@@ -16,11 +16,11 @@ create function pg_temp.logout() returns void language sql as $$
 $$;
 
 insert into auth.users (id, email, aud, role) values
-  ('00000000-0000-0000-0000-00000000000a', 'alice@test.md', 'authenticated', 'authenticated'),
-  ('00000000-0000-0000-0000-00000000000b', 'bob@test.md',   'authenticated', 'authenticated'),
-  ('00000000-0000-0000-0000-00000000000c', 'carol@test.md', 'authenticated', 'authenticated');
+  ('00000000-0000-0000-0000-00000000000a', 'alice@tenancy.test', 'authenticated', 'authenticated'),
+  ('00000000-0000-0000-0000-00000000000b', 'bob@tenancy.test',   'authenticated', 'authenticated'),
+  ('00000000-0000-0000-0000-00000000000c', 'carol@tenancy.test', 'authenticated', 'authenticated');
 
-select is((select count(*)::int from public.profiles where email like '%@test.md'), 3,
+select is((select count(*)::int from public.profiles where email like '%@tenancy.test'), 3,
   'profilurile sunt create automat la înregistrare');
 
 -- ---------------------------------------------------------------- organizații
@@ -49,7 +49,7 @@ select is((select count(*)::int from public.roles where organization_id = (selec
 -- ---------------------------------------------------------------- invitații
 select pg_temp.login_as('00000000-0000-0000-0000-00000000000a');
 insert into public.invitations (organization_id, email, role_id, token_hash, invited_by)
-select org_a, 'carol@test.md', r.id, encode(extensions.digest('token-pentru-carol-0000000000', 'sha256'), 'hex'),
+select org_a, 'carol@tenancy.test', r.id, encode(extensions.digest('token-pentru-carol-0000000000', 'sha256'), 'hex'),
        '00000000-0000-0000-0000-00000000000a'
 from ids join public.roles r on r.organization_id = ids.org_a and r.key = 'agent';
 
@@ -71,7 +71,7 @@ select is((select count(*)::int from public.organizations where name = 'Schimbat
 
 select throws_ok($$
   insert into public.invitations (organization_id, email, role_id, token_hash, invited_by)
-  select org_a, 'x@test.md', r.id, repeat('a', 64), '00000000-0000-0000-0000-00000000000c'
+  select org_a, 'x@tenancy.test', r.id, repeat('a', 64), '00000000-0000-0000-0000-00000000000c'
   from ids join public.roles r on r.organization_id = ids.org_a and r.key = 'agent'
 $$, '42501', null, 'agentul nu poate trimite invitații');
 

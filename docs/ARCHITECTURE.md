@@ -183,7 +183,7 @@ Versiunile exacte se fixează la Etapa 1 după `npm view <pachet> version` (stab
 | `@supabase/supabase-js`, `@supabase/ssr` | client DB/Auth |
 | `react-hook-form`, `zod`, `@hookform/resolvers` | formulare + validare |
 | `@dnd-kit/core`, `@dnd-kit/sortable` | kanban, ordonare etape |
-| `@tanstack/react-table` | tabele (headless, folosit de DataTable shadcn) |
+| — | tabele: `DataTable` propriu (paginare/sortare/filtre pe server, selecție); TanStack Table nu e necesar |
 | `recharts` | grafice (integrat cu componenta Chart din shadcn) |
 | `next-intl` | i18n ro/en/ru |
 | `date-fns` | date și intervale |

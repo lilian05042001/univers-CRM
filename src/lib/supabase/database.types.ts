@@ -178,6 +178,7 @@ export type Database = {
           owner_id: string | null
           phone: string | null
           phone_normalized: string | null
+          search_text: string | null
           updated_at: string
           website: string | null
         }
@@ -196,6 +197,7 @@ export type Database = {
           owner_id?: string | null
           phone?: string | null
           phone_normalized?: never
+          search_text?: never
           updated_at?: string
           website?: string | null
         }
@@ -213,6 +215,7 @@ export type Database = {
           owner_id?: string | null
           phone?: string | null
           phone_normalized?: never
+          search_text?: never
           updated_at?: string
           website?: string | null
         }
@@ -365,6 +368,7 @@ export type Database = {
           organization_id: string
           owner_id: string | null
           position: string | null
+          search_text: string | null
           source_id: string | null
           updated_at: string
         }
@@ -383,6 +387,7 @@ export type Database = {
           organization_id: string
           owner_id?: string | null
           position?: string | null
+          search_text?: never
           source_id?: string | null
           updated_at?: string
         }
@@ -400,6 +405,7 @@ export type Database = {
           organization_id?: string
           owner_id?: string | null
           position?: string | null
+          search_text?: never
           source_id?: string | null
           updated_at?: string
         }
@@ -926,6 +932,7 @@ export type Database = {
           position: number
           priority: Database["public"]["Enums"]["lead_priority"]
           responsible_id: string | null
+          search_text: string | null
           source_id: string | null
           stage_entered_at: string
           stage_id: string
@@ -956,6 +963,7 @@ export type Database = {
           position?: number
           priority?: Database["public"]["Enums"]["lead_priority"]
           responsible_id?: string | null
+          search_text?: never
           source_id?: string | null
           stage_entered_at?: string
           stage_id: string
@@ -985,6 +993,7 @@ export type Database = {
           position?: number
           priority?: Database["public"]["Enums"]["lead_priority"]
           responsible_id?: string | null
+          search_text?: never
           source_id?: string | null
           stage_entered_at?: string
           stage_id?: string
@@ -1728,6 +1737,31 @@ export type Database = {
     Functions: {
       accept_invitation: { Args: { p_token: string }; Returns: string }
       create_organization: { Args: { p_name: string }; Returns: string }
+      find_company_duplicates: {
+        Args: {
+          p_email?: string
+          p_exclude?: string
+          p_name: string
+          p_org: string
+          p_phone?: string
+        }
+        Returns: {
+          company_id: string
+          is_visible: boolean
+          matched_type: string
+          name: string
+        }[]
+      }
+      find_contact_duplicates: {
+        Args: { p_exclude?: string; p_identities: Json; p_org: string }
+        Returns: {
+          contact_id: string
+          full_name: string
+          is_visible: boolean
+          matched_type: string
+          matched_value: string
+        }[]
+      }
       get_invitation: {
         Args: { p_token: string }
         Returns: {
@@ -1738,6 +1772,7 @@ export type Database = {
           role_name: string
         }[]
       }
+      merge_contacts: { Args: { p_keep: string; p_remove: string }; Returns: string }
     }
     Enums: {
       lead_priority: "low" | "normal" | "high" | "urgent"

@@ -7,6 +7,7 @@ import { ok } from "@/lib/actions/result"
 import { env } from "@/lib/env"
 import { createClient } from "@/lib/supabase/server"
 import { emptyToNull } from "@/lib/utils/format"
+import { technicalKey } from "@/lib/utils/search"
 
 import {
   createRoleSchema,
@@ -168,16 +169,7 @@ export const deleteTeam = createOrgAction(
 
 // ---------------------------------------------------------------- Roluri
 
-function roleKey(name: string) {
-  const base = name
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "")
-    .slice(0, 30)
-  return `${/^[a-z]/.test(base) ? base : `role_${base}`}_${randomBytes(3).toString("hex")}`
-}
+const roleKey = (name: string) => technicalKey(name, "role", randomBytes(3).toString("hex"))
 
 export const createRole = createOrgAction(
   { schema: createRoleSchema, permission: "roles.manage" },

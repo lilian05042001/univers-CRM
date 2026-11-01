@@ -17,6 +17,9 @@ Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `a
 - Schimbarea organizației active (creare/invitație/comutare): acțiunea returnează, clientul apelează `enterOrganization()` (navigare completă), nu `redirect()`.
 - Triggere de protecție SQL: `security invoker` + `current_user = 'authenticated'` = apel direct din client; RPC-urile `security definer` trec de ele intenționat.
 - Scheme Zod fără `.transform()` (aceeași formă pentru formular și server); `""` → `null` cu `emptyToNull` în acțiune.
+- Liste (contacte/companii/lead-uri): pagină server → `parseListParams` → `queries.ts` (paginare/sortare/filtre pe server) → `*View` client cu `DataTable`, `Toolbar`, `BulkBar`. Starea e în URL; dialogul de editare se deschide cu `?open=<id|new>` și folosește `useRouteDialog`.
+- Next remontează pagina la orice schimbare de parametri în URL: starea care trebuie să supraviețuiască stă în URL sau într-un store extern (vezi `use-search-draft.ts`).
+- Fără `upsert` care ar actualiza coloane fără grant UPDATE (ex. `organization_id`): `ignoreDuplicates: true` + update separat.
 - Permisiune nouă = migrație care actualizează `private.permission_catalog()` + `src/modules/auth/permissions.ts` + texte în `permissions.*`.
 
 ## Particularități stack

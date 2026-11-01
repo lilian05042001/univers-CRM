@@ -3,41 +3,21 @@ import { expect, test, type Page } from "@playwright/test"
 import messages from "../../messages/ro.json"
 import { navItems } from "../../src/config/navigation"
 
+import { createUser, hasDatabase, login, skipReason, type TestUser } from "./support"
+
 // Fluxurile autentificate rulează pe Supabase local: utilizatorul de test e creat prin Admin API.
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const secretKey = process.env.SUPABASE_SECRET_KEY
 const runId = Date.now()
-const user = {
-  email: `e2e-${runId}@test.md`,
-  password: "Parola123",
-  fullName: "Test E2E",
-  company: `Compania E2E ${runId}`,
-}
+const company = `Compania E2E ${runId}`
 
 test.describe.configure({ mode: "serial" })
-test.skip(
-  !secretKey,
-  "necesită Supabase local (npm run db:start) și SUPABASE_SECRET_KEY în .env.local"
-)
+test.skip(!hasDatabase, skipReason)
 
 let page: Page
 
+let user: TestUser
+
 test.beforeAll(async ({ browser }) => {
-  const res = await fetch(`${supabaseUrl}/auth/v1/admin/users`, {
-    method: "POST",
-    headers: {
-      apikey: secretKey!,
-      Authorization: `Bearer ${secretKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: user.email,
-      password: user.password,
-      email_confirm: true,
-      user_metadata: { full_name: user.fullName },
-    }),
-  })
-  expect(res.ok, await res.text()).toBe(true)
+  user = await createUser("app")
   page = await browser.newPage()
 })
 
@@ -46,18 +26,15 @@ test.afterAll(async () => {
 })
 
 test("new user signs in and is sent to onboarding", async () => {
-  await page.goto("/login")
-  await page.getByLabel(messages.auth.email).fill(user.email)
-  await page.getByLabel(messages.auth.password).fill(user.password)
-  await page.getByRole("button", { name: messages.auth.signIn }).click()
+  await login(page, user)
   await expect(page).toHaveURL(/\/onboarding$/)
 })
 
 test("creating a company makes the user its administrator", async () => {
-  await page.getByLabel(messages.onboarding.companyName).fill(user.company)
+  await page.getByLabel(messages.onboarding.companyName).fill(company)
   await page.getByRole("button", { name: messages.onboarding.create }).click()
   await expect(page).toHaveURL(/\/dashboard$/)
-  await expect(page.getByText(user.company)).toBeVisible()
+  await expect(page.getByText(company)).toBeVisible()
   await expect(page.getByText("Administrator", { exact: true })).toBeVisible()
 })
 

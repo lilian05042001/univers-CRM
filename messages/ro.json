@@ -63,7 +63,12 @@
     "availableInStage": "Acest modul devine funcțional în etapa {stage} a planului de dezvoltare.",
     "notFound": "Pagina nu a fost găsită.",
     "backToDashboard": "Înapoi la Dashboard",
-    "cancel": "Anulează"
+    "cancel": "Anulează",
+    "select": "Alege…",
+    "search": "Caută…",
+    "clear": "Golește",
+    "remove": "Elimină",
+    "save": "Salvează"
   },
   "status": {
     "success": "Succes",
@@ -88,7 +93,16 @@
     "nameMin": "Introdu cel puțin 2 caractere.",
     "tooLong": "Textul este prea lung.",
     "country": "Folosește codul de țară din 2 litere (ex. MD, RO).",
-    "phone": "Numărul de telefon conține caractere nepermise."
+    "phone": "Numărul de telefon conține caractere nepermise.",
+    "contactName": "Introdu prenumele sau numele.",
+    "number": "Introdu un număr valid.",
+    "date": "Introdu o dată validă.",
+    "url": "Introdu o adresă web validă.",
+    "option": "Alege o opțiune din listă.",
+    "amount": "Introdu o sumă validă (ex. 12500 sau 12500,50).",
+    "lossReason": "Alege motivul pierderii.",
+    "optionsRequired": "Adaugă cel puțin o opțiune (câte una pe rând).",
+    "color": "Alege o culoare."
   },
   "errors": {
     "validation": "Verifică datele introduse.",
@@ -119,8 +133,10 @@
       "system_role_create": "Rolurile de sistem se creează automat.",
       "system_role_delete": "Rolurile de sistem nu pot fi șterse.",
       "system_task_type_delete": "Tipurile de activitate de sistem nu pot fi șterse.",
-      "task_type_key_immutable": "Identificatorul tipului de activitate nu poate fi modificat."
-    }
+      "task_type_key_immutable": "Identificatorul tipului de activitate nu poate fi modificat.",
+      "merge_invalid": "Contactele nu pot fi unite."
+    },
+    "lossReasonRequired": "Alege motivul pierderii."
   },
   "auth": {
     "email": "E-mail",
@@ -352,6 +368,84 @@
       "deleteDescription": "Rolul „{name}” va fi șters. Nu poate fi șters cât timp are membri.",
       "allPermissions": "Toate permisiunile (nemodificabil)",
       "noPermissions": "Nicio permisiune suplimentară: vede doar înregistrările proprii."
+    },
+    "tags": {
+      "create": "Etichetă nouă",
+      "createTitle": "Etichetă nouă",
+      "editTitle": "Editează eticheta",
+      "name": "Denumire",
+      "color": "Culoare",
+      "edit": "Editează",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi eticheta?",
+      "deleteDescription": "Eticheta „{name}” va fi eliminată de pe toate înregistrările.",
+      "saved": "Eticheta a fost salvată.",
+      "deleted": "Eticheta a fost ștearsă.",
+      "emptyTitle": "Nicio etichetă",
+      "emptyDescription": "Etichetele ajută la gruparea și filtrarea lead-urilor, contactelor și companiilor."
+    },
+    "sources": {
+      "create": "Sursă nouă",
+      "createTitle": "Sursă nouă",
+      "editTitle": "Editează sursa",
+      "name": "Denumire",
+      "channel": "Canal",
+      "status": "Status",
+      "active": "Activă (apare în formulare)",
+      "activeLabel": "Activă",
+      "inactiveLabel": "Inactivă",
+      "edit": "Editează",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi sursa?",
+      "deleteDescription": "Sursa „{name}” va fi eliminată; înregistrările existente rămân fără sursă. Poți și doar să o dezactivezi.",
+      "saved": "Sursa a fost salvată.",
+      "deleted": "Sursa a fost ștearsă.",
+      "channels": {
+        "manual": "Manual",
+        "web_form": "Formular web",
+        "whatsapp": "WhatsApp",
+        "instagram": "Instagram",
+        "messenger": "Facebook Messenger",
+        "email": "E-mail",
+        "phone": "Telefon",
+        "referral": "Recomandare",
+        "import": "Import",
+        "api": "API",
+        "other": "Altul"
+      }
+    },
+    "fields": {
+      "create": "Câmp nou",
+      "createTitle": "Câmp nou",
+      "editTitle": "Editează câmpul",
+      "entity": "Pentru",
+      "label": "Denumire",
+      "type": "Tip",
+      "options": "Opțiuni (câte una pe rând)",
+      "required": "Obligatoriu",
+      "requiredBadge": "Obligatoriu",
+      "edit": "Editează",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi câmpul?",
+      "deleteDescription": "Câmpul „{name}” nu va mai apărea în formulare. Valorile deja salvate rămân în istoric.",
+      "saved": "Câmpul a fost salvat.",
+      "deleted": "Câmpul a fost șters.",
+      "emptyTitle": "Niciun câmp personalizat",
+      "emptyDescription": "Adaugă câmpuri proprii pentru lead-uri, contacte sau companii.",
+      "entities": {
+        "lead": "Lead-uri",
+        "contact": "Contacte",
+        "company": "Companii"
+      },
+      "types": {
+        "text": "Text",
+        "number": "Număr",
+        "date": "Dată",
+        "select": "Listă (o opțiune)",
+        "multiselect": "Listă (mai multe opțiuni)",
+        "bool": "Da / Nu",
+        "url": "Link"
+      }
     }
   },
   "permissions": {
@@ -385,5 +479,232 @@
     "roles_manage": "Gestionează roluri",
     "settings_manage": "Modifică setările companiei",
     "api_keys_manage": "Gestionează chei API"
+  },
+  "table": {
+    "search": "Caută…",
+    "all": "Toate",
+    "resetFilters": "Resetează filtrele",
+    "selectAll": "Selectează tot",
+    "selectRow": "Selectează rândul",
+    "selected": "{count, plural, one {# selectat} few {# selectate} other {# selectate}}",
+    "clearSelection": "Anulează selecția",
+    "range": "{from}–{to} din {total}",
+    "page": "Pagina {page} din {pages}",
+    "pageSize": "Rânduri pe pagină",
+    "previous": "Pagina anterioară",
+    "next": "Pagina următoare"
+  },
+  "customFields": {
+    "none": "—"
+  },
+  "duplicates": {
+    "title": "Posibile duplicate",
+    "hidden": "Înregistrare a altui coleg",
+    "open": "Deschide",
+    "merge": "Unește aici",
+    "mergeTitle": "Unești contactele?",
+    "mergeDescription": "Datele, lead-urile, notele și sarcinile lui „{name}” vor fi mutate în acest contact, iar „{name}” va fi șters. Acțiunea nu poate fi anulată.",
+    "by": {
+      "phone": "același telefon",
+      "email": "același e-mail",
+      "name": "aceeași denumire",
+      "whatsapp": "același WhatsApp",
+      "instagram": "același Instagram",
+      "messenger": "același Messenger",
+      "telegram": "același Telegram"
+    }
+  },
+  "contacts": {
+    "create": "Contact nou",
+    "unassigned": "Fără responsabil",
+    "merged": "Contactele au fost unite.",
+    "emptyTitle": "Niciun contact",
+    "emptyDescription": "Adaugă primul contact sau schimbă filtrele.",
+    "columns": {
+      "name": "Nume",
+      "company": "Companie",
+      "phone": "Telefon",
+      "email": "E-mail",
+      "owner": "Responsabil",
+      "tags": "Etichete",
+      "created": "Creat"
+    },
+    "filters": {
+      "owner": "Responsabil",
+      "source": "Sursă",
+      "tag": "Etichetă"
+    },
+    "bulk": {
+      "assign": "Atribuie",
+      "tag": "Etichetă",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi contactele selectate?",
+      "deleteDescription": "{count, plural, one {Contactul selectat va fi șters.} other {Cele # contacte selectate vor fi șterse.}}",
+      "assigned": "Responsabilul a fost schimbat.",
+      "tagged": "Eticheta a fost adăugată.",
+      "deleted": "Contactele au fost șterse."
+    },
+    "form": {
+      "createTitle": "Contact nou",
+      "editTitle": "Editează contactul",
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "phones": "Telefoane",
+      "addPhone": "Adaugă telefon",
+      "emails": "E-mailuri",
+      "addEmail": "Adaugă e-mail",
+      "company": "Companie",
+      "position": "Funcție",
+      "source": "Sursă",
+      "owner": "Responsabil",
+      "none": "—",
+      "unassigned": "Fără responsabil",
+      "city": "Oraș",
+      "street": "Adresă",
+      "tags": "Etichete",
+      "customFields": "Câmpuri suplimentare",
+      "cancel": "Anulează",
+      "save": "Salvează",
+      "created": "Contactul a fost creat.",
+      "updated": "Contactul a fost actualizat."
+    }
+  },
+  "companies": {
+    "create": "Companie nouă",
+    "unassigned": "Fără responsabil",
+    "emptyTitle": "Nicio companie",
+    "emptyDescription": "Adaugă prima companie sau schimbă filtrele.",
+    "columns": {
+      "name": "Denumire",
+      "phone": "Telefon",
+      "email": "E-mail",
+      "contacts": "Contacte",
+      "leads": "Lead-uri",
+      "owner": "Responsabil",
+      "tags": "Etichete"
+    },
+    "filters": {
+      "owner": "Responsabil",
+      "tag": "Etichetă"
+    },
+    "bulk": {
+      "assign": "Atribuie",
+      "tag": "Etichetă",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi companiile selectate?",
+      "deleteDescription": "{count, plural, one {Compania selectată va fi ștearsă.} other {Cele # companii selectate vor fi șterse.}}",
+      "assigned": "Responsabilul a fost schimbat.",
+      "tagged": "Eticheta a fost adăugată.",
+      "deleted": "Companiile au fost șterse."
+    },
+    "form": {
+      "createTitle": "Companie nouă",
+      "editTitle": "Editează compania",
+      "name": "Denumire",
+      "industry": "Domeniu de activitate",
+      "phone": "Telefon",
+      "email": "E-mail",
+      "website": "Website",
+      "owner": "Responsabil",
+      "unassigned": "Fără responsabil",
+      "city": "Oraș",
+      "street": "Adresă",
+      "tags": "Etichete",
+      "customFields": "Câmpuri suplimentare",
+      "cancel": "Anulează",
+      "save": "Salvează",
+      "created": "Compania a fost creată.",
+      "updated": "Compania a fost actualizată."
+    }
+  },
+  "leads": {
+    "create": "Lead nou",
+    "unassigned": "Fără responsabil",
+    "noTask": "Fără activitate",
+    "emptyTitle": "Niciun lead",
+    "emptyDescription": "Creează primul lead sau schimbă filtrele.",
+    "priority": {
+      "low": "Scăzută",
+      "normal": "Normală",
+      "high": "Ridicată",
+      "urgent": "Urgentă"
+    },
+    "status": {
+      "open": "Deschise",
+      "won": "Câștigate",
+      "lost": "Pierdute"
+    },
+    "columns": {
+      "title": "Lead",
+      "stage": "Etapă",
+      "value": "Valoare",
+      "responsible": "Responsabil",
+      "priority": "Prioritate",
+      "nextTask": "Următoarea activitate",
+      "tags": "Etichete",
+      "created": "Creat"
+    },
+    "filters": {
+      "pipeline": "Pipeline",
+      "stage": "Etapă",
+      "status": "Status",
+      "responsible": "Responsabil",
+      "me": "Ale mele",
+      "team": "Echipă",
+      "source": "Sursă",
+      "tag": "Etichetă",
+      "priority": "Prioritate"
+    },
+    "bulk": {
+      "move": "Mută în etapă",
+      "assign": "Atribuie",
+      "tag": "Etichetă",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi lead-urile selectate?",
+      "deleteDescription": "{count, plural, one {Lead-ul selectat va fi șters.} other {Cele # lead-uri selectate vor fi șterse.}}",
+      "moved": "Lead-urile au fost mutate.",
+      "assigned": "Responsabilul a fost schimbat.",
+      "tagged": "Eticheta a fost adăugată.",
+      "deleted": "Lead-urile au fost șterse."
+    },
+    "loss": {
+      "title": "Motivul pierderii",
+      "description": "De ce a fost pierdut lead-ul? Motivul apare în rapoarte.",
+      "reason": "Motiv",
+      "placeholder": "Alege motivul",
+      "cancel": "Anulează",
+      "confirm": "Marchează ca pierdut"
+    },
+    "form": {
+      "createTitle": "Lead nou",
+      "editTitle": "Editează lead-ul",
+      "title": "Titlu",
+      "pipeline": "Pipeline",
+      "stage": "Etapă",
+      "value": "Valoare estimată",
+      "priority": "Prioritate",
+      "lossReason": "Motivul pierderii",
+      "lossComment": "Comentariu",
+      "client": "Client",
+      "contact": "Contact",
+      "contactPlaceholder": "Alege un contact existent…",
+      "company": "Companie",
+      "newContactName": "Contact nou: nume",
+      "newContactPhone": "Telefon",
+      "newContactEmail": "E-mail",
+      "details": "Detalii",
+      "responsible": "Responsabil",
+      "unassigned": "Fără responsabil",
+      "team": "Echipă",
+      "source": "Sursă",
+      "none": "—",
+      "tags": "Etichete",
+      "description": "Descriere",
+      "customFields": "Câmpuri suplimentare",
+      "cancel": "Anulează",
+      "save": "Salvează",
+      "created": "Lead-ul a fost creat.",
+      "updated": "Lead-ul a fost actualizat."
+    }
   }
 }

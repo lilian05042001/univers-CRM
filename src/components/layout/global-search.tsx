@@ -1,11 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Building2, Contact, Search, Target, type LucideIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
-import { Search } from "lucide-react"
+import { useEffect, useState } from "react"
 
-import { navItems } from "@/config/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -16,15 +15,25 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import { navItems } from "@/config/navigation"
+import { normalizeSearch } from "@/lib/utils/search"
+import { globalSearch, type SearchResults } from "@/modules/search/actions"
 
-// Căutarea în date (lead-uri, contacte, companii) se adaugă în Etapa 4;
-// până atunci paleta oferă navigare rapidă între module.
+const GROUPS: { key: keyof SearchResults; href: string; icon: LucideIcon }[] = [
+  { key: "leads", href: "/leads", icon: Target },
+  { key: "contacts", href: "/contacts", icon: Contact },
+  { key: "companies", href: "/companies", icon: Building2 },
+]
+
+/** Ctrl+K: caută în lead-uri, contacte (inclusiv telefon / e-mail), companii și module. */
 export function GlobalSearch() {
   const t = useTranslations("search")
   const tTopbar = useTranslations("topbar")
   const tNav = useTranslations("nav")
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const [q, setQ] = useState("")
+  const [results, setResults] = useState<SearchResults | null>(null)
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -36,6 +45,30 @@ export function GlobalSearch() {
     document.addEventListener("keydown", onKeyDown)
     return () => document.removeEventListener("keydown", onKeyDown)
   }, [])
+
+  useEffect(() => {
+    if (q.trim().length < 2) return
+    let cancelled = false
+    const id = setTimeout(async () => {
+      const result = await globalSearch({ q })
+      if (!cancelled && result.ok) setResults(result.data)
+    }, 250)
+    return () => {
+      cancelled = true
+      clearTimeout(id)
+    }
+  }, [q])
+
+  function go(href: string) {
+    setOpen(false)
+    setQ("")
+    setResults(null)
+    router.push(href)
+  }
+
+  const term = normalizeSearch(q)
+  const modules = navItems.filter((item) => normalizeSearch(tNav(item.key)).includes(term))
+  const hits = q.trim().length >= 2 ? results : null
 
   return (
     <>
@@ -53,25 +86,47 @@ export function GlobalSearch() {
       </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen} title={t("title")}>
-        <Command>
-          <CommandInput placeholder={t("placeholder")} />
+        <Command shouldFilter={false}>
+          <CommandInput value={q} onValueChange={setQ} placeholder={t("placeholder")} />
           <CommandList>
             <CommandEmpty>{t("empty")}</CommandEmpty>
-            <CommandGroup heading={t("modules")}>
-              {navItems.map((item) => (
-                <CommandItem
-                  key={item.key}
-                  value={tNav(item.key)}
-                  onSelect={() => {
-                    setOpen(false)
-                    router.push(item.href)
-                  }}
-                >
-                  <item.icon />
-                  {tNav(item.key)}
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            {hits &&
+              GROUPS.map(
+                (group) =>
+                  hits[group.key].length > 0 && (
+                    <CommandGroup key={group.key} heading={tNav(group.key)}>
+                      {hits[group.key].map((hit) => (
+                        <CommandItem
+                          key={hit.id}
+                          value={`${group.key}-${hit.id}`}
+                          onSelect={() => go(`${group.href}?open=${hit.id}`)}
+                        >
+                          <group.icon />
+                          <span className="truncate">{hit.label}</span>
+                          {hit.description && (
+                            <span className="ml-auto truncate text-xs text-muted-foreground">
+                              {hit.description}
+                            </span>
+                          )}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  )
+              )}
+            {modules.length > 0 && (
+              <CommandGroup heading={t("modules")}>
+                {modules.map((item) => (
+                  <CommandItem
+                    key={item.key}
+                    value={`module-${item.key}`}
+                    onSelect={() => go(item.href)}
+                  >
+                    <item.icon />
+                    {tNav(item.key)}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
           </CommandList>
         </Command>
       </CommandDialog>

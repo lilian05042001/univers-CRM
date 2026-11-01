@@ -22,6 +22,7 @@ const DB_ERROR_CODES = new Set([
   "invitation_email_mismatch",
   "invitation_invalid",
   "last_admin",
+  "merge_invalid",
   "membership_immutable",
   "not_authenticated",
   "role_key_immutable",
