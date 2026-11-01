@@ -2,6 +2,9 @@ import { z } from "zod"
 
 import { recordRefSchema } from "@/lib/crm/record-ref"
 
+export const TASK_VIEWS = ["today", "overdue", "upcoming", "done", "all"] as const
+export type TaskView = (typeof TASK_VIEWS)[number]
+
 export const TASK_STATUSES = ["new", "in_progress", "done", "cancelled"] as const
 export type TaskStatus = (typeof TASK_STATUSES)[number]
 

@@ -51,7 +51,15 @@
   },
   "notifications": {
     "title": "Notificări",
-    "empty": "Nu ai notificări noi."
+    "empty": "Nu ai notificări noi.",
+    "titleUnread": "Notificări ({count} necitite)",
+    "markAll": "Marchează citite",
+    "types": {
+      "task_due_soon": "Sarcină în curând",
+      "task_overdue": "Sarcină întârziată",
+      "task_assigned": "Sarcină nouă pentru tine",
+      "lead_assigned": "Lead nou pentru tine"
+    }
   },
   "user": {
     "menu": "Contul meu",
@@ -508,6 +516,42 @@
           "fixed": "Toate lead-urile noi merg la primul utilizator activ din listă."
         }
       }
+    },
+    "taskTypes": {
+      "create": "Tip nou",
+      "createTitle": "Tip de activitate nou",
+      "editTitle": "Editează tipul",
+      "name": "Denumire",
+      "icon": "Pictogramă",
+      "system": "Tip de sistem",
+      "edit": "Editează",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi tipul de activitate?",
+      "deleteDescription": "Tipul „{name}” va fi șters. Nu se poate șterge cât timp există sarcini de acest tip.",
+      "saved": "Tipul de activitate a fost salvat.",
+      "deleted": "Tipul de activitate a fost șters.",
+      "icons": {
+        "phone": "Telefon",
+        "users": "Întâlnire",
+        "message-square": "Mesaj",
+        "mail": "E-mail",
+        "repeat": "Revenire",
+        "check-square": "Sarcină",
+        "calendar": "Calendar",
+        "file-text": "Document",
+        "map-pin": "Vizită",
+        "video": "Video"
+      }
+    },
+    "notificationPrefs": {
+      "save": "Salvează preferințele",
+      "saved": "Preferințele au fost salvate.",
+      "hints": {
+        "task_due_soon": "Cu 15 minute înainte de termen (sau la ora mementoului).",
+        "task_overdue": "Când termenul unei sarcini a trecut și sarcina nu e finalizată.",
+        "task_assigned": "Când un coleg îți atribuie o sarcină.",
+        "lead_assigned": "Când un lead îți este atribuit (manual sau automat)."
+      }
     }
   },
   "permissions": {
@@ -944,6 +988,42 @@
       "duration": "Durată (minute)",
       "priority": "Prioritate",
       "description": "Descriere"
+    },
+    "views": {
+      "today": "Azi",
+      "overdue": "Întârziate",
+      "upcoming": "Viitoare",
+      "done": "Finalizate",
+      "all": "Toate"
+    },
+    "filters": {
+      "responsible": "Responsabil",
+      "mine": "Ale mele",
+      "everyone": "Toți",
+      "unassigned": "Fără responsabil",
+      "type": "Tip"
+    },
+    "empty": {
+      "today": "Nicio sarcină pentru azi",
+      "overdue": "Nicio sarcină întârziată",
+      "upcoming": "Nicio sarcină planificată",
+      "done": "Nicio sarcină finalizată",
+      "all": "Nicio sarcină"
     }
+  },
+  "calendar": {
+    "views": {
+      "month": "Lună",
+      "week": "Săptămână",
+      "day": "Zi"
+    },
+    "today": "Azi",
+    "previous": "Perioada anterioară",
+    "next": "Perioada următoare",
+    "more": "+{count} în plus",
+    "addOn": "Adaugă o sarcină pe {date}",
+    "addAt": "Adaugă o sarcină la {time}",
+    "emptyDay": "Nicio sarcină în această zi",
+    "rescheduled": "Sarcina a fost reprogramată."
   }
 }

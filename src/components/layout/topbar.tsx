@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
 import { GlobalSearch } from "./global-search"
-import { NotificationBell } from "./notification-bell"
+import { NotificationBellSlot } from "./notification-bell-slot"
 import { UserMenu } from "./user-menu"
 
 export function Topbar() {
@@ -16,7 +16,9 @@ export function Topbar() {
       <SidebarTrigger className="-ml-1" aria-label={t("toggleSidebar")} />
       <GlobalSearch />
       <div className="ml-auto flex items-center gap-1">
-        <NotificationBell />
+        <Suspense fallback={<Skeleton className="size-8 rounded-md" />}>
+          <NotificationBellSlot />
+        </Suspense>
         <Suspense fallback={<Skeleton className="size-8 rounded-full" />}>
           <UserMenu />
         </Suspense>

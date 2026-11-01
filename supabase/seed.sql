@@ -200,5 +200,7 @@ begin
   -- Evenimentele generate de seed nu trebuie procesate de automatizări; auditul seed-ului e zgomot.
   update public.domain_events set processed_at = now() where organization_id = v_org;
   delete from public.audit_log where organization_id = v_org;
+  -- Notificările de atribuire din seed ar fi doar zgomot; rămân cele generate de job (sarcini întârziate).
+  delete from public.notifications where organization_id = v_org;
 end;
 $$;

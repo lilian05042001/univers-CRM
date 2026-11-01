@@ -42,3 +42,26 @@ export function utcToZonedInput(value: string | Date, timeZone: string): string 
   const local = new Date(ts + offsetMinutes(ts, timeZone) * 60000)
   return local.toISOString().slice(0, 16)
 }
+
+/** „2026-11-05” + n zile (calendaristic, fără ore). */
+export function addDays(date: string, days: number): string {
+  const [y, m, d] = date.split("-").map(Number) as [number, number, number]
+  return new Date(Date.UTC(y, m - 1, d + days)).toISOString().slice(0, 10)
+}
+
+/** Data de azi („YYYY-MM-DD”) în fusul organizației. */
+export function zonedToday(timeZone: string, now: Date = new Date()): string {
+  return utcToZonedInput(now, timeZone).slice(0, 10)
+}
+
+/** Intervalul UTC [început, sfârșit) al zilelor locale [from, from + days). */
+export function zonedRange(
+  from: string,
+  days: number,
+  timeZone: string
+): { start: Date; end: Date } {
+  return {
+    start: zonedInputToUtc(`${from}T00:00`, timeZone),
+    end: zonedInputToUtc(`${addDays(from, days)}T00:00`, timeZone),
+  }
+}

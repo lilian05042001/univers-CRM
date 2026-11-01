@@ -11,7 +11,7 @@ Fiecare etapă se încheie cu: teste relevante trecute, raport scurt, **aprobare
 | **4** ✅ | Contacte, companii, lead-uri: CRUD, DataTable, filtre, căutare, paginare, duplicate, etichete, câmpuri personalizate, acțiuni în masă | E2E: creare contact → lead → filtrare |
 | **5** ✅ | Pipeline: kanban dnd-kit, setări pipeline/etape (CRUD, ordonare, culori, etape finale), motiv pierdere / sumă câștig, reguli de atribuire | Mutarea persistă + apare în istoric |
 | **6** ✅ | Fișe detaliate lead/contact/companie: secțiuni A–I, cronologie, note, fișiere (Storage), audit vizibil | E2E pe fișa lead-ului |
-| **7** | Sarcini (listă, tipuri, statusuri, întârziate) + calendar zi/săpt/lună + notificări in-app pentru apropiate/întârziate | Notificare generată pentru sarcină întârziată |
+| **7** ✅ | Sarcini (listă, tipuri, statusuri, întârziate) + calendar zi/săpt/lună + notificări in-app pentru apropiate/întârziate | Notificare generată pentru sarcină întârziată |
 | **8** | Inbox: canal intern, conversații, mesaje, note interne, atașamente, răspunsuri rapide, atribuire, realtime, interfața `ChannelAdapter` + endpoint webhooks idempotent | Mesaj intrat → contact identificat → conversație |
 | **9** | Motor automatizări: outbox, worker (`/api/jobs`), pg_cron, editor UI, cele 6 scenarii, istoric execuții, dedupe, protecție la bucle | Teste unitare motor + test dedupe |
 | **10** | Dashboard + rapoarte (funcții SQL, grafice Recharts, filtre perioadă, export CSV) | Cifrele corespund datelor seed (test) |

@@ -84,10 +84,13 @@ export function FilterSelect({
   param,
   label,
   options,
+  allLabel,
 }: {
   param: string
   label: string
   options: FilterOption[]
+  /** Eticheta valorii implicite (fără parametru în URL); implicit „Toate”. */
+  allLabel?: string
 }) {
   const t = useTranslations("table")
   const { searchParams, setParams } = useListNavigation()
@@ -100,7 +103,7 @@ export function FilterSelect({
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={ALL}>{t("all")}</SelectItem>
+        <SelectItem value={ALL}>{allLabel ?? t("all")}</SelectItem>
         {options.map((o) => (
           <SelectItem key={o.value} value={o.value}>
             {o.label}

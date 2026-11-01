@@ -13,6 +13,7 @@ import {
   sourceSchema,
   splitOptions,
   tagSchema,
+  taskTypeSchema,
 } from "./schemas"
 
 const perm = "settings.manage" as const
@@ -117,6 +118,43 @@ export const deleteCustomField = createOrgAction(
     const supabase = await createClient()
     const { error } = await supabase
       .from("custom_field_definitions")
+      .delete()
+      .eq("id", id)
+      .eq("organization_id", ctx.organizationId)
+    if (error) throw error
+    return ok()
+  }
+)
+
+export const saveTaskType = createOrgAction(
+  { schema: taskTypeSchema, permission: perm },
+  async ({ id, name, icon }, ctx) => {
+    const supabase = await createClient()
+    const { error } = id
+      ? await supabase
+          .from("task_types")
+          .update({ name, icon })
+          .eq("id", id)
+          .eq("organization_id", ctx.organizationId)
+      : await supabase.from("task_types").insert({
+          organization_id: ctx.organizationId,
+          key: technicalKey(name, "t", randomBytes(2).toString("hex")),
+          name,
+          icon,
+          position: 100,
+        })
+    if (error) throw error
+    return ok()
+  }
+)
+
+/** Tipurile de sistem nu se șterg (trigger); tipurile folosite de sarcini → errors.inUse. */
+export const deleteTaskType = createOrgAction(
+  { schema: deleteByIdSchema, permission: perm },
+  async ({ id }, ctx) => {
+    const supabase = await createClient()
+    const { error } = await supabase
+      .from("task_types")
       .delete()
       .eq("id", id)
       .eq("organization_id", ctx.organizationId)

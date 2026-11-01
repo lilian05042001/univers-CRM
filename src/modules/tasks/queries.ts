@@ -1,9 +1,11 @@
 import "server-only"
 
 import { refColumn, type RecordRef } from "@/lib/crm/record-ref"
+import { isUuid } from "@/lib/list-params"
+import { zonedRange, zonedToday } from "@/lib/utils/timezone"
 import { createClient } from "@/lib/supabase/server"
 
-import type { TaskStatus } from "./schemas"
+import type { TaskStatus, TaskView } from "./schemas"
 
 export type TaskItem = {
   id: string
@@ -93,3 +95,109 @@ export async function listTaskTypes(organizationId: string) {
 }
 
 export type TaskTypeOption = Awaited<ReturnType<typeof listTaskTypes>>[number]
+
+/** Lista de sarcini (pagina Sarcini): vedere + responsabil + tip, paginată. */
+export async function listTasks(
+  organizationId: string,
+  userId: string,
+  options: {
+    view: TaskView
+    responsible: string
+    typeId: string
+    timeZone: string
+    page: number
+    pageSize: number
+  }
+) {
+  const supabase = await createClient()
+  const now = new Date()
+  const today = zonedRange(zonedToday(options.timeZone, now), 1, options.timeZone)
+
+  let query = supabase
+    .from("tasks")
+    .select(TASK_SELECT, { count: "exact" })
+    .eq("organization_id", organizationId)
+
+  if (options.view === "done") query = query.in("status", ["done", "cancelled"])
+  else if (options.view !== "all") query = query.in("status", ["new", "in_progress"])
+
+  if (options.view === "today") {
+    query = query.gte("due_at", today.start.toISOString()).lt("due_at", today.end.toISOString())
+  } else if (options.view === "overdue") {
+    query = query.lt("due_at", now.toISOString())
+  } else if (options.view === "upcoming") {
+    query = query.gte("due_at", today.end.toISOString())
+  }
+
+  if (options.responsible === "me") query = query.eq("responsible_id", userId)
+  else if (options.responsible === "none") query = query.is("responsible_id", null)
+  else if (isUuid(options.responsible)) query = query.eq("responsible_id", options.responsible)
+  if (isUuid(options.typeId)) query = query.eq("type_id", options.typeId)
+
+  const from = (options.page - 1) * options.pageSize
+  const { data, error, count } = await query
+    .order(options.view === "done" ? "completed_at" : "due_at", {
+      ascending: options.view !== "done",
+    })
+    .range(from, from + options.pageSize - 1)
+  if (error) throw error
+  return { rows: data.map(toTaskItem), total: count ?? 0 }
+}
+
+/** Sarcinile din intervalul calendarului (fără cele anulate). */
+export async function listTasksInRange(
+  organizationId: string,
+  userId: string,
+  range: { start: Date; end: Date },
+  responsible: string
+) {
+  const supabase = await createClient()
+  let query = supabase
+    .from("tasks")
+    .select(TASK_SELECT)
+    .eq("organization_id", organizationId)
+    .neq("status", "cancelled")
+    .gte("due_at", range.start.toISOString())
+    .lt("due_at", range.end.toISOString())
+  if (responsible === "me") query = query.eq("responsible_id", userId)
+  else if (isUuid(responsible)) query = query.eq("responsible_id", responsible)
+  const { data, error } = await query.order("due_at").limit(1000)
+  if (error) throw error
+  return data.map(toTaskItem)
+}
+
+/** Numărul de sarcini deschise pe vederi (pentru tab-uri), cu același filtru de responsabil. */
+export async function countOpenTasks(
+  organizationId: string,
+  userId: string,
+  responsible: string,
+  timeZone: string
+) {
+  const supabase = await createClient()
+  const now = new Date()
+  const today = zonedRange(zonedToday(timeZone, now), 1, timeZone)
+
+  const base = () => {
+    let q = supabase
+      .from("tasks")
+      .select("id", { count: "exact", head: true })
+      .eq("organization_id", organizationId)
+      .in("status", ["new", "in_progress"])
+    if (responsible === "me") q = q.eq("responsible_id", userId)
+    else if (responsible === "none") q = q.is("responsible_id", null)
+    else if (isUuid(responsible)) q = q.eq("responsible_id", responsible)
+    return q
+  }
+
+  const [todayCount, overdue, upcoming] = await Promise.all([
+    base().gte("due_at", today.start.toISOString()).lt("due_at", today.end.toISOString()),
+    base().lt("due_at", now.toISOString()),
+    base().gte("due_at", today.end.toISOString()),
+  ])
+  for (const r of [todayCount, overdue, upcoming]) if (r.error) throw r.error
+  return {
+    today: todayCount.count ?? 0,
+    overdue: overdue.count ?? 0,
+    upcoming: upcoming.count ?? 0,
+  }
+}

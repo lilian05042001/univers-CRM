@@ -1231,6 +1231,101 @@ export type Database = {
           },
         ]
       }
+      notification_preferences: {
+        Row: {
+          in_app: boolean
+          organization_id: string
+          type: string
+          user_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          in_app?: boolean
+          organization_id: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          in_app?: boolean
+          organization_id?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_preferences_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: number
+          link: string | null
+          organization_id: string
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          body?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: never
+          link?: string | null
+          organization_id: string
+          read_at?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: never
+          link?: string | null
+          organization_id?: string
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organizations: {
         Row: {
           country: string
@@ -1538,6 +1633,7 @@ export type Database = {
           id: string
           lead_id: string | null
           organization_id: string
+          overdue_notified_at: string | null
           priority: Database["public"]["Enums"]["lead_priority"]
           reminder_at: string | null
           reminder_sent_at: string | null
@@ -1563,6 +1659,7 @@ export type Database = {
           id?: string
           lead_id?: string | null
           organization_id: string
+          overdue_notified_at?: string | null
           priority?: Database["public"]["Enums"]["lead_priority"]
           reminder_at?: string | null
           reminder_sent_at?: string | null
@@ -1587,6 +1684,7 @@ export type Database = {
           id?: string
           lead_id?: string | null
           organization_id?: string
+          overdue_notified_at?: string | null
           priority?: Database["public"]["Enums"]["lead_priority"]
           reminder_at?: string | null
           reminder_sent_at?: string | null

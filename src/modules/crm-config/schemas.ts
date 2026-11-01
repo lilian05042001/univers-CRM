@@ -87,3 +87,23 @@ export const deleteByIdSchema = z.object({ id: z.uuid() })
 export type TagInput = z.input<typeof tagSchema>
 export type SourceInput = z.input<typeof sourceSchema>
 export type CustomFieldInput = z.input<typeof customFieldSchema>
+
+export const TASK_TYPE_ICONS = [
+  "phone",
+  "users",
+  "message-square",
+  "mail",
+  "repeat",
+  "check-square",
+  "calendar",
+  "file-text",
+  "map-pin",
+  "video",
+] as const
+
+export const taskTypeSchema = z.object({
+  id: z.uuid().optional(),
+  name: name(40),
+  icon: z.enum(TASK_TYPE_ICONS),
+})
+export type TaskTypeInput = z.input<typeof taskTypeSchema>

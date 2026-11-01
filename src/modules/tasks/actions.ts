@@ -1,5 +1,7 @@
 "use server"
 
+import { z } from "zod"
+
 import { createOrgAction } from "@/lib/actions/action"
 import { ok } from "@/lib/actions/result"
 import { refFields } from "@/lib/crm/record-ref"
@@ -49,6 +51,28 @@ export const setTaskStatus = createOrgAction(
     const { error } = await supabase
       .from("tasks")
       .update({ status, ...(result !== undefined && { result: emptyToNull(result) }) })
+      .eq("id", id)
+      .eq("organization_id", ctx.organizationId)
+    if (error) throw error
+    return ok()
+  }
+)
+
+/** Reprogramare prin tragere în calendar: data nouă, ora locală păstrată. */
+export const rescheduleTask = createOrgAction(
+  {
+    schema: z.object({
+      id: z.uuid(),
+      dueAt: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/),
+    }),
+  },
+  async ({ id, dueAt }, ctx) => {
+    const supabase = await createClient()
+    const { error } = await supabase
+      .from("tasks")
+      .update({
+        due_at: zonedInputToUtc(dueAt, ctx.membership.organization.timezone).toISOString(),
+      })
       .eq("id", id)
       .eq("organization_id", ctx.organizationId)
     if (error) throw error
