@@ -96,6 +96,6 @@ test("global search opens the contact", async () => {
   }).toPass()
   await input.fill("turcan")
   await page.getByRole("option", { name: /Ștefan Țurcan/ }).click()
-  await expect(page).toHaveURL(/\/contacts\?open=/)
-  await expect(page.getByRole("dialog")).toContainText(t.contacts.form.editTitle)
+  await expect(page).toHaveURL(/\/contacts\/[0-9a-f-]{36}$/)
+  await expect(page.getByRole("heading", { level: 1, name: "Ștefan Țurcan" })).toBeVisible()
 })

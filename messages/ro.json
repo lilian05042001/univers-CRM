@@ -68,7 +68,9 @@
     "search": "Caută…",
     "clear": "Golește",
     "remove": "Elimină",
-    "save": "Salvează"
+    "save": "Salvează",
+    "yes": "Da",
+    "no": "Nu"
   },
   "status": {
     "success": "Succes",
@@ -104,7 +106,8 @@
     "optionsRequired": "Adaugă cel puțin o opțiune (câte una pe rând).",
     "color": "Alege o culoare.",
     "probability": "Introdu un număr între 0 și 100.",
-    "assignees": "Alege cel puțin un utilizator."
+    "assignees": "Alege cel puțin un utilizator.",
+    "dateTime": "Introdu data și ora."
   },
   "errors": {
     "validation": "Verifică datele introduse.",
@@ -138,7 +141,8 @@
       "task_type_key_immutable": "Identificatorul tipului de activitate nu poate fi modificat.",
       "merge_invalid": "Contactele nu pot fi unite."
     },
-    "lossReasonRequired": "Alege motivul pierderii."
+    "lossReasonRequired": "Alege motivul pierderii.",
+    "fileNotAllowed": "Fișierul nu este permis (maximum 25 MB, fără executabile sau scripturi)."
   },
   "auth": {
     "email": "E-mail",
@@ -625,6 +629,17 @@
       "save": "Salvează",
       "created": "Contactul a fost creat.",
       "updated": "Contactul a fost actualizat."
+    },
+    "detail": {
+      "title": "Fișa contactului",
+      "back": "Toate contactele",
+      "info": "Date de contact",
+      "address": "Adresă",
+      "source": "Sursă",
+      "owner": "Responsabil",
+      "unassigned": "Fără responsabil",
+      "created": "Creat",
+      "deleteDescription": "Contactul „{name}” va fi șters."
     }
   },
   "companies": {
@@ -673,6 +688,18 @@
       "save": "Salvează",
       "created": "Compania a fost creată.",
       "updated": "Compania a fost actualizată."
+    },
+    "detail": {
+      "title": "Fișa companiei",
+      "back": "Toate companiile",
+      "info": "Date companie",
+      "address": "Adresă",
+      "owner": "Responsabil",
+      "unassigned": "Fără responsabil",
+      "created": "Creată",
+      "contacts": "Persoane de contact ({count})",
+      "noContacts": "Nicio persoană de contact.",
+      "deleteDescription": "Compania „{name}” va fi ștearsă."
     }
   },
   "leads": {
@@ -763,6 +790,35 @@
       "save": "Salvează",
       "created": "Lead-ul a fost creat.",
       "updated": "Lead-ul a fost actualizat."
+    },
+    "detail": {
+      "title": "Fișa lead-ului",
+      "back": "Toate lead-urile",
+      "stage": "Etapă",
+      "stageChanged": "Etapa a fost schimbată.",
+      "responsible": "Responsabil",
+      "unassigned": "Fără responsabil",
+      "edit": "Editează",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi lead-ul?",
+      "deleteDescription": "Lead-ul „{title}” va fi șters.",
+      "client": "Client",
+      "noClient": "Niciun contact sau companie asociată.",
+      "secondaryContact": "contact secundar",
+      "commercial": "Informații comerciale",
+      "value": "Valoare estimată",
+      "wonAmount": "Sumă realizată",
+      "lossReason": "Motivul pierderii",
+      "lossComment": "Comentariu pierdere",
+      "priority": "Prioritate",
+      "team": "Echipă",
+      "source": "Sursă",
+      "created": "Creat",
+      "lastActivity": "Ultima interacțiune",
+      "nextTask": "Următoarea activitate",
+      "noTask": "Nicio activitate planificată",
+      "closed": "Închis",
+      "customFields": "Câmpuri suplimentare"
     }
   },
   "pipeline": {
@@ -772,5 +828,122 @@
     "dragInstructions": "Apasă spațiu pentru a ridica lead-ul, săgețile pentru a-l muta între etape și spațiu pentru a-l plasa. Escape anulează.",
     "noPipelineTitle": "Niciun pipeline",
     "noPipelineDescription": "Creează un pipeline din Setări → Pipeline-uri și etape."
+  },
+  "detail": {
+    "edit": "Editează",
+    "delete": "Șterge",
+    "deleteTitle": "Ștergi înregistrarea?",
+    "deleted": "Înregistrarea a fost ștearsă.",
+    "leads": "Lead-uri ({count})",
+    "noLeads": "Niciun lead asociat."
+  },
+  "workspace": {
+    "timeline": "Cronologie",
+    "tasks": "Sarcini ({count})",
+    "notes": "Note ({count})",
+    "files": "Fișiere ({count})",
+    "conversations": "Conversații",
+    "history": "Istoric",
+    "conversationsEmpty": "Nicio conversație",
+    "conversationsHint": "Conversațiile cu clientul vor apărea aici după activarea Inbox-ului (etapa 8)."
+  },
+  "activity": {
+    "emptyTitle": "Nicio activitate încă",
+    "system": "Sistem",
+    "nobody": "nimeni",
+    "types": {
+      "lead": {
+        "created": "Lead creat",
+        "stage_changed": "Etapă schimbată: {from} → {to}",
+        "responsible_changed": "Responsabil schimbat: {to}",
+        "updated": "Modificat: {fields}",
+        "contact_linked": "Contact asociat",
+        "deleted": "Lead șters"
+      },
+      "note": {
+        "added": "Notă: {excerpt}"
+      },
+      "file": {
+        "added": "Fișier adăugat: {name}"
+      },
+      "task": {
+        "created": "Sarcină creată: {title}",
+        "completed": "Sarcină finalizată: {title}",
+        "cancelled": "Sarcină anulată: {title}"
+      },
+      "contact": {
+        "created": "Contact creat",
+        "merged": "Contact unit: {name}"
+      },
+      "company": {
+        "created": "Companie creată"
+      }
+    },
+    "fields": {
+      "title": "titlu",
+      "value": "valoare",
+      "currency": "monedă",
+      "priority": "prioritate",
+      "company_id": "companie",
+      "source_id": "sursă",
+      "team_id": "echipă",
+      "won_amount": "sumă realizată",
+      "loss_reason_id": "motivul pierderii",
+      "custom_fields": "câmpuri suplimentare",
+      "description": "descriere"
+    }
+  },
+  "notes": {
+    "placeholder": "Scrie o notă internă… (Ctrl+Enter pentru salvare)",
+    "add": "Adaugă nota",
+    "added": "Nota a fost adăugată.",
+    "pin": "Fixează sus",
+    "unpin": "Anulează fixarea",
+    "delete": "Șterge",
+    "deleteTitle": "Ștergi nota?",
+    "deleteDescription": "Nota va fi ștearsă definitiv.",
+    "deleted": "Nota a fost ștearsă.",
+    "emptyTitle": "Nicio notă"
+  },
+  "files": {
+    "upload": "Încarcă fișiere",
+    "limits": "Maximum 25 MB per fișier.",
+    "uploaded": "„{name}” a fost încărcat.",
+    "uploadFailed": "încărcarea a eșuat",
+    "download": "Descarcă",
+    "delete": "Șterge",
+    "deleteTitle": "Ștergi fișierul?",
+    "deleteDescription": "„{name}” va fi șters definitiv.",
+    "deleted": "Fișierul a fost șters.",
+    "emptyTitle": "Niciun fișier"
+  },
+  "tasks": {
+    "create": "Sarcină nouă",
+    "edit": "Editează sarcina",
+    "complete": "Finalizează „{title}”",
+    "reopen": "Redeschide „{title}”",
+    "created": "Sarcina a fost creată.",
+    "updated": "Sarcina a fost actualizată.",
+    "completed": "Sarcina a fost finalizată.",
+    "emptyTitle": "Nicio sarcină",
+    "statuses": {
+      "new": "Nouă",
+      "in_progress": "În desfășurare",
+      "done": "Finalizată",
+      "cancelled": "Anulată",
+      "overdue": "Întârziată"
+    },
+    "form": {
+      "createTitle": "Sarcină nouă",
+      "editTitle": "Editează sarcina",
+      "title": "Titlu",
+      "type": "Tip",
+      "responsible": "Responsabil",
+      "unassigned": "Fără responsabil",
+      "dueAt": "Termen",
+      "duration": "Durată (minute)",
+      "priority": "Prioritate",
+      "description": "Descriere"
+    }
   }
 }

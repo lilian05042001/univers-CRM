@@ -103,3 +103,20 @@ export async function getCompany(id: string) {
 }
 
 export type CompanyRecord = NonNullable<Awaited<ReturnType<typeof getCompany>>>
+
+/** Fișa companiei: date, etichete, persoanele de contact și lead-urile asociate. */
+export async function getCompanyDetail(id: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("companies")
+    .select(
+      "id, name, industry, phone, email, website, address, custom_fields, owner_id, created_at, tags:company_tags(tag:tags(id, name, color)), contacts(id, full_name, position, deleted_at), leads(id, title, value, currency, status, deleted_at, stage:pipeline_stages!inner(name, color))"
+    )
+    .eq("id", id)
+    .is("deleted_at", null)
+    .maybeSingle()
+  if (error) throw error
+  return data
+}
+
+export type CompanyDetail = NonNullable<Awaited<ReturnType<typeof getCompanyDetail>>>

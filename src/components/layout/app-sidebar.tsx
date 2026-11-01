@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { Orbit } from "lucide-react"
-import type { ReactNode } from "react"
+import { Suspense, type ReactNode } from "react"
 
 import { isActivePath, navigation } from "@/config/navigation"
 import {
@@ -24,10 +24,7 @@ import {
 
 /** `footer` primește comutatorul de organizație (randat pe server, în Suspense). */
 export function AppSidebar({ footer }: { footer: ReactNode }) {
-  const t = useTranslations("nav")
   const tApp = useTranslations("app")
-  const pathname = usePathname()
-  const { isMobile, setOpenMobile } = useSidebar()
 
   return (
     <Sidebar collapsible="icon">
@@ -44,39 +41,52 @@ export function AppSidebar({ footer }: { footer: ReactNode }) {
       </SidebarHeader>
 
       <SidebarContent>
-        {navigation.map((group) => (
-          <SidebarGroup key={group.key}>
-            <SidebarGroupLabel className="text-sidebar-foreground/60">
-              {t(`groups.${group.key}`)}
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {group.items.map((item) => {
-                  const label = t(item.key)
-                  const active = isActivePath(pathname, item.href)
-                  return (
-                    <SidebarMenuItem key={item.key}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={active}
-                        tooltip={label}
-                        className="data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground"
-                      >
-                        <Link href={item.href} onClick={() => isMobile && setOpenMobile(false)}>
-                          <item.icon />
-                          <span>{label}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  )
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+        {/* Pe rutele dinamice adresa e dată de cerere: meniul apare imediat, evidențierea după. */}
+        <Suspense fallback={<NavLinks pathname={null} />}>
+          <ActiveNavLinks />
+        </Suspense>
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-border">{footer}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )
+}
+
+function ActiveNavLinks() {
+  return <NavLinks pathname={usePathname()} />
+}
+
+function NavLinks({ pathname }: { pathname: string | null }) {
+  const t = useTranslations("nav")
+  const { isMobile, setOpenMobile } = useSidebar()
+
+  return navigation.map((group) => (
+    <SidebarGroup key={group.key}>
+      <SidebarGroupLabel className="text-sidebar-foreground/60">
+        {t(`groups.${group.key}`)}
+      </SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {group.items.map((item) => {
+            const label = t(item.key)
+            return (
+              <SidebarMenuItem key={item.key}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname !== null && isActivePath(pathname, item.href)}
+                  tooltip={label}
+                  className="data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground"
+                >
+                  <Link href={item.href} onClick={() => isMobile && setOpenMobile(false)}>
+                    <item.icon />
+                    <span>{label}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          })}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  ))
 }

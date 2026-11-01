@@ -1,6 +1,7 @@
 "use client"
 
 import { Contact, Plus, Tag, Trash2, UserRound } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useFormatter, useTranslations } from "next-intl"
 import { useState } from "react"
 
@@ -42,6 +43,7 @@ export function ContactsView({ rows, total, page, pageSize, options, record, isN
   const { setParams } = useListNavigation()
   const { run, pending } = useActionRunner()
   const routeDialog = useRouteDialog()
+  const router = useRouter()
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const memberName = nameById(options.members)
   const ids = [...selected]
@@ -177,7 +179,7 @@ export function ContactsView({ rows, total, page, pageSize, options, record, isN
         columns={columns}
         getRowId={(c) => c.id}
         selection={can.edit || can.delete ? { selected, onChange: setSelected } : undefined}
-        onRowClick={(c) => setParams({ open: c.id }, { resetPage: false })}
+        onRowClick={(c) => router.push(`/contacts/${c.id}`)}
         empty={
           <EmptyState icon={Contact} title={t("emptyTitle")} description={t("emptyDescription")} />
         }

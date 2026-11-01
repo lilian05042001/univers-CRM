@@ -1,6 +1,7 @@
 "use client"
 
 import { ArrowRightLeft, Plus, Tag, Target, Trash2, UserRound } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useFormatter, useNow, useTranslations } from "next-intl"
 import { useState } from "react"
 
@@ -61,6 +62,7 @@ export function LeadsView({
   const { searchParams, setParams } = useListNavigation()
   const { run, pending } = useActionRunner()
   const routeDialog = useRouteDialog()
+  const router = useRouter()
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [lostStageId, setLostStageId] = useState<string | null>(null)
   const memberName = nameById(options.members)
@@ -294,7 +296,7 @@ export function LeadsView({
         selection={
           can.edit || can.delete || can.assign ? { selected, onChange: setSelected } : undefined
         }
-        onRowClick={(l) => setParams({ open: l.id }, { resetPage: false })}
+        onRowClick={(l) => router.push(`/leads/${l.id}`)}
         empty={
           <EmptyState icon={Target} title={t("emptyTitle")} description={t("emptyDescription")} />
         }

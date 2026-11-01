@@ -109,3 +109,20 @@ export async function getContact(id: string) {
 }
 
 export type ContactRecord = NonNullable<Awaited<ReturnType<typeof getContact>>>
+
+/** Fișa contactului: date, identități, etichete și lead-urile asociate. */
+export async function getContactDetail(id: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("contacts")
+    .select(
+      "id, full_name, position, address, custom_fields, owner_id, created_at, company:companies(id, name), source:lead_sources(name), identities:contact_identities(type, value, is_primary), tags:contact_tags(tag:tags(id, name, color)), leads:lead_contacts(is_primary, lead:leads!inner(id, title, value, currency, status, deleted_at, stage:pipeline_stages!inner(name, color)))"
+    )
+    .eq("id", id)
+    .is("deleted_at", null)
+    .maybeSingle()
+  if (error) throw error
+  return data
+}
+
+export type ContactDetail = NonNullable<Awaited<ReturnType<typeof getContactDetail>>>

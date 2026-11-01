@@ -21,7 +21,7 @@ export default defineConfig({
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     // Fluxurile autentificate (serial, cu un utilizator nou) rulează doar pe desktop.
-    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: /(app|crm|pipeline)\.spec\.ts/ },
+    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: /(app|crm|pipeline|detail)\.spec\.ts/ },
   ],
   webServer: {
     command: `npm run build && npm run start -- --port ${port}`,

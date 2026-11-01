@@ -22,6 +22,17 @@ async function drag(source: Locator, target: Locator) {
   await page.mouse.up()
 }
 
+/**
+ * Trage până când rezultatul apare: imediat după încărcare tabla poate să nu fie încă
+ * hidratată (dnd-kit nu ascultă evenimentele), iar prima tragere s-ar pierde.
+ */
+async function dragUntil(title: string, target: string, done: () => Promise<void>) {
+  await expect(async () => {
+    await drag(card(title), column(target))
+    await done()
+  }).toPass({ timeout: 20_000 })
+}
+
 const column = (name: string) => page.getByRole("region", { name, exact: true })
 const card = (title: string) => page.getByRole("button", { name: new RegExp(title) })
 
@@ -49,33 +60,44 @@ test("a new lead appears in the first column", async () => {
 })
 
 test("dragging a card moves the lead and persists", async () => {
-  await drag(card("Kanban E2E"), column("Contactat"))
-  await expect(column("Contactat").getByText("Kanban E2E")).toBeVisible()
+  await dragUntil("Kanban E2E", "Contactat", () =>
+    expect(column("Contactat").getByText("Kanban E2E")).toBeVisible({ timeout: 2000 })
+  )
   await expect(column("Contactat").getByTestId("stage-count")).toHaveText("1")
   await expect(column("Lead nou").getByTestId("stage-count")).toHaveText("0")
 
+  // Mutarea se salvează asincron: reîncărcarea abia după ce cererea a ajuns la server.
+  await page.waitForLoadState("networkidle")
   await page.reload()
   await expect(column("Contactat").getByText("Kanban E2E")).toBeVisible()
   await expect(column("Contactat").getByTestId("stage-total")).toContainText("5.000")
 })
 
 test("moving to Lost asks for the reason", async () => {
-  await drag(card("Kanban E2E"), column("Pierdut"))
   const dialog = page.getByRole("dialog")
-  await expect(dialog.getByText(t.leads.loss.title)).toBeVisible()
+  await dragUntil("Kanban E2E", "Pierdut", () =>
+    expect(dialog.getByText(t.leads.loss.title)).toBeVisible({ timeout: 2000 })
+  )
   await dialog.getByRole("combobox").click()
   await page.getByRole("option", { name: "Preț prea mare" }).click()
   await dialog.getByRole("button", { name: t.leads.loss.confirm }).click()
 
+  // Mutarea se salvează asincron: reîncărcarea abia după ce cererea a ajuns la server.
+  await page.waitForLoadState("networkidle")
   await page.reload()
   await expect(column("Pierdut").getByText("Kanban E2E")).toBeVisible()
 })
 
 test("cancelling the reason keeps the lead where it was", async () => {
-  await drag(card("Kanban E2E"), column("Negociere"))
-  await expect(column("Negociere").getByText("Kanban E2E")).toBeVisible()
+  await dragUntil("Kanban E2E", "Negociere", () =>
+    expect(column("Negociere").getByText("Kanban E2E")).toBeVisible({ timeout: 2000 })
+  )
+  // Mutarea se salvează asincron: reîncărcarea abia după ce cererea a ajuns la server.
+  await page.waitForLoadState("networkidle")
   await page.reload()
-  await drag(card("Kanban E2E"), column("Pierdut"))
+  await dragUntil("Kanban E2E", "Pierdut", () =>
+    expect(page.getByRole("dialog").getByText(t.leads.loss.title)).toBeVisible({ timeout: 2000 })
+  )
   await page.getByRole("dialog").getByRole("button", { name: t.leads.loss.cancel }).click()
   await expect(column("Negociere").getByText("Kanban E2E")).toBeVisible()
 })

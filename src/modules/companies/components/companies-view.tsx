@@ -2,6 +2,7 @@
 
 import { Building2, Plus, Tag, Trash2, UserRound } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 
@@ -42,6 +43,7 @@ export function CompaniesView({ rows, total, page, pageSize, options, record, is
   const { setParams } = useListNavigation()
   const { run, pending } = useActionRunner()
   const routeDialog = useRouteDialog()
+  const router = useRouter()
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const memberName = nameById(options.members)
   const ids = [...selected]
@@ -199,7 +201,7 @@ export function CompaniesView({ rows, total, page, pageSize, options, record, is
         columns={columns}
         getRowId={(c) => c.id}
         selection={can.edit || can.delete ? { selected, onChange: setSelected } : undefined}
-        onRowClick={(c) => setParams({ open: c.id }, { resetPage: false })}
+        onRowClick={(c) => router.push(`/companies/${c.id}`)}
         empty={
           <EmptyState
             icon={Building2}

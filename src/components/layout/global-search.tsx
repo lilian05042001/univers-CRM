@@ -99,7 +99,7 @@ export function GlobalSearch() {
                         <CommandItem
                           key={hit.id}
                           value={`${group.key}-${hit.id}`}
-                          onSelect={() => go(`${group.href}?open=${hit.id}`)}
+                          onSelect={() => go(`${group.href}/${hit.id}`)}
                         >
                           <group.icon />
                           <span className="truncate">{hit.label}</span>

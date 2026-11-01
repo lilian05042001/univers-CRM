@@ -185,3 +185,20 @@ export async function getLead(id: string) {
 }
 
 export type LeadRecord = NonNullable<Awaited<ReturnType<typeof getLead>>>
+
+/** Fișa lead-ului: datele comerciale, clientul (contacte + companie), etichetele. */
+export async function getLeadDetail(id: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("leads")
+    .select(
+      "id, title, status, pipeline_id, value, won_amount, currency, priority, description, custom_fields, created_at, last_activity_at, next_task_due_at, closed_at, loss_comment, responsible_id, stage:pipeline_stages!inner(id, name, color, kind), company:companies(id, name, phone, email), source:lead_sources(name), loss_reason:loss_reasons(name), team:teams(name), contacts:lead_contacts(is_primary, contact:contacts(id, full_name, position, identities:contact_identities(type, value, is_primary))), tags:lead_tags(tag:tags(id, name, color))"
+    )
+    .eq("id", id)
+    .is("deleted_at", null)
+    .maybeSingle()
+  if (error) throw error
+  return data
+}
+
+export type LeadDetail = NonNullable<Awaited<ReturnType<typeof getLeadDetail>>>

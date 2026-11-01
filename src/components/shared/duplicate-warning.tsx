@@ -44,7 +44,7 @@ export function DuplicateWarning({
               {m.isVisible && (
                 <span className="ml-auto flex gap-1">
                   <Button asChild variant="ghost" size="sm">
-                    <Link href={`${hrefBase}?open=${m.id}`}>{t("open")}</Link>
+                    <Link href={`${hrefBase}/${m.id}`}>{t("open")}</Link>
                   </Button>
                   {onMerge && (
                     <ConfirmDialog

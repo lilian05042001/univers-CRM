@@ -12,8 +12,9 @@ import {
 } from "@dnd-kit/core"
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable"
 import { Plus } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
-import { useId, useState, useTransition } from "react"
+import { useId, useRef, useState, useTransition } from "react"
 import { toast } from "sonner"
 
 import { FilterSelect, Toolbar } from "@/components/shared/data-table/toolbar"
@@ -69,6 +70,7 @@ export function BoardView({
   const tAll = useTranslations()
   const { setParams } = useListNavigation()
   const routeDialog = useRouteDialog()
+  const router = useRouter()
   const [lostMove, setLostMove] = useState<PendingMove | null>(null)
   const [loadingStage, setLoadingStage] = useState<string | null>(null)
   const [, startTransition] = useTransition()
@@ -95,6 +97,7 @@ export function BoardView({
   }
 
   function onDragEnd(event: Parameters<typeof board.onDragEnd>[0]) {
+    endDrag()
     const move = board.onDragEnd(event)
     if (!move) return
     const kind = pipeline.stages.find((s) => s.id === move.stageId)?.kind
@@ -116,7 +119,12 @@ export function BoardView({
     })
   }
 
-  const open = (id: string) => setParams({ open: id }, { resetPage: false })
+  // După o tragere browserul trimite și un „click” pe card: îl ignorăm, altfel s-ar deschide fișa.
+  const dragging = useRef(false)
+  const endDrag = () => setTimeout(() => (dragging.current = false), 0)
+  const open = (id: string) => {
+    if (!dragging.current) router.push(`/leads/${id}`)
+  }
 
   return (
     <div className="flex min-h-0 flex-col gap-4">
@@ -156,10 +164,16 @@ export function BoardView({
         id={dndId}
         sensors={sensors}
         collisionDetection={closestCorners}
-        onDragStart={board.onDragStart}
+        onDragStart={(event) => {
+          dragging.current = true
+          board.onDragStart(event)
+        }}
         onDragOver={board.onDragOver}
         onDragEnd={onDragEnd}
-        onDragCancel={board.revert}
+        onDragCancel={() => {
+          endDrag()
+          board.revert()
+        }}
         accessibility={{
           screenReaderInstructions: { draggable: t("dragInstructions") },
         }}
