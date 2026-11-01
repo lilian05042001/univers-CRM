@@ -34,13 +34,12 @@
     "calendar": "Activitățile planificate pe zile, săptămâni și luni.",
     "automations": "Reguli care execută automat acțiuni repetitive.",
     "reports": "Rapoarte de vânzări, conversie și activitate.",
-    "team": "Utilizatorii, echipele și rolurile organizației.",
+    "team": "Utilizatorii, echipele și invitațiile organizației.",
     "settings": "Configurarea companiei și a CRM-ului."
   },
   "topbar": {
     "search": "Caută lead-uri, contacte, companii…",
     "searchShort": "Caută…",
-    "create": "Nou",
     "notifications": "Notificări",
     "toggleSidebar": "Comută meniul"
   },
@@ -57,14 +56,14 @@
   "user": {
     "menu": "Contul meu",
     "profile": "Profil",
-    "signOut": "Deconectare",
-    "guest": "Utilizator"
+    "signOut": "Deconectare"
   },
   "common": {
     "comingSoon": "Modul în construcție",
     "availableInStage": "Acest modul devine funcțional în etapa {stage} a planului de dezvoltare.",
     "notFound": "Pagina nu a fost găsită.",
-    "backToDashboard": "Înapoi la Dashboard"
+    "backToDashboard": "Înapoi la Dashboard",
+    "cancel": "Anulează"
   },
   "status": {
     "success": "Succes",
@@ -72,5 +71,316 @@
     "danger": "Eroare",
     "info": "Info",
     "neutral": "Neutru"
+  },
+  "locales": {
+    "ro": "Română",
+    "en": "English",
+    "ru": "Русский"
+  },
+  "validation": {
+    "required": "Câmp obligatoriu.",
+    "email": "Introdu o adresă de e-mail validă.",
+    "passwordMin": "Parola trebuie să aibă cel puțin 8 caractere.",
+    "passwordMax": "Parola poate avea cel mult 72 de caractere.",
+    "passwordLetters": "Parola trebuie să conțină cel puțin o literă.",
+    "passwordDigits": "Parola trebuie să conțină cel puțin o cifră.",
+    "passwordMismatch": "Parolele nu coincid.",
+    "nameMin": "Introdu cel puțin 2 caractere.",
+    "tooLong": "Textul este prea lung.",
+    "country": "Folosește codul de țară din 2 litere (ex. MD, RO).",
+    "phone": "Numărul de telefon conține caractere nepermise."
+  },
+  "errors": {
+    "validation": "Verifică datele introduse.",
+    "forbidden": "Nu ai permisiunea pentru această acțiune.",
+    "duplicate": "Există deja o înregistrare cu aceste date.",
+    "inUse": "Înregistrarea este folosită în altă parte și nu poate fi ștearsă.",
+    "unexpected": "A apărut o eroare neașteptată. Încearcă din nou.",
+    "auth": {
+      "invalidCredentials": "E-mailul sau parola sunt incorecte.",
+      "emailNotConfirmed": "Confirmă adresa de e-mail din mesajul primit, apoi autentifică-te.",
+      "rateLimited": "Prea multe încercări. Așteaptă puțin și încearcă din nou.",
+      "weakPassword": "Parola este prea slabă.",
+      "samePassword": "Parola nouă trebuie să fie diferită de cea veche.",
+      "sessionExpired": "Sesiunea a expirat. Solicită un nou link de resetare.",
+      "invalidLink": "Link-ul este invalid sau a expirat."
+    },
+    "db": {
+      "admin_only": "Doar un administrator poate gestiona administratorii.",
+      "admin_permissions_locked": "Permisiunile administratorului nu pot fi modificate.",
+      "invalid_name": "Denumirea nu este validă.",
+      "invitation_email_mismatch": "Invitația a fost trimisă pe altă adresă de e-mail.",
+      "invitation_invalid": "Invitația nu este validă sau a expirat.",
+      "last_admin": "Organizația trebuie să aibă cel puțin un administrator activ.",
+      "membership_immutable": "Membrul nu poate fi mutat în altă organizație.",
+      "not_authenticated": "Trebuie să fii autentificat.",
+      "role_key_immutable": "Identificatorul rolului nu poate fi modificat.",
+      "system_role_create": "Rolurile de sistem se creează automat.",
+      "system_role_delete": "Rolurile de sistem nu pot fi șterse."
+    }
+  },
+  "auth": {
+    "email": "E-mail",
+    "password": "Parolă",
+    "fullName": "Nume și prenume",
+    "passwordHint": "Minimum 8 caractere, cu litere și cifre.",
+    "forgotPassword": "Ai uitat parola?",
+    "signIn": "Autentificare",
+    "signUp": "Creează cont",
+    "createAccount": "Creează contul",
+    "noAccount": "Nu ai cont?",
+    "haveAccount": "Ai deja cont?",
+    "checkEmailTitle": "Verifică e-mailul",
+    "checkEmailText": "Dacă adresa {email} poate fi înregistrată, vei primi un link de confirmare.",
+    "sendResetLink": "Trimite link-ul de resetare",
+    "resetSent": "Dacă există un cont cu această adresă, vei primi un e-mail cu instrucțiuni.",
+    "backToLogin": "Înapoi la autentificare",
+    "newPassword": "Parola nouă",
+    "confirmPassword": "Confirmă parola",
+    "savePassword": "Salvează parola",
+    "passwordUpdated": "Parola a fost actualizată.",
+    "pages": {
+      "login": {
+        "title": "Autentificare",
+        "description": "Intră în contul tău Univers CRM."
+      },
+      "register": {
+        "title": "Cont nou",
+        "description": "Creează-ți contul, apoi configurează compania."
+      },
+      "forgotPassword": {
+        "title": "Resetarea parolei",
+        "description": "Îți trimitem un link pentru a seta o parolă nouă."
+      },
+      "resetPassword": {
+        "title": "Parolă nouă",
+        "description": "Alege o parolă nouă pentru contul tău."
+      }
+    }
+  },
+  "onboarding": {
+    "title": "Configurează compania",
+    "description": "Creează spațiul de lucru al companiei. Vei fi administratorul acestuia.",
+    "companyName": "Denumirea companiei",
+    "companyNamePlaceholder": "ex. Univers Group SRL",
+    "create": "Creează compania"
+  },
+  "organizations": {
+    "switch": "Organizații",
+    "create": "Companie nouă"
+  },
+  "invite": {
+    "title": "Invitație",
+    "description": "Ai fost invitat în {organization} cu rolul {role}.",
+    "forEmail": "Invitația este pentru {email}.",
+    "accept": "Acceptă invitația",
+    "createAccount": "Creează cont și acceptă",
+    "haveAccount": "Am deja cont",
+    "wrongAccount": "Invitația este pentru {email}, dar ești autentificat ca {current}. Deconectează-te și intră cu adresa corectă.",
+    "invalidTitle": "Invitație invalidă",
+    "invalidDescription": "Invitația a expirat, a fost revocată sau a fost deja folosită.",
+    "toLogin": "Mergi la autentificare"
+  },
+  "profile": {
+    "title": "Profil",
+    "description": "Datele tale personale și securitatea contului.",
+    "personal": "Date personale",
+    "password": "Schimbarea parolei",
+    "fullName": "Nume și prenume",
+    "phone": "Telefon",
+    "emailInfo": "Adresa de e-mail a contului: {email}",
+    "save": "Salvează",
+    "saved": "Profilul a fost salvat."
+  },
+  "team": {
+    "tabs": {
+      "members": "Membri ({count})",
+      "invitations": "Invitații ({count})",
+      "teams": "Echipe ({count})"
+    },
+    "members": {
+      "name": "Utilizator",
+      "role": "Rol",
+      "status": "Status",
+      "actions": "Acțiuni",
+      "you": "tu",
+      "statuses": {
+        "active": "Activ",
+        "disabled": "Dezactivat"
+      },
+      "disable": "Dezactivează",
+      "activate": "Activează",
+      "remove": "Elimină din organizație",
+      "removeTitle": "Elimini membrul?",
+      "removeDescription": "{name} nu va mai avea acces la datele organizației.",
+      "roleChanged": "Rolul a fost schimbat.",
+      "disabled": "Membrul a fost dezactivat.",
+      "activated": "Membrul a fost activat.",
+      "removed": "Membrul a fost eliminat."
+    },
+    "invite": {
+      "open": "Invită",
+      "title": "Invită un coleg",
+      "description": "Colegul primește un link prin care se alătură organizației cu rolul ales.",
+      "createdDescription": "Invitația a fost creată. Trimite link-ul colegului.",
+      "email": "E-mail",
+      "role": "Rol",
+      "team": "Echipă",
+      "noTeam": "Fără echipă",
+      "submit": "Creează invitația",
+      "link": "Link de invitație",
+      "copy": "Copiază link-ul",
+      "linkOnce": "Link-ul este afișat o singură dată și expiră în 7 zile.",
+      "done": "Gata"
+    },
+    "invitations": {
+      "email": "E-mail",
+      "role": "Rol",
+      "team": "Echipă",
+      "expires": "Expiră",
+      "expired": "Expirată",
+      "revoke": "Revocă",
+      "revokeTitle": "Revoci invitația?",
+      "revokeDescription": "Link-ul trimis către {email} nu va mai funcționa.",
+      "revoked": "Invitația a fost revocată.",
+      "emptyTitle": "Nicio invitație în așteptare",
+      "emptyDescription": "Invitațiile trimise și neacceptate apar aici."
+    },
+    "teams": {
+      "create": "Echipă nouă",
+      "createTitle": "Echipă nouă",
+      "editTitle": "Editează echipa",
+      "name": "Denumire",
+      "manager": "Manager",
+      "managerLabel": "Manager",
+      "noManager": "Fără manager",
+      "members": "Membri",
+      "noMembers": "Niciun membru.",
+      "save": "Salvează",
+      "created": "Echipa a fost creată.",
+      "updated": "Echipa a fost actualizată.",
+      "edit": "Editează",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi echipa?",
+      "deleteDescription": "Echipa „{name}” va fi ștearsă. Membrii rămân în organizație.",
+      "deleted": "Echipa a fost ștearsă.",
+      "emptyTitle": "Nicio echipă",
+      "emptyDescription": "Grupează agenții în echipe pentru a distribui lead-urile și a urmări performanța."
+    }
+  },
+  "settings": {
+    "stage": "Disponibil în etapa {stage}",
+    "sections": {
+      "company": {
+        "title": "Datele companiei",
+        "description": "Denumire, date fiscale, monedă, fus orar și limbă."
+      },
+      "users": {
+        "title": "Utilizatori și echipe",
+        "description": "Membri, invitații și echipe."
+      },
+      "roles": {
+        "title": "Roluri și permisiuni",
+        "description": "Ce poate vedea și face fiecare rol."
+      },
+      "pipelines": {
+        "title": "Pipeline-uri și etape",
+        "description": "Etapele de vânzare, culori, etape finale și reguli de atribuire."
+      },
+      "tags": {
+        "title": "Etichete",
+        "description": "Etichete pentru lead-uri, contacte și conversații."
+      },
+      "fields": {
+        "title": "Câmpuri personalizate",
+        "description": "Câmpuri suplimentare pentru lead-uri, contacte și companii."
+      },
+      "sources": {
+        "title": "Surse de lead-uri",
+        "description": "Canalele prin care vin clienții."
+      },
+      "taskTypes": {
+        "title": "Tipuri de activități",
+        "description": "Apel, întâlnire, e-mail și tipuri proprii."
+      },
+      "notifications": {
+        "title": "Notificări",
+        "description": "Ce notificări primește fiecare utilizator."
+      },
+      "integrations": {
+        "title": "Integrări",
+        "description": "WhatsApp, Instagram, Messenger, e-mail, telefonie."
+      },
+      "api": {
+        "title": "API",
+        "description": "Chei de acces pentru integrări externe."
+      },
+      "importExport": {
+        "title": "Import și export",
+        "description": "Importul și exportul datelor în CSV."
+      }
+    },
+    "company": {
+      "name": "Denumire",
+      "legalName": "Denumire juridică",
+      "fiscalCode": "Cod fiscal (IDNO)",
+      "country": "Țara (cod)",
+      "currency": "Moneda implicită",
+      "timezone": "Fus orar",
+      "defaultLocale": "Limba implicită",
+      "save": "Salvează",
+      "saved": "Datele companiei au fost salvate."
+    },
+    "roles": {
+      "create": "Rol nou",
+      "createTitle": "Rol nou",
+      "editTitle": "Editează rolul",
+      "name": "Denumire",
+      "description": "Descriere",
+      "save": "Salvează",
+      "created": "Rolul a fost creat.",
+      "updated": "Rolul a fost actualizat.",
+      "deleted": "Rolul a fost șters.",
+      "system": "Sistem",
+      "memberCount": "{count, plural, =0 {niciun membru} one {# membru} few {# membri} other {# de membri}}",
+      "edit": "Editează",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi rolul?",
+      "deleteDescription": "Rolul „{name}” va fi șters. Nu poate fi șters cât timp are membri.",
+      "allPermissions": "Toate permisiunile (nemodificabil)",
+      "noPermissions": "Nicio permisiune suplimentară: vede doar înregistrările proprii."
+    }
+  },
+  "permissions": {
+    "groups": {
+      "crm": "Vizibilitate date",
+      "leads": "Lead-uri",
+      "contacts": "Contacte și companii",
+      "inbox": "Inbox",
+      "reports": "Rapoarte",
+      "data": "Import / export",
+      "configuration": "Configurare CRM",
+      "administration": "Administrare"
+    },
+    "crm_view_all": "Vede toate înregistrările",
+    "crm_view_team": "Vede înregistrările echipei",
+    "leads_create": "Creează lead-uri",
+    "leads_edit": "Editează lead-uri",
+    "leads_delete": "Șterge lead-uri",
+    "leads_assign": "Redistribuie lead-uri",
+    "contacts_create": "Creează contacte",
+    "contacts_edit": "Editează contacte",
+    "contacts_delete": "Șterge contacte",
+    "inbox_view_all": "Vede toate conversațiile",
+    "reports_view_all": "Rapoartele întregii companii",
+    "reports_view_team": "Rapoartele echipei",
+    "data_import": "Import date",
+    "data_export": "Export date",
+    "pipelines_manage": "Configurează pipeline-uri",
+    "automations_manage": "Configurează automatizări",
+    "team_manage": "Gestionează utilizatori și echipe",
+    "roles_manage": "Gestionează roluri",
+    "settings_manage": "Modifică setările companiei",
+    "api_keys_manage": "Gestionează chei API"
   }
 }

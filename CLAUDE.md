@@ -8,6 +8,13 @@ Decizii: monedă implicită MDL · Supabase local (Docker) pentru dezvoltare · 
 
 ## Comenzi
 `npm run dev` · `build` · `lint` · `typecheck` · `test` (Vitest) · `test:e2e` (Playwright) · `format`
+DB: `db:start` · `db:reset` (reaplică migrațiile) · `db:types` (regenerează `database.types.ts`) · `test:db` (pgTAP). Email-uri locale: Mailpit pe http://127.0.0.1:54324.
+
+## Tipare de cod
+- Mutație = `createOrgAction({ schema, permission }, handler)` din `src/lib/actions/action.ts`; returnează `ActionResult` cu chei i18n. Client: `applyActionResult` (formulare) sau `useActionRunner` (butoane).
+- Citirile de sesiune: `getOrgContext()` / `requirePermission()` din `src/lib/auth/session.ts`, doar în componente din `<Suspense>`.
+- Scheme Zod fără `.transform()` (aceeași formă pentru formular și server); `""` → `null` cu `emptyToNull` în acțiune.
+- Permisiune nouă = migrație care actualizează `private.permission_catalog()` + `src/modules/auth/permissions.ts` + texte în `permissions.*`.
 
 ## Particularități stack
 - Next.js 16.4 cu **Cache Components**: API-urile modificate față de versiunile vechi — citește ghidul din `node_modules/next/dist/docs/` înainte de cod nou (vezi `AGENTS.md`). Citirile de sesiune/cookie stau în `<Suspense>`.

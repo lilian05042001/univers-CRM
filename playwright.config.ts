@@ -1,4 +1,9 @@
+import { existsSync } from "node:fs"
+
 import { defineConfig, devices } from "@playwright/test"
+
+// Testele au nevoie de aceleași variabile ca aplicația (URL Supabase, cheia secretă pentru Admin API).
+if (existsSync(".env.local")) process.loadEnvFile(".env.local")
 
 const port = 3100
 
@@ -15,10 +20,12 @@ export default defineConfig({
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
-    { name: "mobile", use: { ...devices["Pixel 7"] } },
+    // Fluxurile autentificate (serial, cu un utilizator nou) rulează doar pe desktop.
+    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: /app\.spec\.ts/ },
   ],
   webServer: {
     command: `npm run build && npm run start -- --port ${port}`,
+    env: { NEXT_PUBLIC_APP_URL: `http://localhost:${port}` },
     url: `http://localhost:${port}/dashboard`,
     reuseExistingServer: !process.env.CI,
     timeout: 240_000,

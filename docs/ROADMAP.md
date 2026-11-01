@@ -6,7 +6,7 @@ Fiecare etapă se încheie cu: teste relevante trecute, raport scurt, **aprobare
 |---|---|---|
 | **0** ✅ | Analiză, arhitectură, schema DB, documentație, CLAUDE.md | Documentele din `docs/` aprobate |
 | **1** ✅ | Instalare Node/Git, init Next.js + TS + Tailwind v4 + shadcn/ui, ESLint/Prettier, Vitest, Playwright, next-intl (ro), design tokens, layout aplicație (sidebar, topbar, pagini goale pentru cele 12 module), componente shared de bază, repo Git + GitHub | `npm run build` și `lint` trec; navigare completă responsive |
-| **2** | Supabase (local/cloud), clienți server/browser/admin, `proxy.ts`, login/register/reset, onboarding organizație, invitații, roluri și permisiuni, `requirePermission`, comutator organizație, migrații tenancy + RLS + teste pgTAP | Un utilizator nu vede datele altei organizații (test automat) |
+| **2** 🟡 | Supabase (local/cloud), clienți server/browser/admin, `proxy.ts`, login/register/reset, onboarding organizație, invitații, roluri și permisiuni, `requirePermission`, comutator organizație, migrații tenancy + RLS + teste pgTAP | Un utilizator nu vede datele altei organizații (test automat) |
 | **3** | Migrații pentru configurarea CRM și entitățile principale, triggere (`updated_at`, audit, stage history, activities, outbox), funcții helper RLS, tipuri generate, seed demo | `supabase db reset` rulează curat; teste RLS pe toate tabelele |
 | **4** | Contacte, companii, lead-uri: CRUD, DataTable, filtre, căutare, paginare, duplicate, etichete, câmpuri personalizate, acțiuni în masă | E2E: creare contact → lead → filtrare |
 | **5** | Pipeline: kanban dnd-kit, setări pipeline/etape (CRUD, ordonare, culori, etape finale), motiv pierdere / sumă câștig, reguli de atribuire | Mutarea persistă + apare în istoric |

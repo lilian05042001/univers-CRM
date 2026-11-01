@@ -41,9 +41,10 @@ Supabase
 |---|---|
 | Autentificare | Supabase Auth; sesiune în cookie-uri HTTP-only prin `@supabase/ssr`; `getUser()` (nu `getSession()`) pe server |
 | Onboarding | Înregistrare → creare organizație (RPC atomic: org + rol Admin + membership + pipeline implicit + surse) |
-| Invitații | token aleator, stocat ca hash, expirare 7 zile, rol + echipă predefinite |
+| Invitații | token aleator de 256 biți, stocat doar ca hash SHA-256, expirare 7 zile, rol + echipă predefinite; acceptarea verifică că e-mailul contului = e-mailul invitației. Link-ul se afișează o singură dată (trimiterea pe e-mail vine cu integrarea de e-mail, Etapa 11) |
 | Roluri | Administrator, Manager, Agent (sistem, nemodificabile ca cheie) + roluri personalizate |
-| Permisiuni | chei text pe rol (`leads.view.all`, `leads.view.team`, `leads.view.own`, `leads.edit`, `leads.delete`, `leads.export`, `contacts.*`, `inbox.view.all`, `reports.view.all/team`, `automations.manage`, `pipelines.manage`, `users.manage`, `settings.manage`, `import`, `api_keys.manage`) |
+| Permisiuni | chei text pe rol; catalogul unic e `private.permission_catalog()` (SQL), oglindit în `src/modules/auth/permissions.ts` (test automat de sincronizare). Vizibilitate: `crm.view.all` / `crm.view.team` / implicit doar proprii. Rolul `admin` are implicit totul și nu poate fi editat |
+| Erori din DB | `raise exception '<cod>'` → `errors.db.<cod>` în `messages/*.json` (listă în `src/lib/actions/action.ts`) |
 | Vizibilitate date | Admin: toată organizația · Manager: echipele sale · Agent: înregistrările atribuite lui (configurabil per rol) |
 | Server | wrapper `action(schema, perm, handler)` pentru fiecare Server Action: validare Zod, verificare permisiune, mapare erori |
 | RLS | activ pe toate tabelele; politici separate SELECT/INSERT/UPDATE/DELETE; teste pgTAP |

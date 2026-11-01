@@ -1,5 +1,7 @@
 import { useTranslations } from "next-intl"
+import { Suspense } from "react"
 
+import { Skeleton } from "@/components/ui/skeleton"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
 import { GlobalSearch } from "./global-search"
@@ -15,7 +17,9 @@ export function Topbar() {
       <GlobalSearch />
       <div className="ml-auto flex items-center gap-1">
         <NotificationBell />
-        <UserMenu />
+        <Suspense fallback={<Skeleton className="size-8 rounded-full" />}>
+          <UserMenu />
+        </Suspense>
       </div>
     </header>
   )

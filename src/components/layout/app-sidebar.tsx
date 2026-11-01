@@ -4,11 +4,13 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { Orbit } from "lucide-react"
+import type { ReactNode } from "react"
 
 import { isActivePath, navigation } from "@/config/navigation"
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -20,7 +22,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-export function AppSidebar() {
+/** `footer` primește comutatorul de organizație (randat pe server, în Suspense). */
+export function AppSidebar({ footer }: { footer: ReactNode }) {
   const t = useTranslations("nav")
   const tApp = useTranslations("app")
   const pathname = usePathname()
@@ -72,6 +75,7 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarFooter className="border-t border-sidebar-border">{footer}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )
