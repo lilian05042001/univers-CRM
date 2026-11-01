@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/dialog"
 import { FieldGroup, FieldSeparator } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
-import { useRouteDialog } from "@/hooks/use-route-dialog"
 import { applyActionResult } from "@/lib/actions/apply-result"
 import { searchCompanyOptions } from "@/modules/companies/actions"
 import { searchContactOptions } from "@/modules/contacts/actions"
@@ -76,12 +75,11 @@ export function LeadFormDialog({
   options: CrmOptions
   canAssign: boolean
   userId: string
-  onClose: () => void
+  onClose: (saved?: boolean) => void
 }) {
   const t = useTranslations("leads.form")
   const tPriority = useTranslations("leads.priority")
   const [error, setError] = useState<string | null>(null)
-  const dialog = useRouteDialog(onClose)
   const form = useForm<LeadInput>({
     resolver: zodResolver(leadSchema),
     defaultValues: toDefaults(record, options, userId),
@@ -108,7 +106,7 @@ export function LeadFormDialog({
       return
     }
     toast.success(t(record ? "updated" : "created"))
-    dialog.close()
+    onClose(true)
   }
 
   const contact = record?.contacts.find((c) => c.is_primary) ?? record?.contacts[0]
@@ -118,7 +116,7 @@ export function LeadFormDialog({
   )
 
   return (
-    <Dialog open={dialog.open} onOpenChange={dialog.onOpenChange}>
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-h-[92vh] overflow-y-auto sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{t(record ? "editTitle" : "createTitle")}</DialogTitle>
@@ -256,7 +254,7 @@ export function LeadFormDialog({
             {defs.length > 0 && <FieldSeparator>{t("customFields")}</FieldSeparator>}
             <CustomFieldsSection control={form.control} defs={defs} />
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={dialog.close}>
+              <Button type="button" variant="outline" onClick={() => onClose()}>
                 {t("cancel")}
               </Button>
               <Button type="submit" disabled={form.formState.isSubmitting}>

@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/dialog"
 import { FieldGroup, FieldSeparator } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
-import { useRouteDialog } from "@/hooks/use-route-dialog"
 import { applyActionResult } from "@/lib/actions/apply-result"
 import { useActionRunner } from "@/lib/actions/use-action-runner"
 import { formatPhone } from "@/lib/utils/phone"
@@ -75,11 +74,10 @@ export function ContactFormDialog({
   record: ContactRecord | null
   options: CrmOptions
   canMerge: boolean
-  onClose: () => void
+  onClose: (saved?: boolean) => void
 }) {
   const t = useTranslations("contacts.form")
   const [error, setError] = useState<string | null>(null)
-  const dialog = useRouteDialog(onClose)
   const [duplicates, setDuplicates] = useState<DuplicateMatch[]>([])
   const { run, pending: merging } = useActionRunner()
 
@@ -122,14 +120,14 @@ export function ContactFormDialog({
       return
     }
     toast.success(t(record ? "updated" : "created"))
-    dialog.close()
+    onClose(true)
   }
 
   const defs = options.customFields.filter((d) => d.entity === "contact")
   const ownerOptions = toSelectOptions(options.members)
 
   return (
-    <Dialog open={dialog.open} onOpenChange={dialog.onOpenChange}>
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-h-[92vh] overflow-y-auto sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{t(record ? "editTitle" : "createTitle")}</DialogTitle>
@@ -210,7 +208,7 @@ export function ContactFormDialog({
             {defs.length > 0 && <FieldSeparator>{t("customFields")}</FieldSeparator>}
             <CustomFieldsSection control={form.control} defs={defs} />
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={dialog.close}>
+              <Button type="button" variant="outline" onClick={() => onClose()}>
                 {t("cancel")}
               </Button>
               <Button type="submit" disabled={form.formState.isSubmitting || merging}>

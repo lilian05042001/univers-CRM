@@ -6,6 +6,7 @@ export type StageOption = {
   color: string
   kind: StageKind
   position: number
+  probability: number
 }
 export type PipelineOption = { id: string; name: string; isDefault: boolean; stages: StageOption[] }
 export type TagOption = { id: string; name: string; color: string }

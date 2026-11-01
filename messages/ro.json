@@ -102,7 +102,9 @@
     "amount": "Introdu o sumă validă (ex. 12500 sau 12500,50).",
     "lossReason": "Alege motivul pierderii.",
     "optionsRequired": "Adaugă cel puțin o opțiune (câte una pe rând).",
-    "color": "Alege o culoare."
+    "color": "Alege o culoare.",
+    "probability": "Introdu un număr între 0 și 100.",
+    "assignees": "Alege cel puțin un utilizator."
   },
   "errors": {
     "validation": "Verifică datele introduse.",
@@ -446,6 +448,62 @@
         "bool": "Da / Nu",
         "url": "Link"
       }
+    },
+    "pipelines": {
+      "create": "Pipeline nou",
+      "createTitle": "Pipeline nou",
+      "renameTitle": "Redenumește pipeline-ul",
+      "name": "Denumire",
+      "rename": "Redenumește",
+      "default": "Implicit",
+      "makeDefault": "Setează implicit",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi pipeline-ul?",
+      "deleteDescription": "Pipeline-ul „{name}” și etapele lui vor fi șterse. Nu se poate șterge cât timp conține lead-uri.",
+      "saved": "Pipeline-ul a fost salvat.",
+      "deleted": "Pipeline-ul a fost șters.",
+      "defaultSet": "Pipeline-ul implicit a fost schimbat.",
+      "stagesDescription": "Trage etapele pentru a le reordona. Etapele finale („Câștigat”, „Pierdut”) rămân la sfârșit.",
+      "createStage": "Etapă nouă",
+      "createStageTitle": "Etapă nouă",
+      "editStageTitle": "Editează etapa",
+      "editStage": "Editează etapa",
+      "deleteStage": "Șterge etapa",
+      "deleteStageTitle": "Ștergi etapa?",
+      "deleteStageDescription": "Etapa „{name}” va fi ștearsă. Nu se poate șterge cât timp conține lead-uri.",
+      "stageName": "Denumire",
+      "probability": "Probabilitate de câștig (%)",
+      "probabilityHint": "Folosită pentru valoarea ponderată a pipeline-ului în rapoarte.",
+      "color": "Culoare",
+      "dragStage": "Mută etapa {name}",
+      "finalStage": "Etapă finală",
+      "stageSaved": "Etapa a fost salvată.",
+      "stageDeleted": "Etapa a fost ștearsă.",
+      "reordered": "Ordinea etapelor a fost salvată.",
+      "kinds": {
+        "won": "Câștigat",
+        "lost": "Pierdut"
+      },
+      "assignment": {
+        "title": "Atribuire automată",
+        "description": "Cine primește lead-urile noi create fără responsabil în acest pipeline.",
+        "strategy": "Regulă",
+        "users": "Utilizatori",
+        "save": "Salvează regula",
+        "saved": "Regula de atribuire a fost salvată.",
+        "strategies": {
+          "none": "Fără atribuire automată",
+          "round_robin": "Pe rând (round-robin)",
+          "least_loaded": "Celui mai puțin încărcat",
+          "fixed": "Unui responsabil fix"
+        },
+        "hints": {
+          "none": "Lead-urile noi rămân fără responsabil până sunt preluate.",
+          "round_robin": "Lead-urile se distribuie pe rând utilizatorilor aleși.",
+          "least_loaded": "Lead-ul merge la utilizatorul cu cele mai puține lead-uri deschise.",
+          "fixed": "Toate lead-urile noi merg la primul utilizator activ din listă."
+        }
+      }
     }
   },
   "permissions": {
@@ -706,5 +764,13 @@
       "created": "Lead-ul a fost creat.",
       "updated": "Lead-ul a fost actualizat."
     }
+  },
+  "pipeline": {
+    "pipeline": "Pipeline",
+    "emptyColumn": "Niciun lead",
+    "loadMore": "Încarcă încă {count}",
+    "dragInstructions": "Apasă spațiu pentru a ridica lead-ul, săgețile pentru a-l muta între etape și spațiu pentru a-l plasa. Escape anulează.",
+    "noPipelineTitle": "Niciun pipeline",
+    "noPipelineDescription": "Creează un pipeline din Setări → Pipeline-uri și etape."
   }
 }

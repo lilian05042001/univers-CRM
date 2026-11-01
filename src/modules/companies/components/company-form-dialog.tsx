@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/dialog"
 import { FieldGroup, FieldSeparator } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
-import { useRouteDialog } from "@/hooks/use-route-dialog"
 import { applyActionResult } from "@/lib/actions/apply-result"
 import { formatPhone } from "@/lib/utils/phone"
 import { CustomFieldsSection } from "@/modules/crm-config/components/custom-fields-section"
@@ -61,11 +60,10 @@ export function CompanyFormDialog({
 }: {
   record: CompanyRecord | null
   options: CrmOptions
-  onClose: () => void
+  onClose: (saved?: boolean) => void
 }) {
   const t = useTranslations("companies.form")
   const [error, setError] = useState<string | null>(null)
-  const dialog = useRouteDialog(onClose)
   const [duplicates, setDuplicates] = useState<DuplicateMatch[]>([])
 
   const form = useForm<CompanyInput>({
@@ -104,13 +102,13 @@ export function CompanyFormDialog({
       return
     }
     toast.success(t(record ? "updated" : "created"))
-    dialog.close()
+    onClose(true)
   }
 
   const defs = options.customFields.filter((d) => d.entity === "company")
 
   return (
-    <Dialog open={dialog.open} onOpenChange={dialog.onOpenChange}>
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-h-[92vh] overflow-y-auto sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{t(record ? "editTitle" : "createTitle")}</DialogTitle>
@@ -150,7 +148,7 @@ export function CompanyFormDialog({
             {defs.length > 0 && <FieldSeparator>{t("customFields")}</FieldSeparator>}
             <CustomFieldsSection control={form.control} defs={defs} />
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={dialog.close}>
+              <Button type="button" variant="outline" onClick={() => onClose()}>
                 {t("cancel")}
               </Button>
               <Button type="submit" disabled={form.formState.isSubmitting}>

@@ -16,6 +16,7 @@ import { StatusBadge } from "@/components/shared/status-badge"
 import { TagBadge } from "@/components/shared/tag-badge"
 import { Button } from "@/components/ui/button"
 import { useListNavigation } from "@/hooks/use-list-navigation"
+import { useRouteDialog } from "@/hooks/use-route-dialog"
 import { useMoney } from "@/hooks/use-money"
 import { useActionRunner } from "@/lib/actions/use-action-runner"
 import { nameById } from "@/modules/crm-config/options"
@@ -59,6 +60,7 @@ export function LeadsView({
   const money = useMoney()
   const { searchParams, setParams } = useListNavigation()
   const { run, pending } = useActionRunner()
+  const routeDialog = useRouteDialog()
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [lostStageId, setLostStageId] = useState<string | null>(null)
   const memberName = nameById(options.members)
@@ -310,14 +312,14 @@ export function LeadsView({
           }}
         />
       )}
-      {(isNew || record) && (
+      {routeDialog.openParam && (isNew || record) && (
         <LeadFormDialog
           key={record?.id ?? "new"}
           record={record}
           options={options}
           canAssign={can.assign}
           userId={userId}
-          onClose={() => setParams({ open: null }, { resetPage: false })}
+          onClose={routeDialog.close}
         />
       )}
     </div>

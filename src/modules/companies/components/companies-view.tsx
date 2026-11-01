@@ -15,6 +15,7 @@ import { EmptyState } from "@/components/shared/empty-state"
 import { TagBadge } from "@/components/shared/tag-badge"
 import { Button } from "@/components/ui/button"
 import { useListNavigation } from "@/hooks/use-list-navigation"
+import { useRouteDialog } from "@/hooks/use-route-dialog"
 import { useActionRunner } from "@/lib/actions/use-action-runner"
 import { formatPhone } from "@/lib/utils/phone"
 import { nameById } from "@/modules/crm-config/options"
@@ -40,6 +41,7 @@ export function CompaniesView({ rows, total, page, pageSize, options, record, is
   const t = useTranslations("companies")
   const { setParams } = useListNavigation()
   const { run, pending } = useActionRunner()
+  const routeDialog = useRouteDialog()
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const memberName = nameById(options.members)
   const ids = [...selected]
@@ -208,12 +210,12 @@ export function CompaniesView({ rows, total, page, pageSize, options, record, is
       />
       {total > 0 && <Pagination total={total} page={page} pageSize={pageSize} />}
 
-      {(isNew || record) && (
+      {routeDialog.openParam && (isNew || record) && (
         <CompanyFormDialog
           key={record?.id ?? "new"}
           record={record}
           options={options}
-          onClose={() => setParams({ open: null }, { resetPage: false })}
+          onClose={routeDialog.close}
         />
       )}
     </div>

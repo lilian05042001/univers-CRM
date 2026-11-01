@@ -9,7 +9,7 @@ Fiecare etapă se încheie cu: teste relevante trecute, raport scurt, **aprobare
 | **2** ✅ | Supabase (local/cloud), clienți server/browser/admin, `proxy.ts`, login/register/reset, onboarding organizație, invitații, roluri și permisiuni, `requirePermission`, comutator organizație, migrații tenancy + RLS + teste pgTAP | Un utilizator nu vede datele altei organizații (test automat) |
 | **3** ✅ | Migrații pentru configurarea CRM și entitățile principale, triggere (`updated_at`, audit, stage history, activities, outbox), funcții helper RLS, tipuri generate, seed demo | `supabase db reset` rulează curat; teste RLS pe toate tabelele |
 | **4** ✅ | Contacte, companii, lead-uri: CRUD, DataTable, filtre, căutare, paginare, duplicate, etichete, câmpuri personalizate, acțiuni în masă | E2E: creare contact → lead → filtrare |
-| **5** | Pipeline: kanban dnd-kit, setări pipeline/etape (CRUD, ordonare, culori, etape finale), motiv pierdere / sumă câștig, reguli de atribuire | Mutarea persistă + apare în istoric |
+| **5** ✅ | Pipeline: kanban dnd-kit, setări pipeline/etape (CRUD, ordonare, culori, etape finale), motiv pierdere / sumă câștig, reguli de atribuire | Mutarea persistă + apare în istoric |
 | **6** | Fișe detaliate lead/contact/companie: secțiuni A–I, cronologie, note, fișiere (Storage), audit vizibil | E2E pe fișa lead-ului |
 | **7** | Sarcini (listă, tipuri, statusuri, întârziate) + calendar zi/săpt/lună + notificări in-app pentru apropiate/întârziate | Notificare generată pentru sarcină întârziată |
 | **8** | Inbox: canal intern, conversații, mesaje, note interne, atașamente, răspunsuri rapide, atribuire, realtime, interfața `ChannelAdapter` + endpoint webhooks idempotent | Mesaj intrat → contact identificat → conversație |

@@ -14,6 +14,7 @@ import { EmptyState } from "@/components/shared/empty-state"
 import { TagBadge } from "@/components/shared/tag-badge"
 import { Button } from "@/components/ui/button"
 import { useListNavigation } from "@/hooks/use-list-navigation"
+import { useRouteDialog } from "@/hooks/use-route-dialog"
 import { useActionRunner } from "@/lib/actions/use-action-runner"
 import { formatPhone } from "@/lib/utils/phone"
 import { nameById } from "@/modules/crm-config/options"
@@ -40,6 +41,7 @@ export function ContactsView({ rows, total, page, pageSize, options, record, isN
   const format = useFormatter()
   const { setParams } = useListNavigation()
   const { run, pending } = useActionRunner()
+  const routeDialog = useRouteDialog()
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const memberName = nameById(options.members)
   const ids = [...selected]
@@ -182,13 +184,13 @@ export function ContactsView({ rows, total, page, pageSize, options, record, isN
       />
       {total > 0 && <Pagination total={total} page={page} pageSize={pageSize} />}
 
-      {(isNew || record) && (
+      {routeDialog.openParam && (isNew || record) && (
         <ContactFormDialog
           key={record?.id ?? "new"}
           record={record}
           options={options}
           canMerge={can.edit && can.delete}
-          onClose={() => setParams({ open: null }, { resetPage: false })}
+          onClose={routeDialog.close}
         />
       )}
     </div>

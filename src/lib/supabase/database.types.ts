@@ -1773,6 +1773,19 @@ export type Database = {
         }[]
       }
       merge_contacts: { Args: { p_keep: string; p_remove: string }; Returns: string }
+      pipeline_summary: {
+        Args: {
+          p_pipeline: string
+          p_priority?: Database["public"]["Enums"]["lead_priority"]
+          p_responsible?: string
+          p_search?: string
+        }
+        Returns: {
+          lead_count: number
+          stage_id: string
+          total: number
+        }[]
+      }
     }
     Enums: {
       lead_priority: "low" | "normal" | "high" | "urgent"

@@ -12,7 +12,7 @@ export const getCrmOptions = cache(async (organizationId: string): Promise<CrmOp
     supabase
       .from("pipelines")
       .select(
-        "id, name, is_default, position, stages:pipeline_stages(id, name, color, kind, position)"
+        "id, name, is_default, position, stages:pipeline_stages(id, name, color, kind, position, probability)"
       )
       .eq("organization_id", organizationId)
       .is("archived_at", null)
