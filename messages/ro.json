@@ -1,0 +1,76 @@
+{
+  "app": {
+    "name": "Univers CRM",
+    "description": "Gestionarea clienților și a vânzărilor"
+  },
+  "nav": {
+    "groups": {
+      "sales": "Vânzări",
+      "communication": "Comunicare",
+      "analytics": "Analiză",
+      "administration": "Administrare"
+    },
+    "dashboard": "Dashboard",
+    "leads": "Lead-uri",
+    "pipeline": "Pipeline",
+    "contacts": "Contacte",
+    "companies": "Companii",
+    "inbox": "Inbox",
+    "tasks": "Sarcini",
+    "calendar": "Calendar",
+    "automations": "Automatizări",
+    "reports": "Rapoarte",
+    "team": "Echipa",
+    "settings": "Setări"
+  },
+  "modules": {
+    "dashboard": "Situația comercială a companiei: indicatori, grafice și activitate recentă.",
+    "leads": "Oportunitățile comerciale, cu filtrare, căutare și acțiuni în masă.",
+    "pipeline": "Etapele de vânzare în vizualizare Kanban.",
+    "contacts": "Persoanele de contact și istoricul relației cu fiecare.",
+    "companies": "Companiile clienților și persoanele asociate.",
+    "inbox": "Toate conversațiile cu clienții într-un singur loc.",
+    "tasks": "Apeluri, întâlniri, follow-up-uri și alte activități.",
+    "calendar": "Activitățile planificate pe zile, săptămâni și luni.",
+    "automations": "Reguli care execută automat acțiuni repetitive.",
+    "reports": "Rapoarte de vânzări, conversie și activitate.",
+    "team": "Utilizatorii, echipele și rolurile organizației.",
+    "settings": "Configurarea companiei și a CRM-ului."
+  },
+  "topbar": {
+    "search": "Caută lead-uri, contacte, companii…",
+    "searchShort": "Caută…",
+    "create": "Nou",
+    "notifications": "Notificări",
+    "toggleSidebar": "Comută meniul"
+  },
+  "search": {
+    "title": "Căutare globală",
+    "placeholder": "Scrie pentru a căuta sau a naviga…",
+    "empty": "Niciun rezultat.",
+    "modules": "Module"
+  },
+  "notifications": {
+    "title": "Notificări",
+    "empty": "Nu ai notificări noi."
+  },
+  "user": {
+    "menu": "Contul meu",
+    "profile": "Profil",
+    "signOut": "Deconectare",
+    "guest": "Utilizator"
+  },
+  "common": {
+    "comingSoon": "Modul în construcție",
+    "availableInStage": "Acest modul devine funcțional în etapa {stage} a planului de dezvoltare.",
+    "notFound": "Pagina nu a fost găsită.",
+    "backToDashboard": "Înapoi la Dashboard"
+  },
+  "status": {
+    "success": "Succes",
+    "warning": "Atenție",
+    "danger": "Eroare",
+    "info": "Info",
+    "neutral": "Neutru"
+  }
+}
