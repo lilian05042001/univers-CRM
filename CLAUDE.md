@@ -12,7 +12,9 @@ DB: `db:start` · `db:reset` (reaplică migrațiile) · `db:types` (regenerează
 
 ## Tipare de cod
 - Mutație = `createOrgAction({ schema, permission }, handler)` din `src/lib/actions/action.ts`; returnează `ActionResult` cu chei i18n. Client: `applyActionResult` (formulare) sau `useActionRunner` (butoane).
-- Citirile de sesiune: `getOrgContext()` / `requirePermission()` din `src/lib/auth/session.ts`, doar în componente din `<Suspense>`.
+- Citirile de sesiune: `getOrgContext()` / `requirePermission()` din `src/lib/auth/session.ts`, doar în componente din `<Suspense>`. Clientul Supabase de server apelează `connection()` (sesiunea folosește `Date.now()`).
+- Schimbarea organizației active (creare/invitație/comutare): acțiunea returnează, clientul apelează `enterOrganization()` (navigare completă), nu `redirect()`.
+- Triggere de protecție SQL: `security invoker` + `current_user = 'authenticated'` = apel direct din client; RPC-urile `security definer` trec de ele intenționat.
 - Scheme Zod fără `.transform()` (aceeași formă pentru formular și server); `""` → `null` cu `emptyToNull` în acțiune.
 - Permisiune nouă = migrație care actualizează `private.permission_catalog()` + `src/modules/auth/permissions.ts` + texte în `permissions.*`.
 

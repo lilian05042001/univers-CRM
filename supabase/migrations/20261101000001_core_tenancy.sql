@@ -283,7 +283,7 @@ begin
     return old;
   end if;
 
-  if tg_op = 'INSERT' and new.is_system and (select auth.uid()) is not null then
+  if tg_op = 'INSERT' and new.is_system and current_user = 'authenticated' then
     raise exception 'system_role_create' using errcode = 'P0001';
   end if;
 
@@ -317,7 +317,7 @@ $$;
 create or replace function private.guard_memberships()
 returns trigger
 language plpgsql
-security definer
+security invoker -- invoker: current_user identifică apelul direct din client
 set search_path = ''
 as $$
 declare
@@ -333,7 +333,7 @@ begin
     (tg_op in ('UPDATE', 'DELETE') and private.role_key(old.role_id) = 'admin')
     or (tg_op in ('INSERT', 'UPDATE') and private.role_key(new.role_id) = 'admin');
 
-  if v_touches_admin and (select auth.uid()) is not null and not private.is_admin(v_org) then
+  if v_touches_admin and current_user = 'authenticated' and not private.is_admin(v_org) then
     raise exception 'admin_only' using errcode = '42501';
   end if;
 
@@ -363,12 +363,12 @@ create trigger guard_memberships before insert or update or delete on public.mem
 create or replace function private.guard_invitations()
 returns trigger
 language plpgsql
-security definer
+security invoker
 set search_path = ''
 as $$
 begin
   if private.role_key(new.role_id) = 'admin'
-     and (select auth.uid()) is not null
+     and current_user = 'authenticated'
      and not private.is_admin(new.organization_id) then
     raise exception 'admin_only' using errcode = '42501';
   end if;
@@ -515,6 +515,7 @@ grant execute on function public.create_organization, public.accept_invitation, 
 -- Previzualizarea invitației e permisă și înainte de login (tokenul are 256 biți de entropie).
 grant execute on function public.get_invitation to anon;
 revoke all on function private.seed_organization, private.role_key from public;
+grant execute on function private.role_key to authenticated; -- folosită de triggerele invoker
 
 -- -----------------------------------------------------------------------------
 -- Drepturi pe coloane + Row Level Security

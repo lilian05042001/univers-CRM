@@ -2,7 +2,7 @@
 -- Rulare: npm run test:db  (necesită `supabase start`)
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(22);
+select plan(23);
 
 -- ---------------------------------------------------------------- utilitare
 create function pg_temp.login_as(p_user uuid) returns void language sql as $$
@@ -95,9 +95,10 @@ select throws_ok($$
   update public.memberships set status = 'disabled' where user_id = '00000000-0000-0000-0000-00000000000a'
 $$, '42501', 'admin_only', 'un non-admin nu poate dezactiva administratorul');
 
-select throws_ok($$
-  update public.roles set permissions = array['team.manage', 'settings.manage'] where key = 'hr'
-$$, '42501', null, 'fără roles.manage nu se pot modifica permisiunile rolurilor');
+-- RLS pe UPDATE nu aruncă eroare: rândurile nepermise pur și simplu nu sunt modificate.
+update public.roles set permissions = array['team.manage', 'settings.manage'] where key = 'hr';
+select is((select permissions from public.roles where key = 'hr'), array['team.manage'],
+  'fără roles.manage nu se pot modifica permisiunile rolurilor');
 
 -- ---------------------------------------------------------------- reguli administrator
 select pg_temp.login_as('00000000-0000-0000-0000-00000000000a');

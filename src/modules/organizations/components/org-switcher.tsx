@@ -2,7 +2,6 @@
 
 import { Building2, Check, ChevronsUpDown, Plus } from "lucide-react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { useTransition } from "react"
 import { toast } from "sonner"
@@ -18,6 +17,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 
 import { switchOrganization } from "../actions"
+import { enterOrganization } from "../enter-organization"
 
 type OrgOption = { id: string; name: string; roleName: string }
 
@@ -30,7 +30,6 @@ export function OrgSwitcher({
 }) {
   const t = useTranslations("organizations")
   const tErrors = useTranslations()
-  const router = useRouter()
   const [pending, startTransition] = useTransition()
   const active = organizations.find((o) => o.id === activeId) ?? organizations[0]
 
@@ -42,8 +41,7 @@ export function OrgSwitcher({
         toast.error(tErrors(result.error))
         return
       }
-      router.push("/dashboard")
-      router.refresh()
+      enterOrganization()
     })
   }
 

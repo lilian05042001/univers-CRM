@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 
 import { acceptInvitation } from "../actions"
+import { enterOrganization } from "../enter-organization"
 
 export function AcceptInvitationButton({ token }: { token: string }) {
   const t = useTranslations("invite")
@@ -22,7 +23,8 @@ export function AcceptInvitationButton({ token }: { token: string }) {
         onClick={() =>
           startTransition(async () => {
             const result = await acceptInvitation({ token })
-            if (!result.ok) setError(result.error)
+            if (result.ok) enterOrganization()
+            else setError(result.error)
           })
         }
       >

@@ -1,6 +1,8 @@
 "use server"
 
-import { redirect } from "next/navigation"
+// Schimbarea organizației active schimbă tot contextul aplicației: clientul face o navigare
+// completă (enterOrganization), nu un redirect din acțiune, ca routerul să nu refolosească
+// rute din cache randate pentru organizația anterioară.
 
 import { createAction, createOrgAction } from "@/lib/actions/action"
 import { fail, ok } from "@/lib/actions/result"
@@ -24,7 +26,7 @@ export const createOrganization = createAction(createOrganizationSchema, async (
   if (error) throw error
 
   await setActiveOrganization(organizationId)
-  redirect("/dashboard")
+  return ok({ organizationId })
 })
 
 export const switchOrganization = createAction(
@@ -35,7 +37,7 @@ export const switchOrganization = createAction(
       return fail("errors.forbidden")
     }
     await setActiveOrganization(organizationId)
-    return ok()
+    return ok({ organizationId })
   }
 )
 
@@ -48,7 +50,7 @@ export const acceptInvitation = createAction(acceptInvitationSchema, async ({ to
   if (error) throw error
 
   await setActiveOrganization(organizationId)
-  redirect("/dashboard")
+  return ok({ organizationId })
 })
 
 export const updateCompanySettings = createOrgAction(

@@ -13,6 +13,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { applyActionResult } from "@/lib/actions/apply-result"
 
 import { createOrganization } from "../actions"
+import { enterOrganization } from "../enter-organization"
 import { createOrganizationSchema, type CreateOrganizationInput } from "../schemas"
 
 export function CreateOrganizationForm() {
@@ -27,7 +28,8 @@ export function CreateOrganizationForm() {
   async function onSubmit(values: CreateOrganizationInput) {
     setError(null)
     const result = await createOrganization(values)
-    setError(applyActionResult(form, result))
+    if (result.ok) enterOrganization()
+    else setError(applyActionResult(form, result))
   }
 
   return (
