@@ -17,6 +17,7 @@ import { fail, type ActionResult } from "./result"
 const DB_ERROR_CODES = new Set([
   "admin_only",
   "admin_permissions_locked",
+  "assign_forbidden",
   "invalid_name",
   "invitation_email_mismatch",
   "invitation_invalid",
@@ -26,6 +27,8 @@ const DB_ERROR_CODES = new Set([
   "role_key_immutable",
   "system_role_create",
   "system_role_delete",
+  "system_task_type_delete",
+  "task_type_key_immutable",
 ])
 
 type DbError = { code?: string; message?: string }

@@ -108,6 +108,7 @@
     "db": {
       "admin_only": "Doar un administrator poate gestiona administratorii.",
       "admin_permissions_locked": "Permisiunile administratorului nu pot fi modificate.",
+      "assign_forbidden": "Nu ai permisiunea de a atribui înregistrarea altui utilizator.",
       "invalid_name": "Denumirea nu este validă.",
       "invitation_email_mismatch": "Invitația a fost trimisă pe altă adresă de e-mail.",
       "invitation_invalid": "Invitația nu este validă sau a expirat.",
@@ -116,7 +117,9 @@
       "not_authenticated": "Trebuie să fii autentificat.",
       "role_key_immutable": "Identificatorul rolului nu poate fi modificat.",
       "system_role_create": "Rolurile de sistem se creează automat.",
-      "system_role_delete": "Rolurile de sistem nu pot fi șterse."
+      "system_role_delete": "Rolurile de sistem nu pot fi șterse.",
+      "system_task_type_delete": "Tipurile de activitate de sistem nu pot fi șterse.",
+      "task_type_key_immutable": "Identificatorul tipului de activitate nu poate fi modificat."
     }
   },
   "auth": {

@@ -45,7 +45,8 @@ Legendă: `→` FK · `⇉` FK compus cu `organization_id` · `[U]` unic · `[I]
 - stage_entered_at, last_activity_at, next_task_due_at (denormalizat prin trigger din `tasks`)
 - created_by, created_at, updated_at, deleted_at
 - [I] (organization_id, pipeline_id, stage_id, position) — kanban; (organization_id, responsible_id); (organization_id, team_id); (organization_id, status, closed_at); (organization_id, created_at); trigram pe title
-- CHECK: `status='won' ⇒ closed_at not null`; `status='lost' ⇒ loss_reason_id not null` (aplicat în acțiune, întărit prin trigger)
+- `status` e derivat din tipul etapei (trigger); închiderea setează `closed_at`, iar „câștigat” setează `won_amount = value` dacă lipsește. Redeschiderea golește datele de închidere. CHECK: `(status = open) = (closed_at is null)`. Motivul pierderii e cerut de interfață/automatizare, nu de DB (automatizările pot muta lead-uri în „Pierdut”).
+- Atribuirea către alt utilizator cere `leads.assign` (trigger, cod `assign_forbidden`).
 
 **`lead_contacts`** — organization_id, lead_id ⇉, contact_id ⇉, is_primary, role · PK (lead_id, contact_id) · [U parțial] un singur `is_primary` per lead. *Un contact poate avea mai multe lead-uri; un lead poate avea mai multe contacte.* Telefonul/e-mailul lead-ului se iau din contactul principal (fără duplicare de date).
 
@@ -59,7 +60,7 @@ Parent polimorf controlat: coloane FK nulabile `lead_id`, `contact_id`, `company
 
 | Tabel | Coloane principale |
 |---|---|
-| `notes` | organization_id, lead_id/contact_id/company_id, body, is_pinned, author_id, deleted_at |
+| `notes` | organization_id, lead_id/contact_id/company_id, body, is_pinned, created_by (setat automat) |
 | `files` | organization_id, lead_id/contact_id/company_id/message_id, storage_path [U], file_name, mime_type, size_bytes, uploaded_by |
 | `activities` (bigint) | organization_id, type (`lead.created`, `lead.stage_changed`, `note.added`, `task.completed`, `message.received`, `field.updated`…), lead_id/contact_id/company_id, actor_id (null = sistem/automatizare), payload jsonb, occurred_at · [I] (organization_id, lead_id, occurred_at desc) etc. — **cronologia unificată** a fișei |
 
@@ -116,7 +117,9 @@ automations 1─N automation_runs N─1 domain_events
 ## 10. Model RLS (rezumat)
 
 - `SELECT` pe orice tabel: `private.is_member(organization_id)`.
-- `leads` (și entitățile derivate: tasks, conversations): în plus, după `private.lead_scope(organization_id)` — `all` → tot; `team` → `team_id = any(user_team_ids)` sau `responsible_id = auth.uid()`; `own` → `responsible_id = auth.uid()`.
+- Vizibilitate unică: `private.can_see_record(org, owner, team)` după `private.crm_scope(org)` — `all` (admin / `crm.view.all`) → tot; `team` (`crm.view.team`) → proprii + colegii din echipele mele + lead-urile echipelor mele; `own` → proprii. **Înregistrările fără responsabil sunt vizibile tuturor membrilor** (pot fi preluate).
+- Tabelele copil (identități, legături, etichete, istoric, note, fișiere, cronologie) sunt vizibile doar dacă toți părinții sunt vizibili (`private.parents_visible`, subinterogări care respectă RLS-ul părinților).
+- Ștergerea logică (`deleted_at`) cere aceeași permisiune ca ștergerea definitivă; `created_by` nu poate fi falsificat.
 - `INSERT/UPDATE/DELETE`: `private.has_perm(organization_id, '<permisiune>')` + reguli de proprietar.
 - Tabele de configurare (pipelines, roles, automations…): scriere doar cu `settings.manage`/`pipelines.manage`/`automations.manage`.
 - `audit_log`, `domain_events`, `automation_runs`, `webhook_events`: fără scriere din client; scriere doar prin triggere/`service_role`.

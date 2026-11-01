@@ -8,7 +8,8 @@ Decizii: monedă implicită MDL · Supabase local (Docker) pentru dezvoltare · 
 
 ## Comenzi
 `npm run dev` · `build` · `lint` · `typecheck` · `test` (Vitest) · `test:e2e` (Playwright) · `format`
-DB: `db:start` · `db:reset` (reaplică migrațiile) · `db:types` (regenerează `database.types.ts`) · `test:db` (pgTAP). Email-uri locale: Mailpit pe http://127.0.0.1:54324.
+DB: `db:start` · `db:reset` (reaplică migrațiile + `supabase/seed.sql`) · `db:types` (regenerează `database.types.ts`) · `test:db` (pgTAP). Email-uri locale: Mailpit pe http://127.0.0.1:54324.
+Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `agent@demo.md`, `agent2@demo.md`.
 
 ## Tipare de cod
 - Mutație = `createOrgAction({ schema, permission }, handler)` din `src/lib/actions/action.ts`; returnează `ActionResult` cu chei i18n. Client: `applyActionResult` (formulare) sau `useActionRunner` (butoane).
