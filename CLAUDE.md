@@ -9,7 +9,7 @@ Decizii: monedă implicită MDL · Supabase local (Docker) pentru dezvoltare · 
 ## Comenzi
 `npm run dev` · `build` · `lint` · `typecheck` · `test` (Vitest) · `test:e2e` (Playwright) · `format`
 DB: `db:start` · `db:reset` (reaplică migrațiile + `supabase/seed.sql`) · `db:types` (regenerează `database.types.ts`) · `test:db` (pgTAP). Email-uri locale: Mailpit pe http://127.0.0.1:54324.
-Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `agent@demo.md`, `agent2@demo.md`.
+Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `agent@demo.md`, `agent2@demo.md`. Cheia webhook a canalului intern demo (doar local): `demo-webhook-secret`.
 
 ## Tipare de cod
 - Mutație = `createOrgAction({ schema, permission }, handler)` din `src/lib/actions/action.ts`; returnează `ActionResult` cu chei i18n. Client: `applyActionResult` (formulare) sau `useActionRunner` (butoane).
@@ -21,6 +21,8 @@ Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `a
 - Next remontează pagina la orice schimbare de parametri în URL: starea care trebuie să supraviețuiască stă în URL sau într-un store extern (vezi `use-search-draft.ts`).
 - Fără `upsert` care ar actualiza coloane fără grant UPDATE (ex. `organization_id`): `ignoreDuplicates: true` + update separat.
 - Permisiune nouă = migrație care actualizează `private.permission_catalog()` + `src/modules/auth/permissions.ts` + texte în `permissions.*`.
+- `service_role` nu primește drepturi implicite pe tabele noi: granturi explicite, minime, în migrație (ex. `webhook_events`). Clientul admin (`createAdminClient`) doar în `src/lib/channels/inbound.ts` / joburi.
+- RLS pe UPDATE verifică și rândul nou cu politica SELECT: o modificare după care rândul devine invizibil autorului (ex. predarea unei conversații) trece printr-un RPC `security definer` cu verificări explicite.
 
 ## Particularități stack
 - Next.js 16.4 cu **Cache Components**: API-urile modificate față de versiunile vechi — citește ghidul din `node_modules/next/dist/docs/` înainte de cod nou (vezi `AGENTS.md`). Citirile de sesiune/cookie stau în `<Suspense>`.

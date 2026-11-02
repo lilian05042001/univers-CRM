@@ -23,6 +23,9 @@ declare
   v_owners uuid[];
   v_lead uuid;
   v_id uuid;
+  v_channel uuid;
+  v_conv jsonb;
+  v_phone text;
   v_pos int;
   v_created timestamptz;
   v_closed timestamptz;
@@ -196,6 +199,42 @@ begin
   update public.tasks set status = 'done', result = 'Realizat'
   where organization_id = v_org and id in (
     select id from public.tasks where organization_id = v_org order by due_at limit 6);
+
+  -- ------------------------------------------------------------ inbox
+  -- Cheia webhook a canalului intern, DOAR pentru dezvoltare locală: „demo-webhook-secret”.
+  update public.channels
+  set webhook_secret_hash = encode(extensions.digest('demo-webhook-secret', 'sha256'), 'hex')
+  where organization_id = v_org and provider = 'internal'
+  returning id into v_channel;
+
+  insert into public.quick_replies (organization_id, title, shortcut, body, created_by) values
+    (v_org, 'Salut', 'salut', 'Bună ziua! Vă mulțumim că ne-ați scris. Cu ce vă putem ajuta?', v_admin),
+    (v_org, 'Ofertă trimisă', 'oferta', 'V-am trimis oferta pe e-mail. Așteptăm întrebările dumneavoastră.', v_admin),
+    (v_org, 'Program de lucru', 'program', 'Programul nostru: luni–vineri, 09:00–18:00.', v_admin);
+
+  for i in 1 .. 6 loop
+    select value into v_phone from public.contact_identities
+    where contact_id = v_contacts[i] and type = 'phone' and is_primary;
+    v_conv := public.ingest_inbound_message(v_channel, jsonb_build_object(
+      'identity_type', 'phone', 'identity_value', v_phone, 'external_id', 'seed-' || i,
+      'sent_at', now() - make_interval(hours => i * 5),
+      'body', (array['Bună ziua! Puteți să-mi trimiteți oferta actualizată?',
+                     'Când puteți veni pentru o prezentare?',
+                     'Am primit factura, mulțumesc.',
+                     'Aveți reduceri pentru contracte anuale?',
+                     'Vă rog să mă sunați după ora 14.',
+                     'Ce termen de livrare aveți?'])[i]));
+    if i % 2 = 0 then
+      insert into public.messages (organization_id, conversation_id, body, sender_user_id, sent_at)
+      values (v_org, (v_conv ->> 'conversation_id')::uuid,
+              'Bună ziua! Revenim cu răspunsul în cel mai scurt timp.', v_agent,
+              now() - make_interval(hours => i * 5 - 1));
+    end if;
+  end loop;
+  -- Un număr necunoscut: contactul se creează automat.
+  perform public.ingest_inbound_message(v_channel, jsonb_build_object(
+    'identity_type', 'phone', 'identity_value', '+37379000111', 'sender_name', 'Client Nou',
+    'external_id', 'seed-new', 'body', 'Bună! Aș dori o ofertă pentru 5 licențe.'));
 
   -- Evenimentele generate de seed nu trebuie procesate de automatizări; auditul seed-ului e zgomot.
   update public.domain_events set processed_at = now() where organization_id = v_org;

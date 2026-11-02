@@ -3,19 +3,21 @@ import "server-only"
 import type { OrgContext } from "@/lib/auth/session"
 import type { RecordRef } from "@/lib/crm/record-ref"
 import { getCrmOptions } from "@/modules/crm-config/queries"
+import { listConversationsFor } from "@/modules/inbox/queries"
 import { listTaskTypes, listTasksFor } from "@/modules/tasks/queries"
 
 import { listActivities, listFiles, listNotes } from "./queries"
 
-/** Toate datele panourilor dintr-o fișă (cronologie, sarcini, note, fișiere), în paralel. */
+/** Toate datele panourilor dintr-o fișă (cronologie, sarcini, note, fișiere, conversații), în paralel. */
 export async function loadWorkspace(ref: RecordRef, ctx: OrgContext) {
-  const [activities, notes, files, tasks, types, options] = await Promise.all([
+  const [activities, notes, files, tasks, types, options, conversations] = await Promise.all([
     listActivities(ref),
     listNotes(ref),
     listFiles(ref),
     listTasksFor(ref),
     listTaskTypes(ctx.organizationId),
     getCrmOptions(ctx.organizationId),
+    listConversationsFor(ref),
   ])
 
   return {
@@ -24,6 +26,7 @@ export async function loadWorkspace(ref: RecordRef, ctx: OrgContext) {
     notes,
     files,
     tasks,
+    conversations,
     currentUserId: ctx.user.id,
     isAdmin: ctx.membership.role.key === "admin",
     taskContext: {

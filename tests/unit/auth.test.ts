@@ -14,7 +14,9 @@ function sqlPermissionCatalog(): string[] {
     .join("\n")
   // Ultima definiție a private.permission_catalog() câștigă.
   const bodies = [
-    ...sql.matchAll(/permission_catalog\(\)[\s\S]*?select array\[([\s\S]*?)\]::text\[\]/g),
+    ...sql.matchAll(
+      /function private\.permission_catalog\(\)[\s\S]*?select array\[([\s\S]*?)\]::text\[\]/g
+    ),
   ]
   const body = bodies.at(-1)?.[1] ?? ""
   return [...body.matchAll(/'([a-z_.]+)'/g)].map((m) => m[1]!)

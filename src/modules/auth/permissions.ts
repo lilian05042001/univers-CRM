@@ -4,7 +4,7 @@ export const PERMISSION_GROUPS = {
   crm: ["crm.view.all", "crm.view.team"],
   leads: ["leads.create", "leads.edit", "leads.delete", "leads.assign"],
   contacts: ["contacts.create", "contacts.edit", "contacts.delete"],
-  inbox: ["inbox.view.all"],
+  inbox: ["inbox.view.all", "inbox.assign"],
   reports: ["reports.view.all", "reports.view.team"],
   data: ["data.import", "data.export"],
   configuration: ["pipelines.manage", "automations.manage"],

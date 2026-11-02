@@ -74,12 +74,15 @@ Parent polimorf controlat: coloane FK nulabile `lead_id`, `contact_id`, `company
 
 | Tabel | Coloane principale |
 |---|---|
-| `channels` | organization_id, provider `internal/whatsapp/instagram/messenger/email/telephony/web_form`, name, status `active/disconnected/error`, config jsonb (non-secret), vault_secret_id, webhook_secret_hash |
-| `conversations` | organization_id, channel_id ⇉, contact_id ⇉, lead_id ⇉, assignee_id, status `open/pending/closed`, external_thread_id, subject, last_message_at, last_message_preview, unread_count · [U] (channel_id, external_thread_id) · [I] (organization_id, assignee_id, status, last_message_at desc) |
-| `messages` (bigint) | organization_id, conversation_id ⇉, kind `message/internal_note/system`, direction `in/out`, sender_user_id, body, content_type, external_message_id, delivery_status `queued/sent/delivered/read/failed`, error, sent_at · [U parțial] (organization_id, external_message_id) |
-| `conversation_reads` | conversation_id, user_id, last_read_message_id — necitite per utilizator |
-| `quick_replies` | organization_id, title, shortcut, body, owner_id (null = partajat) |
-| `webhook_events` (bigint) | organization_id (nullable până la rutare), provider, external_event_id, payload jsonb, signature_valid, received_at, processed_at, error · [U] (provider, external_event_id) |
+| `channels` | organization_id, provider `internal/whatsapp/instagram/messenger/email/telephony/web_form`, name, status `active/disconnected/error`, config jsonb (non-secret), vault_secret_id, webhook_secret_hash (sha256; necitibil din client), has_webhook_secret · [U parțial] un singur canal `internal` per organizație (creat automat) |
+| `conversations` | organization_id, channel_id ⇉, contact_id ⇉, lead_id ⇉, assignee_id, status `open/pending/closed`, external_thread_id, subject, display_name, search_text, last_message_id / _at / _preview / _direction (denormalizate prin trigger) · [U] (channel_id, external_thread_id) · [I] (organization_id, status, last_message_at desc), (organization_id, assignee_id, status) |
+| `messages` (bigint) | organization_id, conversation_id ⇉, kind `message/internal_note/system`, direction `in/out`, sender_user_id, body, content_type `text/attachment`, external_message_id, delivery_status `queued/sent/delivered/read/failed`, error, sent_at · [U parțial] (organization_id, external_message_id) · imuabile; direcția, expeditorul și livrarea sunt setate de trigger |
+| `conversation_reads` | organization_id, conversation_id, user_id, last_read_message_id — necitite per utilizator (`inbox_unread_counts`, `mark_conversation_read`) |
+| `conversation_tags` | organization_id, conversation_id ⇉, tag_id ⇉ · PK compus |
+| `quick_replies` | organization_id, title, shortcut, body, owner_id (null = partajat, gestionat cu `settings.manage`) |
+| `webhook_events` (bigint) | organization_id (nullable până la rutare), channel_id, provider, external_event_id (`{canal}:{id}`), payload jsonb, signature_valid, received_at, processed_at, error · [U] (provider, external_event_id) — deduplicare; un eveniment eșuat se reprocesează la reluare |
+
+Atașamentele mesajelor sunt rânduri în `files` cu `message_id` (vizibile dacă mesajul e vizibil). RPC-uri: `ingest_inbound_message(canal, mesaj)` (doar `service_role`: identificare contact după `contact_identities`, telefon ≡ WhatsApp → contact nou dacă lipsește → conversație după fir → mesaj idempotent), `assign_conversation` (predare cu `inbox.assign`), `mark_conversation_read`, `inbox_unread_counts`, `inbox_unread_total`. Mesajele primite emit `message.received` (outbox) și apar în cronologia contactului/lead-ului (`message.received` / `message.sent`).
 
 ## 7. Automatizări și notificări
 
@@ -123,4 +126,6 @@ automations 1─N automation_runs N─1 domain_events
 - `INSERT/UPDATE/DELETE`: `private.has_perm(organization_id, '<permisiune>')` + reguli de proprietar.
 - Tabele de configurare (pipelines, roles, automations…): scriere doar cu `settings.manage`/`pipelines.manage`/`automations.manage`.
 - `audit_log`, `domain_events`, `automation_runs`, `webhook_events`: fără scriere din client; scriere doar prin triggere/`service_role`.
+- Inbox: `inbox.view.all` → toate conversațiile; altfel aceeași regulă ca lead-urile după `assignee_id` (echipă / proprii) + cele neatribuite. Mesajele, etichetele și atașamentele urmează conversația.
+- `service_role` nu are drepturi implicite pe tabelele noi: fiecare tabel folosit de webhooks/joburi primește granturi explicite, minime, în migrație.
 - Storage: politică pe `bucket_id = 'crm-files'` și primul segment al căii = organizație din care utilizatorul face parte.

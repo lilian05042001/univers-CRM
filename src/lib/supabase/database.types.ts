@@ -163,6 +163,57 @@ export type Database = {
           },
         ]
       }
+      channels: {
+        Row: {
+          config: NonNullable<Json>
+          created_at: string
+          has_webhook_secret: boolean | null
+          id: string
+          name: string
+          organization_id: string
+          provider: string
+          status: string
+          updated_at: string
+          vault_secret_id: string | null
+          webhook_secret_hash: string | null
+        }
+        ComputedFields: never
+        Insert: {
+          config?: NonNullable<Json>
+          created_at?: string
+          has_webhook_secret?: never
+          id?: string
+          name: string
+          organization_id: string
+          provider: string
+          status?: string
+          updated_at?: string
+          vault_secret_id?: string | null
+          webhook_secret_hash?: string | null
+        }
+        Update: {
+          config?: NonNullable<Json>
+          created_at?: string
+          has_webhook_secret?: never
+          id?: string
+          name?: string
+          organization_id?: string
+          provider?: string
+          status?: string
+          updated_at?: string
+          vault_secret_id?: string | null
+          webhook_secret_hash?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "channels_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companies: {
         Row: {
           address: NonNullable<Json>
@@ -447,6 +498,187 @@ export type Database = {
           },
         ]
       }
+      conversation_reads: {
+        Row: {
+          conversation_id: string
+          last_read_message_id: number
+          organization_id: string
+          read_at: string
+          user_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          conversation_id: string
+          last_read_message_id?: number
+          organization_id: string
+          read_at?: string
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          last_read_message_id?: number
+          organization_id?: string
+          read_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_reads_organization_id_conversation_id_fkey"
+            columns: ["organization_id", "conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["organization_id", "id"]
+          },
+          {
+            foreignKeyName: "conversation_reads_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversation_tags: {
+        Row: {
+          conversation_id: string
+          organization_id: string
+          tag_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          conversation_id: string
+          organization_id: string
+          tag_id: string
+        }
+        Update: {
+          conversation_id?: string
+          organization_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_tags_organization_id_conversation_id_fkey"
+            columns: ["organization_id", "conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["organization_id", "id"]
+          },
+          {
+            foreignKeyName: "conversation_tags_organization_id_tag_id_fkey"
+            columns: ["organization_id", "tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["organization_id", "id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          assignee_id: string | null
+          channel_id: string
+          contact_id: string | null
+          created_at: string
+          created_by: string | null
+          display_name: string
+          external_thread_id: string
+          id: string
+          last_message_at: string
+          last_message_direction: string | null
+          last_message_id: number | null
+          last_message_preview: string
+          lead_id: string | null
+          organization_id: string
+          search_text: string | null
+          status: string
+          subject: string | null
+          updated_at: string
+        }
+        ComputedFields: never
+        Insert: {
+          assignee_id?: string | null
+          channel_id: string
+          contact_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          display_name?: string
+          external_thread_id?: string
+          id?: string
+          last_message_at?: string
+          last_message_direction?: string | null
+          last_message_id?: number | null
+          last_message_preview?: string
+          lead_id?: string | null
+          organization_id: string
+          search_text?: never
+          status?: string
+          subject?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assignee_id?: string | null
+          channel_id?: string
+          contact_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          display_name?: string
+          external_thread_id?: string
+          id?: string
+          last_message_at?: string
+          last_message_direction?: string | null
+          last_message_id?: number | null
+          last_message_preview?: string
+          lead_id?: string | null
+          organization_id?: string
+          search_text?: never
+          status?: string
+          subject?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_organization_id_assignee_id_fkey"
+            columns: ["organization_id", "assignee_id"]
+            isOneToOne: false
+            referencedRelation: "memberships"
+            referencedColumns: ["organization_id", "user_id"]
+          },
+          {
+            foreignKeyName: "conversations_organization_id_channel_id_fkey"
+            columns: ["organization_id", "channel_id"]
+            isOneToOne: false
+            referencedRelation: "channels"
+            referencedColumns: ["organization_id", "id"]
+          },
+          {
+            foreignKeyName: "conversations_organization_id_contact_id_fkey"
+            columns: ["organization_id", "contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["organization_id", "id"]
+          },
+          {
+            foreignKeyName: "conversations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_organization_id_lead_id_fkey"
+            columns: ["organization_id", "lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["organization_id", "id"]
+          },
+        ]
+      }
       custom_field_definitions: {
         Row: {
           created_at: string
@@ -564,6 +796,7 @@ export type Database = {
           file_name: string
           id: string
           lead_id: string | null
+          message_id: number | null
           mime_type: string
           organization_id: string
           size_bytes: number
@@ -578,6 +811,7 @@ export type Database = {
           file_name: string
           id?: string
           lead_id?: string | null
+          message_id?: number | null
           mime_type: string
           organization_id: string
           size_bytes: number
@@ -591,6 +825,7 @@ export type Database = {
           file_name?: string
           id?: string
           lead_id?: string | null
+          message_id?: number | null
           mime_type?: string
           organization_id?: string
           size_bytes?: number
@@ -630,6 +865,13 @@ export type Database = {
             columns: ["organization_id", "lead_id"]
             isOneToOne: false
             referencedRelation: "leads"
+            referencedColumns: ["organization_id", "id"]
+          },
+          {
+            foreignKeyName: "files_organization_id_message_id_fkey"
+            columns: ["organization_id", "message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
             referencedColumns: ["organization_id", "id"]
           },
         ]
@@ -1155,6 +1397,77 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          body: string
+          content_type: string
+          conversation_id: string
+          created_at: string
+          delivery_status: string | null
+          direction: string
+          error: string | null
+          external_message_id: string | null
+          id: number
+          kind: string
+          organization_id: string
+          sender_user_id: string | null
+          sent_at: string
+        }
+        ComputedFields: never
+        Insert: {
+          body?: string
+          content_type?: string
+          conversation_id: string
+          created_at?: string
+          delivery_status?: string | null
+          direction?: string
+          error?: string | null
+          external_message_id?: string | null
+          id?: never
+          kind?: string
+          organization_id: string
+          sender_user_id?: string | null
+          sent_at?: string
+        }
+        Update: {
+          body?: string
+          content_type?: string
+          conversation_id?: string
+          created_at?: string
+          delivery_status?: string | null
+          direction?: string
+          error?: string | null
+          external_message_id?: string | null
+          id?: never
+          kind?: string
+          organization_id?: string
+          sender_user_id?: string | null
+          sent_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_organization_id_conversation_id_fkey"
+            columns: ["organization_id", "conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["organization_id", "id"]
+          },
+          {
+            foreignKeyName: "messages_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_user_id_fkey"
+            columns: ["sender_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notes: {
         Row: {
           body: string
@@ -1499,6 +1812,65 @@ export type Database = {
         }
         Relationships: []
       }
+      quick_replies: {
+        Row: {
+          body: string
+          created_at: string
+          created_by: string | null
+          id: string
+          organization_id: string
+          owner_id: string | null
+          shortcut: string | null
+          title: string
+          updated_at: string
+        }
+        ComputedFields: never
+        Insert: {
+          body: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          organization_id: string
+          owner_id?: string | null
+          shortcut?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          organization_id?: string
+          owner_id?: string | null
+          shortcut?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quick_replies_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quick_replies_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quick_replies_organization_id_owner_id_fkey"
+            columns: ["organization_id", "owner_id"]
+            isOneToOne: false
+            referencedRelation: "memberships"
+            referencedColumns: ["organization_id", "user_id"]
+          },
+        ]
+      }
       roles: {
         Row: {
           created_at: string
@@ -1828,12 +2200,71 @@ export type Database = {
           },
         ]
       }
+      webhook_events: {
+        Row: {
+          channel_id: string | null
+          error: string | null
+          external_event_id: string
+          id: number
+          organization_id: string | null
+          payload: NonNullable<Json>
+          processed_at: string | null
+          provider: string
+          received_at: string
+          signature_valid: boolean
+        }
+        ComputedFields: never
+        Insert: {
+          channel_id?: string | null
+          error?: string | null
+          external_event_id: string
+          id?: never
+          organization_id?: string | null
+          payload: NonNullable<Json>
+          processed_at?: string | null
+          provider: string
+          received_at?: string
+          signature_valid: boolean
+        }
+        Update: {
+          channel_id?: string | null
+          error?: string | null
+          external_event_id?: string
+          id?: never
+          organization_id?: string | null
+          payload?: NonNullable<Json>
+          processed_at?: string | null
+          provider?: string
+          received_at?: string
+          signature_valid?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_events_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "webhook_events_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
       accept_invitation: { Args: { p_token: string }; Returns: string }
+      assign_conversation: {
+        Args: { p_assignee?: string; p_conversation: string }
+        Returns: undefined
+      }
       create_organization: { Args: { p_name: string }; Returns: string }
       find_company_duplicates: {
         Args: {
@@ -1870,6 +2301,16 @@ export type Database = {
           role_name: string
         }[]
       }
+      inbox_unread_counts: {
+        Args: { p_ids: string[] }
+        Returns: {
+          conversation_id: string
+          unread: number
+        }[]
+      }
+      inbox_unread_total: { Args: { p_org: string }; Returns: number }
+      ingest_inbound_message: { Args: { p_channel: string; p_message: Json }; Returns: Json }
+      mark_conversation_read: { Args: { p_conversation: string }; Returns: undefined }
       merge_contacts: { Args: { p_keep: string; p_remove: string }; Returns: string }
       pipeline_summary: {
         Args: {

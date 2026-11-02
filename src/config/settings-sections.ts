@@ -4,6 +4,7 @@ import {
   FileUp,
   KeyRound,
   ListChecks,
+  MessagesSquare,
   Plug,
   Shapes,
   ShieldCheck,
@@ -11,6 +12,7 @@ import {
   Target,
   UsersRound,
   Workflow,
+  Zap,
   type LucideIcon,
 } from "lucide-react"
 
@@ -33,6 +35,8 @@ export const settingsSections: SettingsSection[] = [
   { key: "sources", icon: Target, href: "/settings/sources", stage: 4 },
   { key: "taskTypes", icon: ListChecks, href: "/settings/task-types", stage: 7 },
   { key: "notifications", icon: Bell, href: "/settings/notifications", stage: 7 },
+  { key: "channels", icon: MessagesSquare, href: "/settings/channels", stage: 8 },
+  { key: "quickReplies", icon: Zap, href: "/settings/quick-replies", stage: 8 },
   { key: "integrations", icon: Plug, stage: 11 },
   { key: "api", icon: KeyRound, stage: 11 },
   { key: "importExport", icon: FileUp, stage: 11 },

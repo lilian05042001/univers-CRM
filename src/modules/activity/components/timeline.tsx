@@ -8,9 +8,11 @@ import {
   GitMerge,
   Link2,
   ListPlus,
+  MessageCircle,
   Paperclip,
   PenLine,
   Plus,
+  Send,
   StickyNote,
   Trash2,
   UserRound,
@@ -38,6 +40,8 @@ const ICONS: Record<string, LucideIcon> = {
   "contact.created": Plus,
   "company.created": Plus,
   "contact.merged": GitMerge,
+  "message.received": MessageCircle,
+  "message.sent": Send,
 }
 
 const KNOWN = new Set(Object.keys(ICONS))
@@ -74,7 +78,9 @@ export function Timeline({
         })
       }
       case "note.added":
-        return t("types.note.added", { excerpt: str(p.excerpt) })
+      case "message.received":
+      case "message.sent":
+        return t(`types.${item.type}`, { excerpt: str(p.excerpt) })
       case "file.added":
         return t("types.file.added", { name: str(p.file_name) })
       case "task.created":

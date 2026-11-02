@@ -8,8 +8,8 @@ import { containsPattern, normalizeSearch } from "@/lib/utils/search"
 /** Selecția pentru acțiunile în masă. */
 export const idsSchema = z.array(z.uuid()).min(1).max(500)
 
-type TagTable = "lead_tags" | "contact_tags" | "company_tags"
-type TagColumn = "lead_id" | "contact_id" | "company_id"
+type TagTable = "lead_tags" | "contact_tags" | "company_tags" | "conversation_tags"
+type TagColumn = "lead_id" | "contact_id" | "company_id" | "conversation_id"
 
 /** Etichetele unei înregistrări devin exact `tagIds`. */
 export async function syncTags(

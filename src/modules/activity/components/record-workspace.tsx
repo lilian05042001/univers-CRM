@@ -1,13 +1,12 @@
 "use client"
 
-import { MessagesSquare } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-import { EmptyState } from "@/components/shared/empty-state"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { nameById } from "@/modules/crm-config/options"
 import { FilesPanel } from "@/modules/files/components/files-panel"
+import { ConversationsPanel } from "@/modules/inbox/components/conversations-panel"
 import { NotesPanel } from "@/modules/notes/components/notes-panel"
 import { TasksPanel } from "@/modules/tasks/components/tasks-panel"
 
@@ -50,7 +49,11 @@ export function RecordWorkspace({
             <TabsTrigger value="tasks">{t("tasks", { count: openTasks })}</TabsTrigger>
             <TabsTrigger value="notes">{t("notes", { count: data.notes.length })}</TabsTrigger>
             <TabsTrigger value="files">{t("files", { count: data.files.length })}</TabsTrigger>
-            {conversations && <TabsTrigger value="conversations">{t("conversations")}</TabsTrigger>}
+            {conversations && (
+              <TabsTrigger value="conversations">
+                {t("conversations", { count: data.conversations.length })}
+              </TabsTrigger>
+            )}
             <TabsTrigger value="history">{t("history")}</TabsTrigger>
           </TabsList>
           <TabsContent value="timeline">
@@ -79,11 +82,7 @@ export function RecordWorkspace({
           </TabsContent>
           {conversations && (
             <TabsContent value="conversations">
-              <EmptyState
-                icon={MessagesSquare}
-                title={t("conversationsEmpty")}
-                description={t("conversationsHint")}
-              />
+              <ConversationsPanel conversations={data.conversations} />
             </TabsContent>
           )}
           <TabsContent value="history">
