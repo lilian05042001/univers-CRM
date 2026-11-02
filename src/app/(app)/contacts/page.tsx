@@ -51,6 +51,7 @@ async function Contacts({ searchParams }: Pick<PageProps<"/contacts">, "searchPa
         create: ctx.can("contacts.create"),
         edit: ctx.can("contacts.edit"),
         delete: ctx.can("contacts.delete"),
+        export: ctx.can("data.export"),
       }}
     />
   )

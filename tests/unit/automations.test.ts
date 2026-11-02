@@ -176,6 +176,9 @@ function memoryStore(events: DomainEvent[], automations: Automation[], snap: Sna
     async completeEvent(id, error) {
       completed.push({ id, error })
     },
+    async completeEvents(ids) {
+      for (const id of ids) completed.push({ id, error: null })
+    },
   }
   return {
     store,
@@ -196,6 +199,27 @@ describe("engine", () => {
     expect(stats).toMatchObject({ events: 1, runs: 1, succeeded: 1 })
     expect(m.executed).toEqual([{ automationId: "auto-1", depth: 1 }])
     expect(m.completed).toEqual([{ id: 1, error: null }])
+  })
+
+  it("completes events without matching automations in one call", async () => {
+    const m = memoryStore(
+      [
+        event({ id: 1 }),
+        event({ id: 2, type: "contact.created" }),
+        event({ id: 3, type: "contact.created" }),
+      ],
+      [automation()]
+    )
+    const calls: number[][] = []
+    const bulk = m.store.completeEvents.bind(m.store)
+    m.store.completeEvents = async (ids) => {
+      calls.push(ids)
+      await bulk(ids)
+    }
+    const stats = await processBatch(m.store)
+    expect(stats).toMatchObject({ events: 3, runs: 1, succeeded: 1 })
+    expect(calls).toEqual([[2, 3]])
+    expect(m.completed.map((c) => c.id).sort()).toEqual([1, 2, 3])
   })
 
   it("deduplicates: the same event processed again does not run the automation twice", async () => {

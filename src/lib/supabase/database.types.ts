@@ -76,6 +76,64 @@ export type Database = {
           },
         ]
       }
+      api_keys: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          key_hash: string
+          key_prefix: string
+          last_used_at: string | null
+          name: string
+          organization_id: string
+          revoked_at: string | null
+          scopes: string[]
+        }
+        ComputedFields: never
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          key_hash: string
+          key_prefix: string
+          last_used_at?: string | null
+          name: string
+          organization_id: string
+          revoked_at?: string | null
+          scopes: string[]
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          key_hash?: string
+          key_prefix?: string
+          last_used_at?: string | null
+          name?: string
+          organization_id?: string
+          revoked_at?: string | null
+          scopes?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_keys_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_keys_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assignment_rules: {
         Row: {
           config: NonNullable<Json>
@@ -1021,6 +1079,82 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "messages"
             referencedColumns: ["organization_id", "id"]
+          },
+        ]
+      }
+      import_jobs: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          entity: string
+          errors: NonNullable<Json>
+          failed_count: number
+          file_name: string
+          finished_at: string | null
+          id: string
+          mapping: NonNullable<Json>
+          ok_count: number
+          options: NonNullable<Json>
+          organization_id: string
+          processed_rows: number
+          skipped_count: number
+          status: string
+          total_rows: number
+          updated_at: string
+        }
+        ComputedFields: never
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          entity: string
+          errors?: NonNullable<Json>
+          failed_count?: number
+          file_name: string
+          finished_at?: string | null
+          id?: string
+          mapping?: NonNullable<Json>
+          ok_count?: number
+          options?: NonNullable<Json>
+          organization_id: string
+          processed_rows?: number
+          skipped_count?: number
+          status?: string
+          total_rows: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          entity?: string
+          errors?: NonNullable<Json>
+          failed_count?: number
+          file_name?: string
+          finished_at?: string | null
+          id?: string
+          mapping?: NonNullable<Json>
+          ok_count?: number
+          options?: NonNullable<Json>
+          organization_id?: string
+          processed_rows?: number
+          skipped_count?: number
+          status?: string
+          total_rows?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "import_jobs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "import_jobs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -2438,6 +2572,15 @@ export type Database = {
         Args: { p_assignee?: string; p_conversation: string }
         Returns: undefined
       }
+      authenticate_api_key: {
+        Args: { p_hash: string }
+        Returns: {
+          created_by: string
+          key_id: string
+          organization_id: string
+          scopes: string[]
+        }[]
+      }
       automation_execute: {
         Args: {
           p_actions: Json
@@ -2491,6 +2634,7 @@ export type Database = {
         }
       }
       complete_domain_event: { Args: { p_error?: string; p_id: number }; Returns: undefined }
+      complete_domain_events: { Args: { p_ids: number[] }; Returns: undefined }
       create_organization: { Args: { p_name: string }; Returns: string }
       find_company_duplicates: {
         Args: {
@@ -2517,6 +2661,7 @@ export type Database = {
           matched_value: string
         }[]
       }
+      finish_import: { Args: { p_job: string; p_status: string }; Returns: undefined }
       get_invitation: {
         Args: { p_token: string }
         Returns: {
@@ -2527,6 +2672,7 @@ export type Database = {
           role_name: string
         }[]
       }
+      import_rows: { Args: { p_errors?: Json; p_job: string; p_rows: Json }; Returns: Json }
       inbox_unread_counts: {
         Args: { p_ids: string[] }
         Returns: {

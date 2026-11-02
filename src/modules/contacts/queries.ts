@@ -1,7 +1,7 @@
 import "server-only"
 
 import { idsWithTag, searchFilter } from "@/lib/crm/records"
-import { isUuid, pageRange, type ListParams } from "@/lib/list-params"
+import { fetchAllPages, isUuid, pageRange, type ListParams } from "@/lib/list-params"
 import { createClient } from "@/lib/supabase/server"
 import { containsPattern, normalizeSearch } from "@/lib/utils/search"
 import type { TagOption } from "@/modules/crm-config/types"
@@ -42,14 +42,22 @@ async function idsMatchingIdentity(organizationId: string, q: string) {
   return [...new Set(data.map((r) => r.contact_id))]
 }
 
-export async function listContacts(organizationId: string, params: ListParams<SortKey>) {
+const CONTACT_LIST_SELECT =
+  "id, first_name, last_name, full_name, position, address, custom_fields, created_at, owner_id, company:companies(id, name), source:lead_sources(name), identities:contact_identities(type, value, is_primary), tags:contact_tags(tag:tags(id, name, color))"
+
+/**
+ * Lista filtrată (căutare + filtre din URL); `null` dacă rezultatul e sigur gol.
+ * Builder-ul e întors într-un obiect: fiind „thenable”, un `await` direct l-ar executa.
+ */
+async function filteredContacts(
+  organizationId: string,
+  params: ListParams<SortKey>,
+  count?: "exact"
+) {
   const supabase = await createClient()
   let query = supabase
     .from("contacts")
-    .select(
-      "id, full_name, position, created_at, owner_id, company:companies(id, name), identities:contact_identities(type, value, is_primary), tags:contact_tags(tag:tags(id, name, color))",
-      { count: "exact" }
-    )
+    .select(CONTACT_LIST_SELECT, { count })
     .eq("organization_id", organizationId)
     .is("deleted_at", null)
 
@@ -69,15 +77,21 @@ export async function listContacts(organizationId: string, params: ListParams<So
   const tag = params.get("tag")
   if (isUuid(tag)) {
     const ids = await idsWithTag("contact_tags", "contact_id", tag)
-    if (ids.length === 0) return { rows: [] as ContactRow[], total: 0 }
+    if (ids.length === 0) return null
     query = query.in("id", ids)
   }
 
+  return {
+    query: query.order(params.sort, { ascending: params.dir === "asc" }).order("id"),
+  }
+}
+
+export async function listContacts(organizationId: string, params: ListParams<SortKey>) {
+  const filtered = await filteredContacts(organizationId, params, "exact")
+  if (!filtered) return { rows: [] as ContactRow[], total: 0 }
+
   const { from, to } = pageRange(params)
-  const { data, error, count } = await query
-    .order(params.sort, { ascending: params.dir === "asc" })
-    .order("id")
-    .range(from, to)
+  const { data, error, count } = await filtered.query.range(from, to)
   if (error) throw error
 
   const rows: ContactRow[] = data.map((c) => ({
@@ -93,6 +107,19 @@ export async function listContacts(organizationId: string, params: ListParams<So
   }))
   return { rows, total: count ?? 0 }
 }
+
+/** Toate contactele listei filtrate, cu datele complete (export CSV). */
+export async function listContactsForExport(organizationId: string, params: ListParams<SortKey>) {
+  return fetchAllPages(async (from, to) => {
+    const filtered = await filteredContacts(organizationId, params)
+    if (!filtered) return []
+    const { data, error } = await filtered.query.range(from, to)
+    if (error) throw error
+    return data
+  })
+}
+
+export type ContactExportRow = Awaited<ReturnType<typeof listContactsForExport>>[number]
 
 export async function getContact(id: string) {
   const supabase = await createClient()

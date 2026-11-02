@@ -52,6 +52,7 @@ async function Leads({ searchParams }: Pick<PageProps<"/leads">, "searchParams">
         create: ctx.can("leads.create"),
         edit: ctx.can("leads.edit"),
         delete: ctx.can("leads.delete"),
+        export: ctx.can("data.export"),
         assign: ctx.can("leads.assign"),
       }}
     />

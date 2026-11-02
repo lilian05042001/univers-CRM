@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server"
 
+import { csvResponse } from "@/lib/csv"
+
 import { canViewReports, loadReportContext } from "@/modules/reports/context"
 import { toCsv } from "@/modules/reports/csv"
 import { loadReport } from "@/modules/reports/queries"
@@ -28,11 +30,5 @@ export async function GET(request: Request, ctx: RouteContext<"/reports/[report]
   const csv = toCsv(data.columns, data.rows, (c) => t(`columns.${c.key}`), t("unassigned"))
   const fileName = `raport-${report}-${period.fromDate}_${period.toDate}.csv`
 
-  return new Response(csv, {
-    headers: {
-      "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="${fileName}"`,
-      "Cache-Control": "no-store",
-    },
-  })
+  return csvResponse(csv, fileName)
 }

@@ -19,7 +19,18 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [
-    { name: "desktop", use: { ...devices["Desktop Chrome"] } },
+    {
+      name: "desktop",
+      use: { ...devices["Desktop Chrome"] },
+      testIgnore: /import-export\.spec\.ts/,
+    },
+    // Importul a 10 000 de contacte încarcă baza de date: rulează după celelalte teste, nu în paralel cu ele.
+    {
+      name: "bulk",
+      use: { ...devices["Desktop Chrome"] },
+      testMatch: /import-export\.spec\.ts/,
+      dependencies: ["desktop"],
+    },
     // Pe telefon: paginile publice; fluxurile autentificate (serial, utilizator nou) doar pe desktop.
     { name: "mobile", use: { ...devices["Pixel 7"] }, testMatch: /public\.spec\.ts/ },
   ],

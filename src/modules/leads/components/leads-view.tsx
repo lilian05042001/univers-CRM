@@ -9,6 +9,7 @@ import { ConfirmDialog } from "@/components/shared/confirm-dialog"
 import { BulkBar } from "@/components/shared/data-table/bulk-bar"
 import { BulkMenu } from "@/components/shared/data-table/bulk-menu"
 import { DataTable, type Column } from "@/components/shared/data-table/data-table"
+import { ExportButton } from "@/components/shared/data-table/export-button"
 import { Pagination } from "@/components/shared/data-table/pagination"
 import { FilterSelect, Toolbar } from "@/components/shared/data-table/toolbar"
 import { EmptyState } from "@/components/shared/empty-state"
@@ -39,7 +40,7 @@ type Props = {
   record: LeadRecord | null
   isNew: boolean
   userId: string
-  can: { create: boolean; edit: boolean; delete: boolean; assign: boolean }
+  can: { create: boolean; edit: boolean; delete: boolean; export: boolean; assign: boolean }
 }
 
 const priorityTone = { low: "neutral", normal: "info", high: "warning", urgent: "danger" } as const
@@ -230,6 +231,7 @@ export function LeadsView({
             options={PRIORITIES.map((p) => ({ value: p, label: t(`priority.${p}`) }))}
           />
         </Toolbar>
+        {can.export && <ExportButton />}
         {can.create && (
           <Button onClick={() => setParams({ open: "new" }, { resetPage: false })}>
             <Plus />

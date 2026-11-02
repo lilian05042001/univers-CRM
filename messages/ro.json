@@ -81,7 +81,8 @@
     "remove": "Elimină",
     "save": "Salvează",
     "yes": "Da",
-    "no": "Nu"
+    "no": "Nu",
+    "copy": "Copiază"
   },
   "status": {
     "success": "Succes",
@@ -119,7 +120,8 @@
     "probability": "Introdu un număr între 0 și 100.",
     "assignees": "Alege cel puțin un utilizator.",
     "dateTime": "Introdu data și ora.",
-    "shortcut": "Doar litere mici, cifre, - și _ (maximum 30)."
+    "shortcut": "Doar litere mici, cifre, - și _ (maximum 30).",
+    "scopes": "Alege cel puțin un drept de acces."
   },
   "errors": {
     "validation": "Verifică datele introduse.",
@@ -151,7 +153,10 @@
       "system_role_delete": "Rolurile de sistem nu pot fi șterse.",
       "system_task_type_delete": "Tipurile de activitate de sistem nu pot fi șterse.",
       "task_type_key_immutable": "Identificatorul tipului de activitate nu poate fi modificat.",
-      "merge_invalid": "Contactele nu pot fi unite."
+      "merge_invalid": "Contactele nu pot fi unite.",
+      "api_key_revoked": "Cheia API a fost revocată și nu mai poate fi reactivată.",
+      "import_finished": "Importul s-a încheiat; pornește un import nou.",
+      "invalid_batch": "Lotul de import nu este valid."
     },
     "lossReasonRequired": "Alege motivul pierderii.",
     "fileNotAllowed": "Fișierul nu este permis (maximum 25 MB, fără executabile sau scripturi)."
@@ -354,15 +359,15 @@
       },
       "integrations": {
         "title": "Integrări",
-        "description": "WhatsApp, Instagram, Messenger, e-mail, telefonie."
+        "description": "Canale, API public, import CSV și integrările planificate."
       },
       "api": {
         "title": "API",
-        "description": "Chei de acces pentru integrări externe."
+        "description": "Chei de acces și referința API-ului public v1."
       },
       "importExport": {
         "title": "Import și export",
-        "description": "Importul și exportul datelor în CSV."
+        "description": "Import CSV cu mapare de câmpuri și raport de erori; export CSV."
       }
     },
     "company": {
@@ -613,7 +618,6 @@
       "rotateDescription": "Cheia actuală, dacă există, nu va mai fi acceptată. Sistemele care trimit mesaje trebuie actualizate cu cheia nouă.",
       "webhookUrl": "Adresa webhook (POST)",
       "channelHeader": "Antetul {header}",
-      "copy": "Copiază",
       "secretTitle": "Cheia webhook",
       "secretHint": "Copiaz-o acum: din motive de securitate nu va mai fi afișată.",
       "secret": "Cheie",
@@ -665,7 +669,8 @@
     "page": "Pagina {page} din {pages}",
     "pageSize": "Rânduri pe pagină",
     "previous": "Pagina anterioară",
-    "next": "Pagina următoare"
+    "next": "Pagina următoare",
+    "export": "Exportă CSV"
   },
   "customFields": {
     "none": "—"
@@ -1491,5 +1496,247 @@
       "overdue": "Restante",
       "lost_value": "Valoare pierdută"
     }
+  },
+  "integrations": {
+    "noAccessTitle": "Acces restricționat",
+    "noAccessHint": "Cheile API pot fi gestionate doar de utilizatorii cu dreptul „Chei API”.",
+    "api": {
+      "intro": "Cheile API permit sistemelor externe (site, ERP, formulare) să citească și să creeze date prin API-ul public. Cheia se afișează o singură dată; în CRM se păstrează doar amprenta ei. Cheia nu mai funcționează dacă autorul ei părăsește organizația.",
+      "create": "Cheie nouă",
+      "created": "Cheia API a fost creată.",
+      "name": "Denumire",
+      "namePlaceholder": "ex. Site web, ERP",
+      "scopes": "Drepturi de acces",
+      "scopeLabels": {
+        "contacts_read": "Citire contacte și companii",
+        "contacts_write": "Creare și modificare contacte și companii",
+        "leads_read": "Citire lead-uri și pipeline-uri",
+        "leads_write": "Creare și modificare lead-uri"
+      },
+      "expiresIn": "Expirare",
+      "expiry": {
+        "never": "Fără expirare",
+        "30": "După 30 de zile",
+        "90": "După 90 de zile",
+        "365": "După un an"
+      },
+      "empty": "Nicio cheie API",
+      "emptyHint": "Creează o cheie pentru a conecta un sistem extern.",
+      "status": {
+        "active": "Activă",
+        "revoked": "Revocată",
+        "expired": "Expirată"
+      },
+      "createdBy": "Creată pe {date} de {author}",
+      "lastUsed": "folosită ultima dată pe {date}",
+      "neverUsed": "nefolosită încă",
+      "expiresAt": "expiră pe {date}",
+      "revoke": "Revocă",
+      "revokeTitle": "Revoci cheia API?",
+      "revokeDescription": "Sistemele care folosesc cheia „{name}” vor primi imediat eroarea 401. Revocarea este definitivă.",
+      "revoked": "Cheia API a fost revocată.",
+      "secretTitle": "Cheia API nouă",
+      "secretHint": "Copiază cheia acum: nu va mai fi afișată. Trimite-o în antetul Authorization: Bearer <cheie>.",
+      "secret": "Cheia API",
+      "reference": {
+        "title": "Referință API v1",
+        "description": "REST + JSON. Fiecare cerere se autentifică cu o cheie API, iar datele aparțin organizației cheii.",
+        "baseUrl": "Adresa de bază",
+        "example": "Exemplu de cerere",
+        "conventions": "Liste: ?limit= (max. 100), offset=, q= (căutare), updated_since= (ISO 8601). Răspuns: { data, pagination }. Erori: { error: { code, fields? } } cu codurile 401, 403, 404, 422. PATCH modifică doar câmpurile trimise; DELETE este ștergere logică.",
+        "method": "Metodă",
+        "path": "Resursă",
+        "scope": "Drept necesar"
+      }
+    },
+    "catalog": {
+      "intro": "Integrările disponibile acum și cele planificate. Canalele externe se conectează doar prin API-urile oficiale ale furnizorilor, cu conturile business ale companiei.",
+      "configure": "Configurează",
+      "status": {
+        "active": "Activă",
+        "available": "Disponibilă",
+        "planned": "Planificată"
+      },
+      "items": {
+        "internal": {
+          "title": "Canal intern și formular web",
+          "description": "Mesaje primite prin webhook (formulare de pe site, alte sisteme) direct în Inbox."
+        },
+        "api": {
+          "title": "API public v1",
+          "description": "Contacte, companii, lead-uri și pipeline-uri prin REST, cu chei API și drepturi pe resursă."
+        },
+        "csv": {
+          "title": "Import / export CSV",
+          "description": "Importul contactelor și companiilor cu mapare de câmpuri; exportul listelor filtrate."
+        },
+        "whatsapp": {
+          "title": "WhatsApp Business",
+          "description": "Prin WhatsApp Cloud API (Meta). Necesită cont business verificat și șabloane de mesaje aprobate."
+        },
+        "instagram": {
+          "title": "Instagram",
+          "description": "Mesaje directe prin Meta Graph API. Necesită pagină business și aplicație Meta aprobată."
+        },
+        "messenger": {
+          "title": "Facebook Messenger",
+          "description": "Mesajele paginii de Facebook prin Meta Graph API."
+        },
+        "email": {
+          "title": "E-mail",
+          "description": "Căsuța de e-mail a companiei (IMAP/SMTP sau un furnizor de e-mail)."
+        },
+        "telephony": {
+          "title": "Telefonie",
+          "description": "Apeluri și înregistrări prin furnizorul de telefonie VoIP al companiei."
+        }
+      }
+    }
+  },
+  "importExport": {
+    "importTitle": "Import CSV",
+    "importDescription": "Fișierul este citit în browser și trimis pe loturi; fiecare rând este validat, iar rândurile cu erori apar în raport fără să oprească importul.",
+    "exportTitle": "Export CSV",
+    "exportHint": "Exportul complet al fiecărei liste. Pentru un export filtrat folosește butonul „Exportă CSV” din listă.",
+    "noAccess": "Nu ai drepturi de import sau export.",
+    "entity": "Ce importi",
+    "entities": {
+      "contacts": "Contacte",
+      "companies": "Companii"
+    },
+    "exportEntities": {
+      "contacts": "Contacte",
+      "companies": "Companii",
+      "leads": "Lead-uri"
+    },
+    "fileNames": {
+      "contacts": "contacte",
+      "companies": "companii",
+      "leads": "lead-uri"
+    },
+    "encoding": "Codificare",
+    "encodings": {
+      "utf-8": "UTF-8 (recomandat)",
+      "windows-1250": "Windows-1250 (Excel, latină)",
+      "windows-1251": "Windows-1251 (Excel, chirilică)"
+    },
+    "file": {
+      "label": "Fișier CSV",
+      "hint": "Antetul pe primul rând, cel mult {rows, number} de rânduri. Separatorul se detectează automat.",
+      "summary": "{name}: {rows, plural, one {# rând} few {# rânduri} other {# de rânduri}}, {columns} coloane",
+      "tooLarge": "Fișierul depășește 20 MB.",
+      "empty": "Fișierul nu conține rânduri de date.",
+      "tooManyRows": "Fișierul are prea multe rânduri (maximum 50.000). Împarte-l în mai multe fișiere.",
+      "unreadable": "Fișierul nu poate fi citit."
+    },
+    "mapping": {
+      "column": "Coloană din fișier",
+      "samples": "Exemple",
+      "field": "Câmp în CRM",
+      "skip": "— Nu importa —",
+      "fieldFor": "Câmpul pentru coloana {column}",
+      "needName": "Mapează cel puțin o coloană pe prenume, nume de familie sau nume complet.",
+      "needCompanyName": "Mapează o coloană pe denumirea companiei.",
+      "duplicate": "Același câmp este ales pentru mai multe coloane (permis doar pentru telefon, e-mail și etichete)."
+    },
+    "options": {
+      "skipDuplicates": {
+        "contacts": "Sari peste contactele cu telefon sau e-mail existent",
+        "companies": "Sari peste companiile cu aceeași denumire, telefon sau e-mail"
+      },
+      "createCompanies": "Creează companiile care nu există",
+      "defaultOwner": "Responsabil implicit",
+      "noOwner": "Fără responsabil",
+      "defaultOwnerHint": "Pentru rândurile fără coloana „Responsabil (e-mail)”."
+    },
+    "start": "Importă {rows, plural, one {# rând} few {# rânduri} other {# de rânduri}}",
+    "progress": {
+      "label": "Progresul importului",
+      "idle": "Pregătit",
+      "running": "Se importă…",
+      "done": "Import finalizat",
+      "cancelled": "Import oprit",
+      "failed": "Import eșuat",
+      "rows": "{processed, number} din {total, number} rânduri",
+      "cancel": "Oprește",
+      "errorReport": "Raportul de erori",
+      "again": "Import nou",
+      "stats": {
+        "ok": "Importate",
+        "skipped": "Sărite (duplicate)",
+        "failed": "Cu erori"
+      }
+    },
+    "history": {
+      "title": "Istoricul importurilor",
+      "empty": "Niciun import încă.",
+      "file": "Fișier",
+      "status": "Stare",
+      "ok": "Importate",
+      "skipped": "Sărite",
+      "failed": "Erori",
+      "author": "Autor",
+      "processed": "{processed, number} / {total, number} rânduri",
+      "errors": "Erori",
+      "statuses": {
+        "processing": "În curs",
+        "done": "Finalizat",
+        "cancelled": "Oprit",
+        "failed": "Eșuat",
+        "interrupted": "Întrerupt"
+      }
+    },
+    "fields": {
+      "first_name": "Prenume",
+      "last_name": "Nume de familie",
+      "full_name": "Nume complet",
+      "phone": "Telefon",
+      "email": "E-mail",
+      "company": "Companie",
+      "position": "Funcție",
+      "source": "Sursă",
+      "owner": "Responsabil (e-mail)",
+      "tags": "Etichete",
+      "city": "Oraș",
+      "street": "Adresă",
+      "name": "Denumire",
+      "companyName": "Denumire",
+      "industry": "Domeniu",
+      "website": "Site web",
+      "created_at": "Creat la",
+      "title": "Lead",
+      "pipeline": "Pipeline",
+      "stage": "Etapă",
+      "status": "Stare",
+      "value": "Valoare",
+      "currency": "Monedă",
+      "won_amount": "Sumă câștigată",
+      "contact": "Contact principal",
+      "team": "Echipă",
+      "priority": "Prioritate",
+      "closed_at": "Închis la"
+    },
+    "errors": {
+      "duplicate": "Există deja (sărit).",
+      "unknown_owner": "Responsabilul nu este un membru activ al organizației (verifică e-mailul).",
+      "unknown_source": "Sursa nu există în setări.",
+      "unknown_tag": "Una dintre etichete nu există în setări.",
+      "unknown_company": "Compania nu există.",
+      "invalid_value": "O valoare nu respectă formatul permis.",
+      "db_error": "Rândul nu a putut fi salvat."
+    },
+    "report": {
+      "row": "Rând",
+      "field": "Câmp",
+      "error": "Eroare",
+      "fileName": "erori-import"
+    },
+    "leadStatus": {
+      "open": "Deschis",
+      "won": "Câștigat",
+      "lost": "Pierdut"
+    },
+    "yes": "da",
+    "no": "nu"
   }
 }

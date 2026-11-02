@@ -106,9 +106,11 @@ Funcții `security invoker` (respectă RLS: managerul vede echipa, agentul doar 
 
 | Tabel | Coloane principale |
 |---|---|
-| `api_keys` | organization_id, name, key_prefix, key_hash [U], scopes text[], last_used_at, revoked_at, created_by |
-| `import_jobs` | organization_id, entity, status `pending/processing/done/failed`, file_path, mapping jsonb, total/ok/failed counts, errors jsonb, created_by |
+| `api_keys` | organization_id, name, key_prefix (vizibil, ex. `ucrm_AbCdEfG`), key_hash [U] (sha256, fără SELECT din client), scopes text[] ⊆ `private.api_scopes()` (`contacts:read/write`, `leads:read/write`), last_used_at (max. o dată pe minut), expires_at, revoked_at (definitiv), created_by · RLS: `api_keys.manage` · audit fără hash |
+| `import_jobs` | organization_id, entity `contacts/companies`, status `processing/done/failed/cancelled` (în UI: „întrerupt” dacă nu progresează 10 min), file_name, options jsonb (`skip_duplicates`, `create_companies`, `default_owner_id`), mapping jsonb, total_rows ≤ 50 000, processed_rows, ok/skipped/failed_count, errors jsonb (primele 1000: `{row, code, field?}`), created_by · RLS: citire de autor (sau `settings.manage`) cu `data.import`; progresul doar prin RPC |
 | `audit_log` (bigint) | organization_id, actor_id, action `insert/update/delete`, table_name, record_id, old_data jsonb, new_data jsonb, created_at · [I] (organization_id, table_name, record_id) · doar INSERT prin trigger, fără UPDATE/DELETE |
+
+Import (Etapa 11): `import_rows(job, rows, errors)` (`security definer`, verifică autorul jobului, `data.import`, `contacts.create`; fiecare rând într-o subtranzacție; rezolvă sursa / etichetele după nume, responsabilul după e-mail, compania după nume — creată dacă lipsește; duplicate după telefon / e-mail, la companii și după nume; `plan_cache_mode = force_custom_plan` + `ANALYZE` la fiecare 2000 de rânduri, ca timpul pe lot să rămână constant), `finish_import(job, status)`. Index `companies_search_eq (organization_id, search_text)`. API: `authenticate_api_key(hash)` doar pentru `service_role`; `service_role` are granturi explicite pe coloanele folosite de API-ul v1.
 
 ## 9. Relații principale
 

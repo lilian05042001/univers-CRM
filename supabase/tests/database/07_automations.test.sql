@@ -126,6 +126,9 @@ select is((select count(*)::int from public.domain_events where type = 'lead.ina
   'lead-ul inactiv produce un singur eveniment, oricâte rulări');
 
 -- ---------------------------------------------------------------- outbox
+-- Izolare: evenimentele rămase de la alte rulări (ex. E2E fără worker) nu intră în lotul preluat.
+update public.domain_events set processed_at = now()
+where processed_at is null and organization_id <> pg_temp.id('org');
 select is((select count(*)::int from public.claim_domain_events(500) where organization_id = pg_temp.id('org')) > 0, true,
   'worker-ul preia evenimentele în așteptare');
 select is((select count(*)::int from public.claim_domain_events(500) where organization_id = pg_temp.id('org')), 0,

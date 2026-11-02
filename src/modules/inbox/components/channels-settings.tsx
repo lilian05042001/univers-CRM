@@ -1,10 +1,11 @@
 "use client"
 
-import { Check, Copy, KeyRound, Pencil } from "lucide-react"
+import { KeyRound, Pencil } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { ConfirmDialog } from "@/components/shared/confirm-dialog"
+import { CopyField } from "@/components/shared/copy-field"
 import { FormDialog } from "@/components/shared/form/form-dialog"
 import { TextField } from "@/components/shared/form/text-field"
 import { Button } from "@/components/ui/button"
@@ -44,30 +45,6 @@ function RenameDialog({ channel }: { channel: ChannelItem }) {
     >
       <TextField control={d.form.control} name="name" label={t("name")} autoFocus />
     </FormDialog>
-  )
-}
-
-function CopyField({ label, value }: { label: string; value: string }) {
-  const t = useTranslations("settings.channels")
-  const [copied, setCopied] = useState(false)
-  return (
-    <div className="flex flex-col gap-1">
-      <span className="text-xs text-muted-foreground">{label}</span>
-      <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-2 py-1.5">
-        <code className="min-w-0 flex-1 text-xs break-all">{value}</code>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label={t("copy")}
-          onClick={async () => {
-            await navigator.clipboard.writeText(value)
-            setCopied(true)
-          }}
-        >
-          {copied ? <Check /> : <Copy />}
-        </Button>
-      </div>
-    </div>
   )
 }
 

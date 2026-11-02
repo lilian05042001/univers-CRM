@@ -1,7 +1,7 @@
 import "server-only"
 
 import { idsWithTag, searchFilter } from "@/lib/crm/records"
-import { isUuid, pageRange, type ListParams } from "@/lib/list-params"
+import { fetchAllPages, isUuid, pageRange, type ListParams } from "@/lib/list-params"
 import { createClient } from "@/lib/supabase/server"
 import type { StageKind, TagOption } from "@/modules/crm-config/types"
 
@@ -29,13 +29,18 @@ export type LeadRow = {
 /** Filtrele comune listei și tablei Kanban (din parametrii URL). */
 export type LeadFilters = (key: string) => string
 
+// Include și câmpurile exportului CSV (pipeline, sursă, echipă, câmpuri personalizate).
 const LEAD_ROW_SELECT =
-  "id, title, value, won_amount, currency, responsible_id, priority, next_task_due_at, created_at, stage:pipeline_stages!inner(id, name, color, kind), company:companies(name), contacts:lead_contacts(is_primary, contact:contacts(full_name)), tags:lead_tags(tag:tags(id, name, color))"
+  "id, title, status, value, won_amount, currency, responsible_id, priority, next_task_due_at, created_at, closed_at, custom_fields, pipeline_id, stage:pipeline_stages!inner(id, name, color, kind), source:lead_sources(name), team:teams(name), company:companies(name), contacts:lead_contacts(is_primary, contact:contacts(full_name)), tags:lead_tags(tag:tags(id, name, color))"
 
-function leadsQuery(supabase: Supabase, organizationId: string) {
+function leadsQuery(
+  supabase: Supabase,
+  organizationId: string,
+  count: "exact" | undefined = "exact"
+) {
   return supabase
     .from("leads")
-    .select(LEAD_ROW_SELECT, { count: "exact" })
+    .select(LEAD_ROW_SELECT, { count })
     .eq("organization_id", organizationId)
     .is("deleted_at", null)
 }
@@ -125,6 +130,31 @@ export async function listLeads(
   if (error) throw error
   return { rows: data.map(toLeadRow), total: count ?? 0 }
 }
+
+/** Toate lead-urile listei filtrate, cu datele complete (export CSV). */
+export async function listLeadsForExport(
+  organizationId: string,
+  userId: string,
+  params: ListParams<SortKey>
+) {
+  const supabase = await createClient()
+  return fetchAllPages(async (from, to) => {
+    const filtered = await applyFilters(
+      leadsQuery(supabase, organizationId, undefined),
+      params.get,
+      userId
+    )
+    if (!filtered) return []
+    const { data, error } = await filtered.query
+      .order(params.sort, { ascending: params.dir === "asc", nullsFirst: false })
+      .order("id")
+      .range(from, to)
+    if (error) throw error
+    return data
+  })
+}
+
+export type LeadExportRow = Awaited<ReturnType<typeof listLeadsForExport>>[number]
 
 export const BOARD_PAGE_SIZE = 30
 

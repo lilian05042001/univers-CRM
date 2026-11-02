@@ -17,6 +17,8 @@ export interface EngineStore {
     depth: number
   ): Promise<{ status: "success" | "failed"; error: string | null }>
   completeEvent(eventId: number, error: string | null): Promise<void>
+  /** Finalizează dintr-odată evenimentele fără automatizări (ex. 10 000 de contact.created după un import). */
+  completeEvents(eventIds: number[]): Promise<void>
 }
 
 export type BatchStats = {
@@ -30,7 +32,7 @@ export type BatchStats = {
 }
 
 /** Procesează un lot de evenimente din outbox. Returnează statistici pentru jurnal. */
-export async function processBatch(store: EngineStore, limit = 50): Promise<BatchStats> {
+export async function processBatch(store: EngineStore, limit = 200): Promise<BatchStats> {
   const stats: BatchStats = {
     events: 0,
     runs: 0,
@@ -48,7 +50,11 @@ export async function processBatch(store: EngineStore, limit = 50): Promise<Batc
     ...new Set(events.map((e) => e.organization_id)),
   ])
 
-  for (const event of events) {
+  const relevant = events.filter((e) => automations.some((a) => matchesTrigger(a, e)))
+  const idle = events.filter((e) => !relevant.includes(e)).map((e) => e.id)
+  if (idle.length) await store.completeEvents(idle)
+
+  for (const event of relevant) {
     try {
       await processEvent(store, event, automations, stats)
       await store.completeEvent(event.id, null)

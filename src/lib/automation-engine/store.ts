@@ -87,5 +87,9 @@ export function createEngineStore(): EngineStore {
     async completeEvent(eventId, error) {
       await rpc(admin.rpc("complete_domain_event", { p_id: eventId, p_error: error ?? undefined }))
     },
+
+    async completeEvents(eventIds) {
+      await rpc(admin.rpc("complete_domain_events", { p_ids: eventIds }))
+    },
   }
 }

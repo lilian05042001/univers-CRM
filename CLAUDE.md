@@ -2,7 +2,7 @@
 
 CRM multi-tenant (Next.js + Supabase). Documentația completă: `docs/`.
 - Arhitectură, structură, securitate, dependențe, riscuri: `docs/ARCHITECTURE.md`
-- Schema DB: `docs/DATABASE.md` · Module: `docs/MODULES.md` · Plan: `docs/ROADMAP.md`
+- Schema DB: `docs/DATABASE.md` · Module: `docs/MODULES.md` · Plan: `docs/ROADMAP.md` · API public: `docs/API.md`
 
 Decizii: monedă implicită MDL · Supabase local (Docker) pentru dezvoltare · limbă implicită română.
 
@@ -17,11 +17,11 @@ Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `a
 - Schimbarea organizației active (creare/invitație/comutare): acțiunea returnează, clientul apelează `enterOrganization()` (navigare completă), nu `redirect()`.
 - Triggere de protecție SQL: `security invoker` + `current_user = 'authenticated'` = apel direct din client; RPC-urile `security definer` trec de ele intenționat.
 - Scheme Zod fără `.transform()` (aceeași formă pentru formular și server); `""` → `null` cu `emptyToNull` în acțiune.
-- Liste (contacte/companii/lead-uri): pagină server → `parseListParams` → `queries.ts` (paginare/sortare/filtre pe server) → `*View` client cu `DataTable`, `Toolbar`, `BulkBar`. Starea e în URL; dialogul de editare se deschide cu `?open=<id|new>` și folosește `useRouteDialog`.
+- Liste (contacte/companii/lead-uri): pagină server → `parseListParams` → `queries.ts` (paginare/sortare/filtre pe server; același builder servește exportul CSV `/<listă>/export`) → `*View` client cu `DataTable`, `Toolbar`, `BulkBar`, `ExportButton`. Starea e în URL; dialogul de editare se deschide cu `?open=<id|new>` și folosește `useRouteDialog`.
 - Next remontează pagina la orice schimbare de parametri în URL: starea care trebuie să supraviețuiască stă în URL sau într-un store extern (vezi `use-search-draft.ts`).
 - Fără `upsert` care ar actualiza coloane fără grant UPDATE (ex. `organization_id`): `ignoreDuplicates: true` + update separat.
 - Permisiune nouă = migrație care actualizează `private.permission_catalog()` + `src/modules/auth/permissions.ts` + texte în `permissions.*`.
-- `service_role` nu primește drepturi implicite pe tabele noi: granturi explicite, minime, în migrație (ex. `webhook_events`). Clientul admin (`createAdminClient`) doar în `src/lib/channels/inbound.ts` / joburi.
+- `service_role` nu primește drepturi implicite pe tabele noi: granturi explicite, minime, în migrație (ex. `webhook_events`). Clientul admin (`createAdminClient`) doar în `src/lib/channels/inbound.ts`, joburi și `src/lib/api/` (API v1: fiecare interogare cu `.eq("organization_id", ctx.organizationId)`).
 - Chei i18n: next-intl tratează „.” ca nivel; identificatorii cu punct (`lead.created`) devin chei cu `_` (`i18nKey()` în `modules/automations/fields.ts`).
 - RLS pe UPDATE verifică și rândul nou cu politica SELECT: o modificare după care rândul devine invizibil autorului (ex. predarea unei conversații) trece printr-un RPC `security definer` cu verificări explicite.
 

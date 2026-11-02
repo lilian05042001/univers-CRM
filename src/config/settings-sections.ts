@@ -37,7 +37,7 @@ export const settingsSections: SettingsSection[] = [
   { key: "notifications", icon: Bell, href: "/settings/notifications", stage: 7 },
   { key: "channels", icon: MessagesSquare, href: "/settings/channels", stage: 8 },
   { key: "quickReplies", icon: Zap, href: "/settings/quick-replies", stage: 8 },
-  { key: "integrations", icon: Plug, stage: 11 },
-  { key: "api", icon: KeyRound, stage: 11 },
-  { key: "importExport", icon: FileUp, stage: 11 },
+  { key: "integrations", icon: Plug, href: "/settings/integrations", stage: 11 },
+  { key: "api", icon: KeyRound, href: "/settings/api", stage: 11 },
+  { key: "importExport", icon: FileUp, href: "/settings/import-export", stage: 11 },
 ]

@@ -17,7 +17,10 @@ import { fail, type ActionResult } from "./result"
 const DB_ERROR_CODES = new Set([
   "admin_only",
   "admin_permissions_locked",
+  "api_key_revoked",
   "assign_forbidden",
+  "import_finished",
+  "invalid_batch",
   "invalid_name",
   "invitation_email_mismatch",
   "invitation_invalid",

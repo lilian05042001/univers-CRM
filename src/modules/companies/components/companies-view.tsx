@@ -10,6 +10,7 @@ import { ConfirmDialog } from "@/components/shared/confirm-dialog"
 import { BulkBar } from "@/components/shared/data-table/bulk-bar"
 import { BulkMenu } from "@/components/shared/data-table/bulk-menu"
 import { DataTable, type Column } from "@/components/shared/data-table/data-table"
+import { ExportButton } from "@/components/shared/data-table/export-button"
 import { Pagination } from "@/components/shared/data-table/pagination"
 import { FilterSelect, Toolbar } from "@/components/shared/data-table/toolbar"
 import { EmptyState } from "@/components/shared/empty-state"
@@ -35,7 +36,7 @@ type Props = {
   options: CrmOptions
   record: CompanyRecord | null
   isNew: boolean
-  can: { create: boolean; edit: boolean; delete: boolean }
+  can: { create: boolean; edit: boolean; delete: boolean; export: boolean }
 }
 
 export function CompaniesView({ rows, total, page, pageSize, options, record, isNew, can }: Props) {
@@ -144,6 +145,7 @@ export function CompaniesView({ rows, total, page, pageSize, options, record, is
             options={options.tags.map((s) => ({ value: s.id, label: s.name }))}
           />
         </Toolbar>
+        {can.export && <ExportButton />}
         {can.create && (
           <Button onClick={() => setParams({ open: "new" }, { resetPage: false })}>
             <Plus />

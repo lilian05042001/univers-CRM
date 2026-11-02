@@ -57,3 +57,20 @@ export function pageRange(params: { page: number; pageSize: number }) {
 }
 
 export const isUuid = (v: string) => z.uuid().safeParse(v).success
+
+/** Numărul maxim de rânduri într-un export CSV. */
+export const EXPORT_LIMIT = 50_000
+const EXPORT_PAGE = 1000
+
+/** Toate rândurile unei liste filtrate (export), în pagini de 1000, cel mult EXPORT_LIMIT. */
+export async function fetchAllPages<T>(
+  page: (from: number, to: number) => Promise<T[]>
+): Promise<T[]> {
+  const rows: T[] = []
+  while (rows.length < EXPORT_LIMIT) {
+    const batch = await page(rows.length, rows.length + EXPORT_PAGE - 1)
+    rows.push(...batch)
+    if (batch.length < EXPORT_PAGE) break
+  }
+  return rows.slice(0, EXPORT_LIMIT)
+}

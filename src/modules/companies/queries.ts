@@ -1,7 +1,7 @@
 import "server-only"
 
 import { idsWithTag, searchFilter } from "@/lib/crm/records"
-import { isUuid, pageRange, type ListParams } from "@/lib/list-params"
+import { fetchAllPages, isUuid, pageRange, type ListParams } from "@/lib/list-params"
 import { createClient } from "@/lib/supabase/server"
 import { containsPattern, normalizeSearch } from "@/lib/utils/search"
 import type { TagOption } from "@/modules/crm-config/types"
@@ -41,14 +41,19 @@ async function idsMatchingContactData(organizationId: string, q: string) {
   return data.map((r) => r.id)
 }
 
-export async function listCompanies(organizationId: string, params: ListParams<SortKey>) {
+const COMPANY_LIST_SELECT =
+  "id, name, industry, phone, email, website, address, custom_fields, owner_id, created_at, contacts(count), leads(count), tags:company_tags(tag:tags(id, name, color))"
+
+/** Lista filtrată; `null` dacă rezultatul e sigur gol (builder-ul e „thenable”, deci întors într-un obiect). */
+async function filteredCompanies(
+  organizationId: string,
+  params: ListParams<SortKey>,
+  count?: "exact"
+) {
   const supabase = await createClient()
   let query = supabase
     .from("companies")
-    .select(
-      "id, name, industry, phone, email, owner_id, created_at, contacts(count), leads(count), tags:company_tags(tag:tags(id, name, color))",
-      { count: "exact" }
-    )
+    .select(COMPANY_LIST_SELECT, { count })
     .eq("organization_id", organizationId)
     .is("deleted_at", null)
 
@@ -62,15 +67,21 @@ export async function listCompanies(organizationId: string, params: ListParams<S
   const tag = params.get("tag")
   if (isUuid(tag)) {
     const ids = await idsWithTag("company_tags", "company_id", tag)
-    if (ids.length === 0) return { rows: [] as CompanyRow[], total: 0 }
+    if (ids.length === 0) return null
     query = query.in("id", ids)
   }
 
+  return {
+    query: query.order(params.sort, { ascending: params.dir === "asc" }).order("id"),
+  }
+}
+
+export async function listCompanies(organizationId: string, params: ListParams<SortKey>) {
+  const filtered = await filteredCompanies(organizationId, params, "exact")
+  if (!filtered) return { rows: [] as CompanyRow[], total: 0 }
+
   const { from, to } = pageRange(params)
-  const { data, error, count } = await query
-    .order(params.sort, { ascending: params.dir === "asc" })
-    .order("id")
-    .range(from, to)
+  const { data, error, count } = await filtered.query.range(from, to)
   if (error) throw error
 
   const rows: CompanyRow[] = data.map((c) => ({
@@ -87,6 +98,19 @@ export async function listCompanies(organizationId: string, params: ListParams<S
   }))
   return { rows, total: count ?? 0 }
 }
+
+/** Toate companiile listei filtrate, cu datele complete (export CSV). */
+export async function listCompaniesForExport(organizationId: string, params: ListParams<SortKey>) {
+  return fetchAllPages(async (from, to) => {
+    const filtered = await filteredCompanies(organizationId, params)
+    if (!filtered) return []
+    const { data, error } = await filtered.query.range(from, to)
+    if (error) throw error
+    return data
+  })
+}
+
+export type CompanyExportRow = Awaited<ReturnType<typeof listCompaniesForExport>>[number]
 
 export async function getCompany(id: string) {
   const supabase = await createClient()

@@ -48,7 +48,7 @@ Supabase
 | Vizibilitate date | Admin: toată organizația · Manager: echipele sale · Agent: înregistrările atribuite lui (configurabil per rol) |
 | Server | wrapper `action(schema, perm, handler)` pentru fiecare Server Action: validare Zod, verificare permisiune, mapare erori |
 | RLS | activ pe toate tabelele; politici separate SELECT/INSERT/UPDATE/DELETE; teste pgTAP |
-| service_role | doar `src/lib/supabase/admin.ts` + `server-only`; folosit de webhooks, cron, API public |
+| service_role | doar `src/lib/supabase/admin.ts` + `server-only`; folosit de webhooks (`src/lib/channels/inbound.ts`), joburi și API-ul public (`src/lib/api/`, fiecare interogare filtrată pe organizația cheii) |
 | Secrete integrări | Supabase Vault; în tabel se păstrează doar referința |
 | Chei API | afișate o singură dată, stocate ca SHA-256, cu prefix vizibil și scopes |
 | Webhooks | verificare semnătură (HMAC/provider), tabel `webhook_events` cu cheie unică pentru idempotență |
@@ -177,6 +177,14 @@ univers-crm/
 - Rute: `/dashboard` (toți; cifrele urmează RLS), `/reports/[report]` (`reports.view.*`), `/reports/[report]/export` (CSV, cere și `data.export`).
 - Grafice: componenta Chart din shadcn (Recharts); paleta categorială validată pentru daltonism în `--chart-1…5` (diferită de culorile de stare), o singură axă, tabel sub fiecare grafic.
 
+## 7c. Import / export CSV, chei API, API public v1 (Etapa 11)
+
+- **Import** (`src/modules/import-export`): fișierul (max. 20 MB / 50 000 rânduri, UTF-8 sau Windows-1250/1251) e citit în browser cu papaparse → mapare coloane (automată după antet: etichetele din interfață, chei, sinonime ro/en/ru; exportul aplicației se reimportă fără ajustări) → `startImport` creează jobul → loturi de max. 500 rânduri / ~600 KB trimise secvențial (`importBatch`: validare Zod/TS pe server în `rows.ts`, apoi RPC `import_rows`) → `finishImport`. Interfața rămâne responsivă (o Server Action per lot, progres după fiecare lot, oprire, avertizare la închiderea paginii). Raport de erori CSV: `/settings/import-export/[id]/errors`.
+- **Export**: `/contacts|companies|leads/export?…` cu exact filtrele și sortarea listei (aceleași builder-e de interogare din `queries.ts`), max. 50 000 rânduri, responsabilul ca e-mail, câmpurile personalizate ca coloane; utilitarul comun `src/lib/csv.ts` (BOM, „;”, protecție la formule — fără a altera numerele/telefoanele). Necesită `data.export`.
+- **Chei API** (`/settings/api`, `api_keys.manage`): `ucrm_` + 256 biți, afișată o singură dată; scope-uri pe resursă; expirare opțională; revocare definitivă; cheia devine invalidă dacă autorul nu mai e membru activ.
+- **API v1** (`src/app/api/v1`, logica în `src/lib/api`, documentat în `docs/API.md`): `withApiKey(scope, handler)` → `authenticate_api_key(sha256)` → handler cu clientul `service_role` + `organization_id` explicit; erori JSON stabile (`401/403/404/409/413/422`); integritatea între organizații e garantată și de FK-urile compuse. Exclus din `proxy.ts`. Rate-limit: Etapa 12.
+- **Integrări** (`/settings/integrations`): catalog — canal intern, API, CSV (active) și WhatsApp / Instagram / Messenger / e-mail / telefonie (planificate, doar prin API-uri oficiale).
+
 ## 7b. Motorul de automatizări (Etapa 9)
 
 - `src/lib/automation-engine/`: `triggers.ts` (potrivire declanșator, chei de deduplicare, protecție la bucle: o automatizare ignoră propriile efecte, lanțurile se opresc la adâncimea 3), `conditions.ts` (arbore AND/OR, operatori pe câmpuri ale lead-ului / sarcinii), `engine.ts` (`processBatch` peste o interfață `EngineStore`, testată în memorie), `store.ts` (RPC-uri `service_role`).
@@ -204,7 +212,7 @@ Versiunile exacte se fixează la Etapa 1 după `npm view <pachet> version` (stab
 | `cmdk` | căutare globală Ctrl+K (componenta Command din shadcn) |
 | `server-only` | protecție module server |
 | `libphonenumber-js` | normalizare telefon pentru duplicate și identificare în inbox |
-| `papaparse` (Etapa 11) | import/export CSV |
+| `papaparse` (+ dev `@types/papaparse`) | citirea fișierelor CSV la import, în browser |
 | dev: `vitest`, `@testing-library/react`, `jsdom`, `@playwright/test`, `supabase` (CLI), `eslint`, `prettier` | testare / tooling |
 
 Nu sunt incluse: ORM (folosim tipuri generate de Supabase), state manager global, librării de animații, TanStack Query (de reevaluat doar dacă inbox-ul o cere).
