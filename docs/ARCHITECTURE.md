@@ -171,6 +171,12 @@ univers-crm/
 - Canalul intern: antet `x-channel-id` + `Authorization: Bearer <cheie>`; cheia (`whk_…`) se generează în Setări → Canale, se afișează o singură dată, în DB rămâne doar hash-ul sha256. Corp JSON: `{ id, thread_id?, sender: { name?, phone? | email? }, text, sent_at? }`. Furnizorii externi vor folosi semnătura proprie (HMAC) cu secretul din Vault (`vault_secret_id`).
 - Flux outbound: mesaj creat cu `status=queued` → worker → adaptor → `sent/failed`.
 
+## 7a. Dashboard și rapoarte (Etapa 10)
+
+- `src/modules/reports`: `period.ts` (perioade în fusul organizației, granularitate automată), `context.ts` (filtre din URL validate față de opțiuni), `queries.ts` (`loadReport` — aceeași sursă pentru pagină, dashboard și CSV), `csv.ts` (BOM, `;`, protecție la formule).
+- Rute: `/dashboard` (toți; cifrele urmează RLS), `/reports/[report]` (`reports.view.*`), `/reports/[report]/export` (CSV, cere și `data.export`).
+- Grafice: componenta Chart din shadcn (Recharts); paleta categorială validată pentru daltonism în `--chart-1…5` (diferită de culorile de stare), o singură axă, tabel sub fiecare grafic.
+
 ## 7b. Motorul de automatizări (Etapa 9)
 
 - `src/lib/automation-engine/`: `triggers.ts` (potrivire declanșator, chei de deduplicare, protecție la bucle: o automatizare ignoră propriile efecte, lanțurile se opresc la adâncimea 3), `conditions.ts` (arbore AND/OR, operatori pe câmpuri ale lead-ului / sarcinii), `engine.ts` (`processBatch` peste o interfață `EngineStore`, testată în memorie), `store.ts` (RPC-uri `service_role`).

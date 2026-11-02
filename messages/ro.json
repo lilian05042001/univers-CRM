@@ -1383,5 +1383,113 @@
       "emptyTitle": "Nicio execuție",
       "emptyHint": "Execuțiile apar aici după ce automatizările active sunt declanșate."
     }
+  },
+  "dashboard": {
+    "description": "Indicatorii perioadei alese, calculați din datele pe care le vezi.",
+    "details": "Raport complet",
+    "noData": "Nicio valoare în perioada aleasă.",
+    "recentActivity": "Activitate recentă",
+    "kpis": {
+      "newLeads": "Lead-uri noi",
+      "activeLeads": "Lead-uri active",
+      "wonAmount": "Vânzări încheiate",
+      "wonCount": "{count, plural, =0 {niciun lead câștigat} one {# lead câștigat} few {# lead-uri câștigate} other {# de lead-uri câștigate}}",
+      "winRate": "Rată de câștig",
+      "closed": "{won} câștigate · {lost} pierdute",
+      "cycle": "Durata medie a vânzării",
+      "pipelineValue": "Valoare pipeline (estimată)",
+      "pipelineHint": "Lead-urile deschise, acum",
+      "tasksOverdue": "Sarcini întârziate",
+      "tasksToday": "Sarcini pentru azi"
+    },
+    "charts": {
+      "sales": "Evoluția vânzărilor",
+      "leads": "Evoluția lead-urilor",
+      "funnel": "Conversie pe etape",
+      "team": "Performanța echipei",
+      "sources": "Surse de lead-uri"
+    }
+  },
+  "reports": {
+    "navLabel": "Rapoarte",
+    "export": "Export CSV",
+    "noData": "Nicio înregistrare pentru filtrele alese.",
+    "unassigned": "Neatribuit",
+    "daysValue": "{days, plural, one {# zi} few {# zile} other {# de zile}}",
+    "weekOf": "săpt. {date}",
+    "currencyNote": "Sumele sunt în {currency}; lead-urile în alte monede intră doar în numărători.",
+    "noAccessTitle": "Nu ai acces la rapoarte",
+    "noAccessHint": "Rapoartele sunt disponibile managerilor și administratorilor. Indicatorii tăi sunt în Dashboard.",
+    "periods": {
+      "label": "Perioada",
+      "from": "De la",
+      "to": "Până la",
+      "today": "Azi",
+      "7d": "Ultimele 7 zile",
+      "30d": "Ultimele 30 de zile",
+      "month": "Luna curentă",
+      "last_month": "Luna precedentă",
+      "90d": "Ultimele 90 de zile",
+      "custom": "Personalizată"
+    },
+    "filters": {
+      "pipeline": "Pipeline",
+      "team": "Echipa",
+      "responsible": "Responsabil",
+      "source": "Sursa",
+      "defaultPipeline": "Principal"
+    },
+    "list": {
+      "leads": {
+        "title": "Lead-uri",
+        "description": "Lead-uri noi, câștigate și pierdute în timp."
+      },
+      "sales": {
+        "title": "Vânzări",
+        "description": "Venitul realizat (lead-uri câștigate) pe perioadă."
+      },
+      "funnel": {
+        "title": "Pâlnie",
+        "description": "Câte lead-uri create în perioadă au ajuns în fiecare etapă și conversia între etape."
+      },
+      "team": {
+        "title": "Echipa",
+        "description": "Lead-uri, vânzări și sarcini pe fiecare responsabil."
+      },
+      "sources": {
+        "title": "Surse",
+        "description": "De unde vin lead-urile și care surse aduc vânzări."
+      },
+      "activities": {
+        "title": "Activități",
+        "description": "Sarcini planificate, realizate și restante, pe tipuri."
+      },
+      "losses": {
+        "title": "Motive de pierdere",
+        "description": "De ce se pierd lead-urile și ce valoare se pierde."
+      }
+    },
+    "columns": {
+      "bucket": "Perioada",
+      "new_leads": "Lead-uri noi",
+      "won_count": "Câștigate",
+      "lost_count": "Pierdute",
+      "won_amount": "Vânzări",
+      "stage": "Etapa",
+      "reached": "Au ajuns în etapă",
+      "from_start": "Din total",
+      "from_previous": "Față de etapa anterioară",
+      "current_count": "Acum în etapă",
+      "current_value": "Valoare acum",
+      "name": "Nume",
+      "open_leads": "Lead-uri deschise",
+      "open_value": "Valoare deschisă",
+      "tasks_done": "Sarcini realizate",
+      "tasks_overdue": "Sarcini restante",
+      "planned": "Planificate",
+      "done": "Realizate",
+      "overdue": "Restante",
+      "lost_value": "Valoare pierdută"
+    }
   }
 }

@@ -98,6 +98,10 @@ Declanșatoarele bazate pe timp (`task.due_soon`, `lead.inactive`) sunt generate
 
 Motorul (Etapa 9): `domain_events` are și `dedupe_key`, `automation_depth`; `automations.state` (index round-robin); `automation_runs.status` include `running`, plus `entity_type/entity_id`. RPC-uri doar pentru `service_role`: `claim_domain_events` (`FOR UPDATE SKIP LOCKED`, blocare 2 min), `complete_domain_event` (reîncercare cu backoff exponențial, max. 5), `active_automations`, `automation_snapshot`, `automation_start_run` (null = duplicat), `automation_finish_run`, `automation_execute` (acțiunile într-o subtranzacție: toate sau niciuna; setează `app.automation_id` / `app.automation_depth`, pe care `private.emit_event` le copiază în evenimentele produse). Notificare nouă: tipul `automation`; cronologie: `lead.revenue_recorded`. RLS: citire cu `automations.manage` sau vizibilitate pe echipă/toate (managerul citește), scriere doar cu `automations.manage`.
 
+## 7c. Rapoarte (Etapa 10)
+
+Funcții `security invoker` (respectă RLS: managerul vede echipa, agentul doar ale sale), interval `[p_from, p_to)`, filtre opționale pipeline / responsabil / echipă / sursă prin `private.report_leads`: `report_kpis` (noi, active, valoare deschisă, câștigate + sumă, pierdute, rată de câștig = câștigate / închise, ciclu mediu în zile, sarcini întârziate / azi), `report_timeseries` (zi / săptămână / lună în fusul organizației, toate bucket-urile), `report_funnel` (lead-uri create în perioadă care au intrat în fiecare etapă, din `lead_stage_history`), `report_by_responsible`, `report_by_source`, `report_loss_reasons`, `report_activities`. Sumele: doar lead-urile în moneda organizației; „câștigat” folosește `won_amount`, altfel `value`.
+
 ## 8. Integrări, import, audit
 
 | Tabel | Coloane principale |

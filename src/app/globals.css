@@ -74,11 +74,12 @@
   --border: oklch(0.929 0.013 255.508);
   --input: oklch(0.929 0.013 255.508);
   --ring: oklch(0.623 0.214 259.815);
-  --chart-1: oklch(0.546 0.245 262.881);
-  --chart-2: oklch(0.627 0.194 149.214);
-  --chart-3: oklch(0.705 0.213 47.604);
-  --chart-4: oklch(0.541 0.281 293.009);
-  --chart-5: oklch(0.715 0.143 215.221);
+  /* Paletă categorială validată (CVD), ordinea fixă; diferită de culorile de stare. */
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
   --radius: 0.5rem;
   --sidebar: oklch(0.235 0.07 268);
   --sidebar-foreground: oklch(0.869 0.022 252.894);

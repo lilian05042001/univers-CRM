@@ -2551,6 +2551,135 @@ export type Database = {
           total: number
         }[]
       }
+      report_activities: {
+        Args: { p_from: string; p_org: string; p_responsible?: string; p_to: string }
+        Returns: {
+          done: number
+          name: string
+          overdue: number
+          planned: number
+          type_id: string
+        }[]
+      }
+      report_by_responsible: {
+        Args: {
+          p_from: string
+          p_org: string
+          p_pipeline?: string
+          p_source?: string
+          p_team?: string
+          p_to: string
+        }
+        Returns: {
+          lost_count: number
+          name: string
+          new_leads: number
+          open_leads: number
+          open_value: number
+          tasks_done: number
+          tasks_overdue: number
+          user_id: string
+          won_amount: number
+          won_count: number
+        }[]
+      }
+      report_by_source: {
+        Args: {
+          p_from: string
+          p_org: string
+          p_pipeline?: string
+          p_responsible?: string
+          p_team?: string
+          p_to: string
+        }
+        Returns: {
+          name: string
+          new_leads: number
+          source_id: string
+          won_amount: number
+          won_count: number
+        }[]
+      }
+      report_funnel: {
+        Args: {
+          p_from: string
+          p_org: string
+          p_pipeline: string
+          p_responsible?: string
+          p_source?: string
+          p_team?: string
+          p_to: string
+        }
+        Returns: {
+          color: string
+          current_count: number
+          current_value: number
+          kind: string
+          name: string
+          reached: number
+          stage_id: string
+          stage_position: number
+        }[]
+      }
+      report_kpis: {
+        Args: {
+          p_from: string
+          p_org: string
+          p_pipeline?: string
+          p_responsible?: string
+          p_source?: string
+          p_team?: string
+          p_to: string
+        }
+        Returns: {
+          active_leads: number
+          active_value: number
+          avg_cycle_days: number
+          lost_count: number
+          new_leads: number
+          tasks_overdue: number
+          tasks_today: number
+          win_rate: number
+          won_amount: number
+          won_count: number
+        }[]
+      }
+      report_loss_reasons: {
+        Args: {
+          p_from: string
+          p_org: string
+          p_pipeline?: string
+          p_responsible?: string
+          p_source?: string
+          p_team?: string
+          p_to: string
+        }
+        Returns: {
+          lost_count: number
+          lost_value: number
+          name: string
+          reason_id: string
+        }[]
+      }
+      report_timeseries: {
+        Args: {
+          p_bucket: string
+          p_from: string
+          p_org: string
+          p_pipeline?: string
+          p_responsible?: string
+          p_source?: string
+          p_team?: string
+          p_to: string
+        }
+        Returns: {
+          bucket: string
+          lost_count: number
+          new_leads: number
+          won_amount: number
+          won_count: number
+        }[]
+      }
     }
     Enums: {
       lead_priority: "low" | "normal" | "high" | "urgent"
