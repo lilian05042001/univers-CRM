@@ -3,6 +3,7 @@
 import {
   ArrowRightLeft,
   CheckCircle2,
+  CircleDollarSign,
   Circle,
   FileText,
   GitMerge,
@@ -42,6 +43,7 @@ const ICONS: Record<string, LucideIcon> = {
   "contact.merged": GitMerge,
   "message.received": MessageCircle,
   "message.sent": Send,
+  "lead.revenue_recorded": CircleDollarSign,
 }
 
 const KNOWN = new Set(Object.keys(ICONS))
@@ -87,6 +89,14 @@ export function Timeline({
       case "task.completed":
       case "task.cancelled":
         return t(`types.${item.type}`, { title: str(p.title) })
+      case "lead.revenue_recorded":
+        return t("types.lead.revenue_recorded", {
+          amount: format.number(Number(p.amount ?? 0), {
+            style: "currency",
+            currency: str(p.currency) || "MDL",
+            maximumFractionDigits: 0,
+          }),
+        })
       case "contact.merged":
         return t("types.contact.merged", { name: str(p.merged_name) })
       default:

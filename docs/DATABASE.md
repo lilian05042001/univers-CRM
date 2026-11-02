@@ -94,7 +94,9 @@ Atașamentele mesajelor sunt rânduri în `files` cu `message_id` (vizibile dac�
 | `notifications` (bigint) | organization_id, user_id, type, title, body, entity_type, entity_id, read_at · [I] (user_id, read_at, created_at desc) |
 | `notification_preferences` | organization_id, user_id, type, in_app, email · PK (organization_id, user_id, type) |
 
-Declanșatoarele bazate pe timp (`task.due_soon`, `lead.inactive`) sunt generate de un job periodic cu `dedupe_key` determinist (ex. `lead:{id}:inactive:{yyyy-mm-dd}`).
+Declanșatoarele bazate pe timp (`task.due_soon`, `lead.inactive`) sunt generate de `private.generate_time_events()` (pg_cron, la minut) ca `domain_events` cu `dedupe_key` determinist unic (ex. `lead:{id}:inactive:7:{last_activity_at}`, `task:{id}:due_soon:60:{due_at}`).
+
+Motorul (Etapa 9): `domain_events` are și `dedupe_key`, `automation_depth`; `automations.state` (index round-robin); `automation_runs.status` include `running`, plus `entity_type/entity_id`. RPC-uri doar pentru `service_role`: `claim_domain_events` (`FOR UPDATE SKIP LOCKED`, blocare 2 min), `complete_domain_event` (reîncercare cu backoff exponențial, max. 5), `active_automations`, `automation_snapshot`, `automation_start_run` (null = duplicat), `automation_finish_run`, `automation_execute` (acțiunile într-o subtranzacție: toate sau niciuna; setează `app.automation_id` / `app.automation_depth`, pe care `private.emit_event` le copiază în evenimentele produse). Notificare nouă: tipul `automation`; cronologie: `lead.revenue_recorded`. RLS: citire cu `automations.manage` sau vizibilitate pe echipă/toate (managerul citește), scriere doar cu `automations.manage`.
 
 ## 8. Integrări, import, audit
 

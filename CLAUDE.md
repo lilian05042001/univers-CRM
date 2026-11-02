@@ -9,7 +9,7 @@ Decizii: monedă implicită MDL · Supabase local (Docker) pentru dezvoltare · 
 ## Comenzi
 `npm run dev` · `build` · `lint` · `typecheck` · `test` (Vitest) · `test:e2e` (Playwright) · `format`
 DB: `db:start` · `db:reset` (reaplică migrațiile + `supabase/seed.sql`) · `db:types` (regenerează `database.types.ts`) · `test:db` (pgTAP). Email-uri locale: Mailpit pe http://127.0.0.1:54324.
-Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `agent@demo.md`, `agent2@demo.md`. Cheia webhook a canalului intern demo (doar local): `demo-webhook-secret`.
+Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `agent@demo.md`, `agent2@demo.md`. Cheia webhook a canalului intern demo (doar local): `demo-webhook-secret`. Automatizările rulează local doar cu `npm run dev` pe portul 3000 și `CRON_SECRET=local-cron-secret` în `.env.local` (sau manual: `POST /api/jobs/automations`).
 
 ## Tipare de cod
 - Mutație = `createOrgAction({ schema, permission }, handler)` din `src/lib/actions/action.ts`; returnează `ActionResult` cu chei i18n. Client: `applyActionResult` (formulare) sau `useActionRunner` (butoane).
@@ -22,6 +22,7 @@ Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `a
 - Fără `upsert` care ar actualiza coloane fără grant UPDATE (ex. `organization_id`): `ignoreDuplicates: true` + update separat.
 - Permisiune nouă = migrație care actualizează `private.permission_catalog()` + `src/modules/auth/permissions.ts` + texte în `permissions.*`.
 - `service_role` nu primește drepturi implicite pe tabele noi: granturi explicite, minime, în migrație (ex. `webhook_events`). Clientul admin (`createAdminClient`) doar în `src/lib/channels/inbound.ts` / joburi.
+- Chei i18n: next-intl tratează „.” ca nivel; identificatorii cu punct (`lead.created`) devin chei cu `_` (`i18nKey()` în `modules/automations/fields.ts`).
 - RLS pe UPDATE verifică și rândul nou cu politica SELECT: o modificare după care rândul devine invizibil autorului (ex. predarea unei conversații) trece printr-un RPC `security definer` cu verificări explicite.
 
 ## Particularități stack

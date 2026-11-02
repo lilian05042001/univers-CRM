@@ -170,6 +170,12 @@ univers-crm/
 - Flux inbound: `POST /api/webhooks/[provider]` (exclus din `proxy.ts`) → adaptor → verificare → `webhook_events` (dedupe) → RPC `ingest_inbound_message` (identificare contact prin `contact_identities` → conversație → mesaj) → eveniment `message.received`.
 - Canalul intern: antet `x-channel-id` + `Authorization: Bearer <cheie>`; cheia (`whk_…`) se generează în Setări → Canale, se afișează o singură dată, în DB rămâne doar hash-ul sha256. Corp JSON: `{ id, thread_id?, sender: { name?, phone? | email? }, text, sent_at? }`. Furnizorii externi vor folosi semnătura proprie (HMAC) cu secretul din Vault (`vault_secret_id`).
 - Flux outbound: mesaj creat cu `status=queued` → worker → adaptor → `sent/failed`.
+
+## 7b. Motorul de automatizări (Etapa 9)
+
+- `src/lib/automation-engine/`: `triggers.ts` (potrivire declanșator, chei de deduplicare, protecție la bucle: o automatizare ignoră propriile efecte, lanțurile se opresc la adâncimea 3), `conditions.ts` (arbore AND/OR, operatori pe câmpuri ale lead-ului / sarcinii), `engine.ts` (`processBatch` peste o interfață `EngineStore`, testată în memorie), `store.ts` (RPC-uri `service_role`).
+- Worker: `POST /api/jobs/automations` cu `Authorization: Bearer CRON_SECRET` (exclus din `proxy.ts`), rulează loturi până la 20 s. pg_cron apelează `private.kick_automation_worker()` la 15 s, care face `net.http_post` doar dacă există evenimente în așteptare; adresa (`jobs_url`, fără `/automations`) și secretul (`cron_secret`) stau în Supabase Vault. Local, seed-ul le setează pentru `http://host.docker.internal:3000/api/jobs` și `local-cron-secret`.
+- Acțiunile se execută în SQL (`private.automation_action`): `assign_responsible` (pe rând / cel mai puțin încărcat / fix), `create_task`, `notify`, `add_tag`, `change_stage` (doar în pipeline-ul lead-ului), `require_loss_reason`, `record_revenue`.
 - Etapa 8 livrează canalul **intern** (mesaje introduse manual / formular web) și infrastructura; conectarea reală la WhatsApp Cloud API, Meta (Instagram/Messenger), e-mail (IMAP/SMTP sau provider), telefonie se face ulterior, doar prin API-uri oficiale, cu credențiale reale ale companiei.
 
 ## 8. Dependențe necesare

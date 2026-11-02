@@ -9,7 +9,7 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Exclude fișierele statice, optimizarea imaginilor, resursele publice și webhook-urile
-    // (fără sesiune; autentificate de adaptorul canalului).
-    "/((?!_next/static|_next/image|favicon.ico|api/webhooks/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    // și joburile (fără sesiune; autentificate de adaptorul canalului / CRON_SECRET).
+    "/((?!_next/static|_next/image|favicon.ico|api/webhooks/|api/jobs/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 }

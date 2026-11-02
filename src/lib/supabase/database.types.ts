@@ -163,6 +163,148 @@ export type Database = {
           },
         ]
       }
+      automation_runs: {
+        Row: {
+          automation_id: string
+          dedupe_key: string
+          entity_id: string | null
+          entity_type: string | null
+          error: string | null
+          event_id: number | null
+          finished_at: string | null
+          id: number
+          organization_id: string
+          result: NonNullable<Json>
+          started_at: string
+          status: string
+        }
+        ComputedFields: never
+        Insert: {
+          automation_id: string
+          dedupe_key: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error?: string | null
+          event_id?: number | null
+          finished_at?: string | null
+          id?: never
+          organization_id: string
+          result?: NonNullable<Json>
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          automation_id?: string
+          dedupe_key?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error?: string | null
+          event_id?: number | null
+          finished_at?: string | null
+          id?: never
+          organization_id?: string
+          result?: NonNullable<Json>
+          started_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_runs_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "domain_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automation_runs_organization_id_automation_id_fkey"
+            columns: ["organization_id", "automation_id"]
+            isOneToOne: false
+            referencedRelation: "automations"
+            referencedColumns: ["organization_id", "id"]
+          },
+          {
+            foreignKeyName: "automation_runs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      automations: {
+        Row: {
+          actions: NonNullable<Json>
+          conditions: NonNullable<Json>
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          organization_id: string
+          pipeline_id: string | null
+          state: NonNullable<Json>
+          trigger_config: NonNullable<Json>
+          trigger_type: string
+          updated_at: string
+        }
+        ComputedFields: never
+        Insert: {
+          actions: NonNullable<Json>
+          conditions?: NonNullable<Json>
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          organization_id: string
+          pipeline_id?: string | null
+          state?: NonNullable<Json>
+          trigger_config?: NonNullable<Json>
+          trigger_type: string
+          updated_at?: string
+        }
+        Update: {
+          actions?: NonNullable<Json>
+          conditions?: NonNullable<Json>
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          organization_id?: string
+          pipeline_id?: string | null
+          state?: NonNullable<Json>
+          trigger_config?: NonNullable<Json>
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automations_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automations_organization_id_pipeline_id_fkey"
+            columns: ["organization_id", "pipeline_id"]
+            isOneToOne: false
+            referencedRelation: "pipelines"
+            referencedColumns: ["organization_id", "id"]
+          },
+        ]
+      }
       channels: {
         Row: {
           config: NonNullable<Json>
@@ -734,7 +876,9 @@ export type Database = {
         Row: {
           actor_id: string | null
           attempts: number
+          automation_depth: number
           caused_by_automation_id: string | null
+          dedupe_key: string | null
           entity_id: string
           entity_type: string
           id: number
@@ -750,7 +894,9 @@ export type Database = {
         Insert: {
           actor_id?: string | null
           attempts?: number
+          automation_depth?: number
           caused_by_automation_id?: string | null
+          dedupe_key?: string | null
           entity_id: string
           entity_type: string
           id?: never
@@ -765,7 +911,9 @@ export type Database = {
         Update: {
           actor_id?: string | null
           attempts?: number
+          automation_depth?: number
           caused_by_automation_id?: string | null
+          dedupe_key?: string | null
           entity_id?: string
           entity_type?: string
           id?: never
@@ -2261,10 +2409,88 @@ export type Database = {
     }
     Functions: {
       accept_invitation: { Args: { p_token: string }; Returns: string }
+      active_automations: {
+        Args: { p_orgs: string[] }
+        Returns: {
+          actions: NonNullable<Json>
+          conditions: NonNullable<Json>
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          organization_id: string
+          pipeline_id: string | null
+          state: NonNullable<Json>
+          trigger_config: NonNullable<Json>
+          trigger_type: string
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "automations"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       assign_conversation: {
         Args: { p_assignee?: string; p_conversation: string }
         Returns: undefined
       }
+      automation_execute: {
+        Args: {
+          p_actions: Json
+          p_contact?: string
+          p_depth: number
+          p_lead?: string
+          p_run: number
+          p_task?: string
+        }
+        Returns: Json
+      }
+      automation_finish_run: {
+        Args: { p_error?: string; p_result?: Json; p_run: number; p_status: string }
+        Returns: undefined
+      }
+      automation_snapshot: { Args: { p_lead?: string; p_task?: string }; Returns: Json }
+      automation_start_run: {
+        Args: {
+          p_automation: string
+          p_dedupe_key: string
+          p_entity_id: string
+          p_entity_type: string
+          p_event: number
+        }
+        Returns: number
+      }
+      claim_domain_events: {
+        Args: { p_limit?: number }
+        Returns: {
+          actor_id: string | null
+          attempts: number
+          automation_depth: number
+          caused_by_automation_id: string | null
+          dedupe_key: string | null
+          entity_id: string
+          entity_type: string
+          id: number
+          last_error: string | null
+          locked_until: string | null
+          occurred_at: string
+          organization_id: string
+          payload: NonNullable<Json>
+          processed_at: string | null
+          type: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "domain_events"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      complete_domain_event: { Args: { p_error?: string; p_id: number }; Returns: undefined }
       create_organization: { Args: { p_name: string }; Returns: string }
       find_company_duplicates: {
         Args: {

@@ -5,5 +5,6 @@ export const NOTIFICATION_TYPES = [
   "lead_assigned",
   "conversation_assigned",
   "message_received",
+  "automation",
 ] as const
 export type NotificationType = (typeof NOTIFICATION_TYPES)[number]

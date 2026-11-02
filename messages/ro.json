@@ -60,7 +60,8 @@
       "task_assigned": "Sarcină nouă pentru tine",
       "lead_assigned": "Lead nou pentru tine",
       "conversation_assigned": "Conversație atribuită ție",
-      "message_received": "Mesaj nou de la client"
+      "message_received": "Mesaj nou de la client",
+      "automation": "Automatizare"
     }
   },
   "user": {
@@ -563,7 +564,8 @@
         "task_assigned": "Când un coleg îți atribuie o sarcină.",
         "lead_assigned": "Când un lead îți este atribuit (manual sau automat).",
         "conversation_assigned": "Când un coleg îți atribuie o conversație din Inbox.",
-        "message_received": "Când un client scrie într-o conversație atribuită ție."
+        "message_received": "Când un client scrie într-o conversație atribuită ție.",
+        "automation": "Mesajele trimise de automatizări (ex. lead câștigat, sarcină în curând)."
       }
     },
     "quickReplies": {
@@ -965,7 +967,8 @@
         "responsible_changed": "Responsabil schimbat: {to}",
         "updated": "Modificat: {fields}",
         "contact_linked": "Contact asociat",
-        "deleted": "Lead șters"
+        "deleted": "Lead șters",
+        "revenue_recorded": "Rezultat înregistrat: {amount}"
       },
       "note": {
         "added": "Notă: {excerpt}"
@@ -1188,6 +1191,197 @@
     "record": {
       "emptyTitle": "Nicio conversație",
       "emptyHint": "Mesajele clientului din Inbox apar aici."
+    }
+  },
+  "automations": {
+    "create": "Automatizare nouă",
+    "createTitle": "Automatizare nouă",
+    "emptyTitle": "Nicio automatizare",
+    "emptyHint": "Pornește de la un șablon de mai jos sau creează una de la zero.",
+    "neverRan": "Nu a rulat încă",
+    "stats": "30 de zile: {runs, plural, =0 {nicio execuție} one {# execuție} few {# execuții} other {# de execuții}} · {failures, plural, =0 {fără erori} one {# eroare} few {# erori} other {# de erori}}",
+    "toggle": "Activează / dezactivează „{name}”",
+    "activated": "Automatizarea a fost activată.",
+    "deactivated": "Automatizarea a fost dezactivată.",
+    "templatesTitle": "Șabloane",
+    "templatesHint": "Scenariile uzuale, gata configurate. Le poți ajusta înainte de salvare.",
+    "noAccessTitle": "Nu ai acces la automatizări",
+    "noAccessHint": "Automatizările sunt vizibile administratorilor și managerilor.",
+    "triggers": {
+      "lead_created": "Lead nou creat",
+      "lead_stage_entered": "Lead intrat în etapă",
+      "lead_won": "Lead câștigat",
+      "lead_lost": "Lead pierdut",
+      "task_due_soon": "Sarcină care începe în curând",
+      "lead_inactive": "Lead fără activitate",
+      "message_received": "Mesaj nou de la client"
+    },
+    "editor": {
+      "general": "General",
+      "name": "Denumire",
+      "description": "Descriere (opțional)",
+      "active": "Activă",
+      "trigger": "Declanșator",
+      "triggerHint": "Evenimentul care pornește automatizarea.",
+      "triggerType": "Când",
+      "stage": "Etapa",
+      "minutes": "Cu câte minute înainte de termen",
+      "days": "După câte zile fără activitate",
+      "pipeline": "Pipeline",
+      "allPipelines": "Toate pipeline-urile",
+      "conditions": "Condiții",
+      "conditionsHint": "Opțional: automatizarea rulează doar dacă sunt îndeplinite.",
+      "actions": "Acțiuni",
+      "actionsHint": "Se execută în ordine, toate sau niciuna.",
+      "save": "Salvează",
+      "saved": "Automatizarea a fost salvată.",
+      "history": "Istoric execuții",
+      "delete": "Șterge",
+      "deleteTitle": "Ștergi automatizarea?",
+      "deleteDescription": "„{name}” și istoricul ei de execuții vor fi șterse.",
+      "deleted": "Automatizarea a fost ștearsă."
+    },
+    "conditions": {
+      "field": "Câmp",
+      "operator": "Condiție",
+      "value": "Valoare",
+      "add": "Adaugă condiție",
+      "remove": "Elimină condiția",
+      "none": "Fără condiții: rulează la fiecare declanșare.",
+      "combine": "Se îndeplinesc",
+      "and": "toate condițiile",
+      "or": "oricare condiție",
+      "fields": {
+        "lead_value": "Valoarea lead-ului",
+        "lead_priority": "Prioritatea lead-ului",
+        "lead_source_id": "Sursa",
+        "lead_responsible_id": "Responsabilul",
+        "lead_team_id": "Echipa",
+        "lead_stage_id": "Etapa",
+        "lead_tags": "Etichetele",
+        "lead_title": "Titlul lead-ului",
+        "task_priority": "Prioritatea sarcinii"
+      },
+      "operators": {
+        "eq": "este",
+        "neq": "nu este",
+        "gt": "mai mare decât",
+        "gte": "cel puțin",
+        "lt": "mai mic decât",
+        "lte": "cel mult",
+        "contains": "conține",
+        "is_empty": "este gol",
+        "is_not_empty": "este completat",
+        "includes": "include",
+        "not_includes": "nu include"
+      }
+    },
+    "actions": {
+      "type": "Tipul acțiunii",
+      "add": "Adaugă acțiune",
+      "remove": "Elimină acțiunea",
+      "up": "Mută în sus",
+      "down": "Mută în jos",
+      "types": {
+        "assign_responsible": "Atribuie responsabil",
+        "create_task": "Creează sarcină",
+        "notify": "Trimite notificare",
+        "add_tag": "Adaugă etichetă",
+        "change_stage": "Schimbă etapa",
+        "require_loss_reason": "Cere motivul pierderii",
+        "record_revenue": "Înregistrează rezultatul câștigului"
+      },
+      "strategy": "Distribuire",
+      "strategies": {
+        "round_robin": "Pe rând",
+        "least_loaded": "Cel mai puțin încărcat",
+        "fixed": "Mereu primul din listă"
+      },
+      "users": "Utilizatori",
+      "user": "Utilizator",
+      "taskTitle": "Titlul sarcinii",
+      "taskType": "Tipul sarcinii",
+      "taskTypeDefault": "Follow-up (implicit)",
+      "dueInHours": "Termen (ore de acum)",
+      "priority": "Prioritate",
+      "assignee": "Responsabilul sarcinii",
+      "assignees": {
+        "lead_responsible": "Responsabilul lead-ului",
+        "user": "Un utilizator anume"
+      },
+      "recipient": "Destinatar",
+      "recipients": {
+        "responsible": "Responsabilul lead-ului / sarcinii",
+        "user": "Un utilizator anume"
+      },
+      "message": "Mesajul notificării",
+      "tag": "Eticheta",
+      "stage": "Etapa nouă",
+      "hints": {
+        "require_loss_reason": "Dacă lead-ul pierdut nu are motiv, responsabilul primește o sarcină și o notificare.",
+        "record_revenue": "Completează suma realizată (implicit valoarea lead-ului) și o înregistrează în cronologie."
+      }
+    },
+    "templates": {
+      "assignOnCreate": {
+        "name": "Atribuire la creare",
+        "description": "Lead-urile noi fără responsabil se distribuie pe rând echipei."
+      },
+      "taskOnStage": {
+        "name": "Sarcină la intrarea în etapă",
+        "description": "Când lead-ul ajunge la „Ofertă prezentată”, responsabilul primește un follow-up.",
+        "task": "Follow-up după ofertă"
+      },
+      "dueSoonReminder": {
+        "name": "Notificare înainte de termen",
+        "description": "Cu o oră înainte de o sarcină, responsabilul e notificat.",
+        "message": "O sarcină începe în curând"
+      },
+      "lossReason": {
+        "name": "Motivul pierderii",
+        "description": "Un lead pierdut fără motiv generează o sarcină pentru responsabil."
+      },
+      "wonRevenue": {
+        "name": "Rezultatul câștigului",
+        "description": "La câștig se înregistrează suma realizată și responsabilul e felicitat.",
+        "message": "Felicitări! Lead câștigat."
+      },
+      "inactiveReminder": {
+        "name": "Reminder la inactivitate",
+        "description": "După 7 zile fără activitate, responsabilul primește o sarcină.",
+        "task": "Revino la client"
+      }
+    },
+    "runs": {
+      "title": "Istoric execuții",
+      "description": "Ce au făcut automatizările și de ce unele au fost omise sau au eșuat.",
+      "time": "Data",
+      "automation": "Automatizare",
+      "statusLabel": "Stare",
+      "entity": "Înregistrare",
+      "details": "Detalii",
+      "status": {
+        "success": "Reușită",
+        "skipped": "Omisă",
+        "failed": "Eșuată",
+        "running": "În curs"
+      },
+      "entities": {
+        "lead": "Lead",
+        "task": "Sarcină",
+        "conversation": "Conversație",
+        "contact": "Contact",
+        "company": "Companie"
+      },
+      "reasons": {
+        "conditions": "Condițiile nu au fost îndeplinite",
+        "pipeline": "Alt pipeline",
+        "loop_self": "Efect propriu (protecție la bucle)",
+        "loop_depth": "Lanț prea lung de automatizări (protecție la bucle)"
+      },
+      "actionSkipped": "nu a fost necesar",
+      "emptyTitle": "Nicio execuție",
+      "emptyHint": "Execuțiile apar aici după ce automatizările active sunt declanșate."
     }
   }
 }

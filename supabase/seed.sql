@@ -236,6 +236,26 @@ begin
     'identity_type', 'phone', 'identity_value', '+37379000111', 'sender_name', 'Client Nou',
     'external_id', 'seed-new', 'body', 'Bună! Aș dori o ofertă pentru 5 licențe.'));
 
+  -- ------------------------------------------------------------ automatizări
+  -- Worker-ul local: pg_cron → pg_net → aplicația (npm run dev). Secretul e CRON_SECRET din .env.local.
+  perform vault.create_secret('http://host.docker.internal:3000/api/jobs', 'jobs_url', 'Worker automatizări (local)');
+  perform vault.create_secret('local-cron-secret', 'cron_secret', 'Secretul joburilor (local)');
+
+  insert into public.automations (organization_id, name, trigger_type, trigger_config, actions, pipeline_id, created_by)
+  values
+    (v_org, 'Sarcină la intrarea în Negociere', 'lead.stage_entered', jsonb_build_object('stage_id', v_stages[6]),
+     jsonb_build_array(jsonb_build_object('type', 'create_task', 'title', 'Pregătește contractul',
+                                          'assignee', 'lead_responsible', 'due_in_hours', 24, 'priority', 'high')),
+     v_pipeline, v_admin),
+    (v_org, 'Motivul pierderii', 'lead.lost', '{}',
+     '[{"type": "require_loss_reason"}]', v_pipeline, v_admin),
+    (v_org, 'Rezultatul câștigului', 'lead.won', '{}',
+     '[{"type": "record_revenue"}, {"type": "notify", "recipient": "responsible", "message": "Felicitări! Lead câștigat."}]',
+     v_pipeline, v_admin),
+    (v_org, 'Reminder la 7 zile fără activitate', 'lead.inactive', '{"days": 7}',
+     '[{"type": "create_task", "title": "Revino la client", "assignee": "lead_responsible", "due_in_hours": 4}]',
+     v_pipeline, v_admin);
+
   -- Evenimentele generate de seed nu trebuie procesate de automatizări; auditul seed-ului e zgomot.
   update public.domain_events set processed_at = now() where organization_id = v_org;
   delete from public.audit_log where organization_id = v_org;
