@@ -2,6 +2,8 @@ import { Orbit } from "lucide-react"
 import { useTranslations } from "next-intl"
 import type { ReactNode } from "react"
 
+import { LocaleSwitcher } from "@/modules/locale/components/locale-switcher"
+
 /** Pagină centrată cu logo: login, înregistrare, onboarding, invitații. */
 export function AuthShell({ children }: { children: ReactNode }) {
   const t = useTranslations("app")
@@ -15,6 +17,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
         {t("name")}
       </div>
       <div className="w-full max-w-sm">{children}</div>
+      <LocaleSwitcher className="mt-6 w-44" />
     </div>
   )
 }

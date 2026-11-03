@@ -1,10 +1,13 @@
 import { getRequestConfig } from "next-intl/server"
+import { locale as rootLocale } from "next/root-params"
 
-import { defaultLocale } from "./config"
+import { defaultLocale, isLocale } from "./config"
 
-// Limba e fixă (ro) până la Etapa 2; apoi se va citi din profilul utilizatorului.
-export default getRequestConfig(async () => {
-  const locale = defaultLocale
+// Componentele server citesc limba din segmentul rădăcină [locale]; route handlerele
+// (unde next/root-params nu e disponibil) o transmit explicit: getTranslations({ locale, … }).
+export default getRequestConfig(async ({ locale: explicit }) => {
+  const requested = explicit ?? (await rootLocale())
+  const locale = isLocale(requested) ? requested : defaultLocale
 
   return {
     locale,

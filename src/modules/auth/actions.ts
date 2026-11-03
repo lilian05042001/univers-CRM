@@ -8,6 +8,9 @@ import { fail, ok } from "@/lib/actions/result"
 import { safeNextPath } from "@/lib/auth/routes"
 import { clearActiveOrganization } from "@/lib/auth/session"
 import { env } from "@/lib/env"
+import { isLocale } from "@/lib/i18n/config"
+import { currentLocale, setLocaleCookie } from "@/lib/i18n/cookie"
+import { authAttemptAllowed } from "@/lib/security/rate-limit"
 import { createClient } from "@/lib/supabase/server"
 
 import { forgotPasswordSchema, loginSchema, registerSchema, resetPasswordSchema } from "./schemas"
@@ -17,8 +20,9 @@ function callbackUrl(next: string) {
 }
 
 export const login = createAction(loginSchema, async ({ email, password, next }) => {
+  if (!(await authAttemptAllowed("login", email))) return fail("errors.auth.rateLimited")
   const supabase = await createClient()
-  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
     if (error.code === "email_not_confirmed") return fail("errors.auth.emailNotConfirmed")
@@ -26,18 +30,30 @@ export const login = createAction(loginSchema, async ({ email, password, next })
     if (error.status === 429) return fail("errors.auth.rateLimited")
     throw error
   }
+  // Limba aleasă în profil se aplică pe orice dispozitiv, de la autentificare.
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("locale")
+    .eq("id", data.user.id)
+    .maybeSingle()
+  if (isLocale(profile?.locale)) await setLocaleCookie(profile.locale)
   redirect(safeNextPath(next))
 })
 
 export const register = createAction(
   registerSchema,
   async ({ fullName, email, password, next }) => {
+    if (!(await authAttemptAllowed("register"))) return fail("errors.auth.rateLimited")
     const supabase = await createClient()
     const target = safeNextPath(next, "/onboarding")
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName }, emailRedirectTo: callbackUrl(target) },
+      // Limba interfeței de la înregistrare devine limba profilului.
+      options: {
+        data: { full_name: fullName, locale: await currentLocale() },
+        emailRedirectTo: callbackUrl(target),
+      },
     })
 
     if (error) {
@@ -54,6 +70,7 @@ export const register = createAction(
 )
 
 export const requestPasswordReset = createAction(forgotPasswordSchema, async ({ email }) => {
+  if (!(await authAttemptAllowed("reset", email))) return fail("errors.auth.rateLimited")
   const supabase = await createClient()
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: callbackUrl("/reset-password"),

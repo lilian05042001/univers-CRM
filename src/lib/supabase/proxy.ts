@@ -7,9 +7,12 @@ import { GUEST_ONLY_PATHS, PUBLIC_PATHS, matchesPath } from "@/lib/auth/routes"
 /**
  * Reîmprospătează sesiunea Supabase și face redirecționările optimiste.
  * Verificarea reală a accesului rămâne în server (DAL + RLS).
+ * `rewriteTo`: ruta internă (cu limba) care servește cererea; URL-ul din browser nu se schimbă.
  */
-export async function updateSession(request: NextRequest) {
-  let response = NextResponse.next({ request })
+export async function updateSession(request: NextRequest, rewriteTo?: URL) {
+  const forward = () =>
+    rewriteTo ? NextResponse.rewrite(rewriteTo, { request }) : NextResponse.next({ request })
+  let response = forward()
 
   const supabase = createServerClient(env.supabaseUrl, env.supabasePublishableKey, {
     cookies: {
@@ -18,7 +21,7 @@ export async function updateSession(request: NextRequest) {
       },
       setAll(cookiesToSet, headers) {
         for (const { name, value } of cookiesToSet) request.cookies.set(name, value)
-        response = NextResponse.next({ request })
+        response = forward()
         for (const { name, value, options } of cookiesToSet) {
           response.cookies.set(name, value, options)
         }

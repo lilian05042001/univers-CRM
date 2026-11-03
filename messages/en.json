@@ -1,0 +1,1747 @@
+{
+  "app": {
+    "name": "Univers CRM",
+    "description": "Customer and sales management"
+  },
+  "nav": {
+    "groups": {
+      "sales": "Sales",
+      "communication": "Communication",
+      "analytics": "Analytics",
+      "administration": "Administration"
+    },
+    "dashboard": "Dashboard",
+    "leads": "Leads",
+    "pipeline": "Pipeline",
+    "contacts": "Contacts",
+    "companies": "Companies",
+    "inbox": "Inbox",
+    "tasks": "Tasks",
+    "calendar": "Calendar",
+    "automations": "Automations",
+    "reports": "Reports",
+    "team": "Team",
+    "settings": "Settings"
+  },
+  "modules": {
+    "dashboard": "Your company's sales at a glance: KPIs, charts and recent activity.",
+    "leads": "Sales opportunities with filtering, search and bulk actions.",
+    "pipeline": "Sales stages in a Kanban view.",
+    "contacts": "Contact people and the history of each relationship.",
+    "companies": "Client companies and their people.",
+    "inbox": "All customer conversations in one place.",
+    "tasks": "Calls, meetings, follow-ups and other activities.",
+    "calendar": "Planned activities by day, week and month.",
+    "automations": "Rules that perform repetitive actions automatically.",
+    "reports": "Sales, conversion and activity reports.",
+    "team": "The organization's users, teams and invitations.",
+    "settings": "Company and CRM configuration."
+  },
+  "topbar": {
+    "search": "Search leads, contacts, companies…",
+    "searchShort": "Search…",
+    "notifications": "Notifications",
+    "toggleSidebar": "Toggle menu"
+  },
+  "search": {
+    "title": "Global search",
+    "placeholder": "Type to search or navigate…",
+    "empty": "No results.",
+    "modules": "Modules"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "You have no new notifications.",
+    "titleUnread": "Notifications ({count} unread)",
+    "markAll": "Mark as read",
+    "types": {
+      "task_due_soon": "Task due soon",
+      "task_overdue": "Overdue task",
+      "task_assigned": "New task for you",
+      "lead_assigned": "New lead for you",
+      "conversation_assigned": "Conversation assigned to you",
+      "message_received": "New message from a customer",
+      "automation": "Automation"
+    }
+  },
+  "user": {
+    "menu": "My account",
+    "profile": "Profile",
+    "signOut": "Sign out"
+  },
+  "common": {
+    "comingSoon": "Module under construction",
+    "availableInStage": "This module becomes available in stage {stage} of the development plan.",
+    "notFound": "Page not found.",
+    "backToDashboard": "Back to Dashboard",
+    "cancel": "Cancel",
+    "select": "Choose…",
+    "search": "Search…",
+    "clear": "Clear",
+    "remove": "Remove",
+    "save": "Save",
+    "yes": "Yes",
+    "no": "No",
+    "copy": "Copy"
+  },
+  "status": {
+    "success": "Success",
+    "warning": "Warning",
+    "danger": "Error",
+    "info": "Info",
+    "neutral": "Neutral"
+  },
+  "locales": {
+    "ro": "Română",
+    "en": "English",
+    "ru": "Русский"
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Enter a valid email address.",
+    "passwordMin": "The password must be at least 8 characters long.",
+    "passwordMax": "The password can be at most 72 characters long.",
+    "passwordLetters": "The password must contain at least one letter.",
+    "passwordDigits": "The password must contain at least one digit.",
+    "passwordMismatch": "The passwords do not match.",
+    "nameMin": "Enter at least 2 characters.",
+    "tooLong": "The text is too long.",
+    "country": "Use the 2-letter country code (e.g. MD, RO).",
+    "phone": "The phone number contains invalid characters.",
+    "contactName": "Enter the first or last name.",
+    "number": "Enter a valid number.",
+    "date": "Enter a valid date.",
+    "url": "Enter a valid web address.",
+    "option": "Choose an option from the list.",
+    "amount": "Enter a valid amount (e.g. 12500 or 12500.50).",
+    "lossReason": "Choose the loss reason.",
+    "optionsRequired": "Add at least one option (one per line).",
+    "color": "Choose a color.",
+    "probability": "Enter a number between 0 and 100.",
+    "assignees": "Choose at least one user.",
+    "dateTime": "Enter the date and time.",
+    "shortcut": "Only lowercase letters, digits, - and _ (30 at most).",
+    "scopes": "Choose at least one access right."
+  },
+  "errors": {
+    "validation": "Please check the data you entered.",
+    "forbidden": "You don't have permission for this action.",
+    "duplicate": "A record with these details already exists.",
+    "inUse": "The record is used elsewhere and cannot be deleted.",
+    "unexpected": "An unexpected error occurred. Please try again.",
+    "auth": {
+      "invalidCredentials": "The email or password is incorrect.",
+      "emailNotConfirmed": "Confirm your email address from the message you received, then sign in.",
+      "rateLimited": "Too many attempts. Please wait a moment and try again.",
+      "weakPassword": "The password is too weak.",
+      "samePassword": "The new password must differ from the old one.",
+      "sessionExpired": "The session has expired. Request a new reset link.",
+      "invalidLink": "The link is invalid or has expired."
+    },
+    "db": {
+      "admin_only": "Only an administrator can manage administrators.",
+      "admin_permissions_locked": "Administrator permissions cannot be changed.",
+      "assign_forbidden": "You don't have permission to assign the record to another user.",
+      "invalid_name": "The name is not valid.",
+      "invitation_email_mismatch": "The invitation was sent to a different email address.",
+      "invitation_invalid": "The invitation is invalid or has expired.",
+      "last_admin": "The organization must have at least one active administrator.",
+      "membership_immutable": "The member cannot be moved to another organization.",
+      "not_authenticated": "You must be signed in.",
+      "role_key_immutable": "The role identifier cannot be changed.",
+      "system_role_create": "System roles are created automatically.",
+      "system_role_delete": "System roles cannot be deleted.",
+      "system_task_type_delete": "System activity types cannot be deleted.",
+      "task_type_key_immutable": "The activity type identifier cannot be changed.",
+      "merge_invalid": "The contacts cannot be merged.",
+      "api_key_revoked": "The API key has been revoked and cannot be reactivated.",
+      "import_finished": "The import has finished; start a new import.",
+      "invalid_batch": "The import batch is not valid."
+    },
+    "lossReasonRequired": "Choose the loss reason.",
+    "fileNotAllowed": "This file is not allowed (25 MB maximum, no executables or scripts)."
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "passwordHint": "At least 8 characters, with letters and digits.",
+    "forgotPassword": "Forgot your password?",
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "createAccount": "Create the account",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "checkEmailTitle": "Check your email",
+    "checkEmailText": "If the address {email} can be registered, you will receive a confirmation link.",
+    "sendResetLink": "Send the reset link",
+    "resetSent": "If an account exists with this address, you will receive an email with instructions.",
+    "backToLogin": "Back to sign in",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "savePassword": "Save password",
+    "passwordUpdated": "The password has been updated.",
+    "pages": {
+      "login": {
+        "title": "Sign in",
+        "description": "Sign in to your Univers CRM account."
+      },
+      "register": {
+        "title": "New account",
+        "description": "Create your account, then set up your company."
+      },
+      "forgotPassword": {
+        "title": "Password reset",
+        "description": "We'll send you a link to set a new password."
+      },
+      "resetPassword": {
+        "title": "New password",
+        "description": "Choose a new password for your account."
+      }
+    }
+  },
+  "onboarding": {
+    "title": "Set up your company",
+    "description": "Create your company's workspace. You will be its administrator.",
+    "companyName": "Company name",
+    "companyNamePlaceholder": "e.g. Univers Group LLC",
+    "create": "Create the company"
+  },
+  "organizations": {
+    "switch": "Organizations",
+    "create": "New company"
+  },
+  "invite": {
+    "title": "Invitation",
+    "description": "You have been invited to {organization} with the role {role}.",
+    "forEmail": "The invitation is for {email}.",
+    "accept": "Accept the invitation",
+    "createAccount": "Create an account and accept",
+    "haveAccount": "I already have an account",
+    "wrongAccount": "The invitation is for {email}, but you are signed in as {current}. Sign out and sign in with the correct address.",
+    "invalidTitle": "Invalid invitation",
+    "invalidDescription": "The invitation has expired, was revoked or has already been used.",
+    "toLogin": "Go to sign in"
+  },
+  "profile": {
+    "title": "Profile",
+    "description": "Your personal details and account security.",
+    "personal": "Personal details",
+    "password": "Change password",
+    "fullName": "Full name",
+    "phone": "Phone",
+    "emailInfo": "Account email address: {email}",
+    "save": "Save",
+    "saved": "The profile has been saved.",
+    "language": "Interface language",
+    "languageHint": "Applies on all your devices from the next sign-in."
+  },
+  "team": {
+    "tabs": {
+      "members": "Members ({count})",
+      "invitations": "Invitations ({count})",
+      "teams": "Teams ({count})"
+    },
+    "members": {
+      "name": "User",
+      "role": "Role",
+      "status": "Status",
+      "actions": "Actions",
+      "you": "you",
+      "statuses": {
+        "active": "Active",
+        "disabled": "Disabled"
+      },
+      "disable": "Disable",
+      "activate": "Activate",
+      "remove": "Remove from organization",
+      "removeTitle": "Remove the member?",
+      "removeDescription": "{name} will no longer have access to the organization's data.",
+      "roleChanged": "The role has been changed.",
+      "disabled": "The member has been disabled.",
+      "activated": "The member has been activated.",
+      "removed": "The member has been removed."
+    },
+    "invite": {
+      "open": "Invite",
+      "title": "Invite a colleague",
+      "description": "Your colleague receives a link to join the organization with the chosen role.",
+      "createdDescription": "The invitation has been created. Send the link to your colleague.",
+      "email": "Email",
+      "role": "Role",
+      "team": "Team",
+      "noTeam": "No team",
+      "submit": "Create invitation",
+      "link": "Invitation link",
+      "copy": "Copy link",
+      "linkOnce": "The link is shown only once and expires in 7 days.",
+      "done": "Done"
+    },
+    "invitations": {
+      "email": "Email",
+      "role": "Role",
+      "team": "Team",
+      "expires": "Expires",
+      "expired": "Expired",
+      "revoke": "Revoke",
+      "revokeTitle": "Revoke the invitation?",
+      "revokeDescription": "The link sent to {email} will stop working.",
+      "revoked": "The invitation has been revoked.",
+      "emptyTitle": "No pending invitations",
+      "emptyDescription": "Sent invitations that haven't been accepted appear here."
+    },
+    "teams": {
+      "create": "New team",
+      "createTitle": "New team",
+      "editTitle": "Edit team",
+      "name": "Name",
+      "manager": "Manager",
+      "managerLabel": "Manager",
+      "noManager": "No manager",
+      "members": "Members",
+      "noMembers": "No members.",
+      "save": "Save",
+      "created": "The team has been created.",
+      "updated": "The team has been updated.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteTitle": "Delete the team?",
+      "deleteDescription": "The team “{name}” will be deleted. Its members remain in the organization.",
+      "deleted": "The team has been deleted.",
+      "emptyTitle": "No teams",
+      "emptyDescription": "Group agents into teams to distribute leads and track performance."
+    }
+  },
+  "settings": {
+    "stage": "Available in stage {stage}",
+    "sections": {
+      "company": {
+        "title": "Company details",
+        "description": "Name, tax details, currency, time zone and language."
+      },
+      "users": {
+        "title": "Users and teams",
+        "description": "Members, invitations and teams."
+      },
+      "roles": {
+        "title": "Roles and permissions",
+        "description": "What each role can see and do."
+      },
+      "pipelines": {
+        "title": "Pipelines and stages",
+        "description": "Sales stages, colors, final stages and assignment rules."
+      },
+      "tags": {
+        "title": "Tags",
+        "description": "Tags for leads, contacts and conversations."
+      },
+      "fields": {
+        "title": "Custom fields",
+        "description": "Additional fields for leads, contacts and companies."
+      },
+      "sources": {
+        "title": "Lead sources",
+        "description": "The channels customers come through."
+      },
+      "taskTypes": {
+        "title": "Activity types",
+        "description": "Call, meeting, email and your own types."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Which notifications each user receives."
+      },
+      "channels": {
+        "title": "Communication channels",
+        "description": "The internal channel, webhook address and access keys."
+      },
+      "quickReplies": {
+        "title": "Quick replies",
+        "description": "Message templates for the Inbox, shared or personal."
+      },
+      "integrations": {
+        "title": "Integrations",
+        "description": "Channels, public API, CSV import and planned integrations."
+      },
+      "api": {
+        "title": "API",
+        "description": "Access keys and the public API v1 reference."
+      },
+      "importExport": {
+        "title": "Import and export",
+        "description": "CSV import with field mapping and an error report; CSV export."
+      }
+    },
+    "company": {
+      "name": "Name",
+      "legalName": "Legal name",
+      "fiscalCode": "Tax code (IDNO)",
+      "country": "Country (code)",
+      "currency": "Default currency",
+      "timezone": "Time zone",
+      "defaultLocale": "Default language",
+      "save": "Save",
+      "saved": "The company details have been saved."
+    },
+    "roles": {
+      "create": "New role",
+      "createTitle": "New role",
+      "editTitle": "Edit role",
+      "name": "Name",
+      "description": "Description",
+      "save": "Save",
+      "created": "The role has been created.",
+      "updated": "The role has been updated.",
+      "deleted": "The role has been deleted.",
+      "system": "System",
+      "memberCount": "{count, plural, =0 {no members} one {# member} other {# members}}",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteTitle": "Delete the role?",
+      "deleteDescription": "The role “{name}” will be deleted. It cannot be deleted while it has members.",
+      "allPermissions": "All permissions (cannot be changed)",
+      "noPermissions": "No additional permissions: sees only their own records."
+    },
+    "tags": {
+      "create": "New tag",
+      "createTitle": "New tag",
+      "editTitle": "Edit tag",
+      "name": "Name",
+      "color": "Color",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteTitle": "Delete the tag?",
+      "deleteDescription": "The tag “{name}” will be removed from all records.",
+      "saved": "The tag has been saved.",
+      "deleted": "The tag has been deleted.",
+      "emptyTitle": "No tags",
+      "emptyDescription": "Tags help group and filter leads, contacts and companies."
+    },
+    "sources": {
+      "create": "New source",
+      "createTitle": "New source",
+      "editTitle": "Edit source",
+      "name": "Name",
+      "channel": "Channel",
+      "status": "Status",
+      "active": "Active (shown in forms)",
+      "activeLabel": "Active",
+      "inactiveLabel": "Inactive",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteTitle": "Delete the source?",
+      "deleteDescription": "The source “{name}” will be removed; existing records will have no source. You can also just deactivate it.",
+      "saved": "The source has been saved.",
+      "deleted": "The source has been deleted.",
+      "channels": {
+        "manual": "Manual",
+        "web_form": "Web form",
+        "whatsapp": "WhatsApp",
+        "instagram": "Instagram",
+        "messenger": "Facebook Messenger",
+        "email": "Email",
+        "phone": "Phone",
+        "referral": "Referral",
+        "import": "Import",
+        "api": "API",
+        "other": "Other"
+      }
+    },
+    "fields": {
+      "create": "New field",
+      "createTitle": "New field",
+      "editTitle": "Edit field",
+      "entity": "For",
+      "label": "Name",
+      "type": "Type",
+      "options": "Options (one per line)",
+      "required": "Required",
+      "requiredBadge": "Required",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteTitle": "Delete the field?",
+      "deleteDescription": "The field “{name}” will no longer appear in forms. Already saved values remain in the history.",
+      "saved": "The field has been saved.",
+      "deleted": "The field has been deleted.",
+      "emptyTitle": "No custom fields",
+      "emptyDescription": "Add your own fields for leads, contacts or companies.",
+      "entities": {
+        "lead": "Leads",
+        "contact": "Contacts",
+        "company": "Companies"
+      },
+      "types": {
+        "text": "Text",
+        "number": "Number",
+        "date": "Date",
+        "select": "List (one option)",
+        "multiselect": "List (multiple options)",
+        "bool": "Yes / No",
+        "url": "Link"
+      }
+    },
+    "pipelines": {
+      "create": "New pipeline",
+      "createTitle": "New pipeline",
+      "renameTitle": "Rename pipeline",
+      "name": "Name",
+      "rename": "Rename",
+      "default": "Default",
+      "makeDefault": "Set as default",
+      "delete": "Delete",
+      "deleteTitle": "Delete the pipeline?",
+      "deleteDescription": "The pipeline “{name}” and its stages will be deleted. It cannot be deleted while it contains leads.",
+      "saved": "The pipeline has been saved.",
+      "deleted": "The pipeline has been deleted.",
+      "defaultSet": "The default pipeline has been changed.",
+      "stagesDescription": "Drag the stages to reorder them. Final stages (“Won”, “Lost”) stay at the end.",
+      "createStage": "New stage",
+      "createStageTitle": "New stage",
+      "editStageTitle": "Edit stage",
+      "editStage": "Edit stage",
+      "deleteStage": "Delete stage",
+      "deleteStageTitle": "Delete the stage?",
+      "deleteStageDescription": "The stage “{name}” will be deleted. It cannot be deleted while it contains leads.",
+      "stageName": "Name",
+      "probability": "Win probability (%)",
+      "probabilityHint": "Used for the weighted pipeline value in reports.",
+      "color": "Color",
+      "dragStage": "Move stage {name}",
+      "finalStage": "Final stage",
+      "stageSaved": "The stage has been saved.",
+      "stageDeleted": "The stage has been deleted.",
+      "reordered": "The stage order has been saved.",
+      "kinds": {
+        "won": "Won",
+        "lost": "Lost"
+      },
+      "assignment": {
+        "title": "Automatic assignment",
+        "description": "Who receives new leads created without an owner in this pipeline.",
+        "strategy": "Rule",
+        "users": "Users",
+        "save": "Save rule",
+        "saved": "The assignment rule has been saved.",
+        "strategies": {
+          "none": "No automatic assignment",
+          "round_robin": "In turn (round-robin)",
+          "least_loaded": "To the least loaded",
+          "fixed": "To a fixed owner"
+        },
+        "hints": {
+          "none": "New leads stay unassigned until someone takes them.",
+          "round_robin": "Leads are distributed in turn to the chosen users.",
+          "least_loaded": "The lead goes to the user with the fewest open leads.",
+          "fixed": "All new leads go to the first active user in the list."
+        }
+      }
+    },
+    "taskTypes": {
+      "create": "New type",
+      "createTitle": "New activity type",
+      "editTitle": "Edit type",
+      "name": "Name",
+      "icon": "Icon",
+      "system": "System type",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteTitle": "Delete the activity type?",
+      "deleteDescription": "The type “{name}” will be deleted. It cannot be deleted while tasks of this type exist.",
+      "saved": "The activity type has been saved.",
+      "deleted": "The activity type has been deleted.",
+      "icons": {
+        "phone": "Phone",
+        "users": "Meeting",
+        "message-square": "Message",
+        "mail": "Email",
+        "repeat": "Follow-up",
+        "check-square": "Task",
+        "calendar": "Calendar",
+        "file-text": "Document",
+        "map-pin": "Visit",
+        "video": "Video"
+      }
+    },
+    "notificationPrefs": {
+      "save": "Save preferences",
+      "saved": "The preferences have been saved.",
+      "hints": {
+        "task_due_soon": "15 minutes before the due time (or at the reminder time).",
+        "task_overdue": "When a task is past due and not completed.",
+        "task_assigned": "When a colleague assigns you a task.",
+        "lead_assigned": "When a lead is assigned to you (manually or automatically).",
+        "conversation_assigned": "When a colleague assigns you an Inbox conversation.",
+        "message_received": "When a customer writes in a conversation assigned to you.",
+        "automation": "Messages sent by automations (e.g. lead won, task coming up)."
+      }
+    },
+    "quickReplies": {
+      "create": "New reply",
+      "createTitle": "New quick reply",
+      "editTitle": "Edit quick reply",
+      "name": "Title",
+      "shortcut": "Shortcut",
+      "shortcutHint": "Lowercase letters, digits, - or _. In a message you type /shortcut.",
+      "body": "Text",
+      "shared": "Shared with the whole team",
+      "sharedBadge": "Shared",
+      "saved": "The quick reply has been saved.",
+      "deleted": "The quick reply has been deleted.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteTitle": "Delete the quick reply?",
+      "deleteDescription": "The reply “{name}” will be deleted.",
+      "emptyTitle": "No quick replies",
+      "emptyHint": "Create templates for the messages you send often."
+    },
+    "channels": {
+      "intro": "Messages reach the Inbox via webhook. The internal channel accepts messages from your website form or your own systems; WhatsApp, Instagram, Messenger, email and telephony are connected from Integrations.",
+      "name": "Name",
+      "rename": "Rename",
+      "saved": "The channel has been saved.",
+      "providers": {
+        "internal": "Internal",
+        "whatsapp": "WhatsApp",
+        "instagram": "Instagram",
+        "messenger": "Messenger",
+        "email": "Email",
+        "telephony": "Telephony",
+        "web_form": "Web form"
+      },
+      "status": {
+        "active": "active",
+        "disconnected": "disconnected",
+        "error": "error"
+      },
+      "keySet": "webhook key set",
+      "keyMissing": "no webhook key",
+      "rotate": "Generate key",
+      "rotateTitle": "Generate a new key?",
+      "rotateDescription": "The current key, if any, will no longer be accepted. Systems that send messages must be updated with the new key.",
+      "webhookUrl": "Webhook address (POST)",
+      "channelHeader": "The {header} header",
+      "secretTitle": "Webhook key",
+      "secretHint": "Copy it now: for security reasons it will not be shown again.",
+      "secret": "Key",
+      "usage": "Send requests with the headers “Authorization: Bearer KEY” and “{header}: channel ID”, and a JSON body with the fields id, sender (name, phone or email) and text."
+    }
+  },
+  "permissions": {
+    "groups": {
+      "crm": "Data visibility",
+      "leads": "Leads",
+      "contacts": "Contacts and companies",
+      "inbox": "Inbox",
+      "reports": "Reports",
+      "data": "Import / export",
+      "configuration": "CRM configuration",
+      "administration": "Administration"
+    },
+    "crm_view_all": "Sees all records",
+    "crm_view_team": "Sees the team's records",
+    "leads_create": "Creates leads",
+    "leads_edit": "Edits leads",
+    "leads_delete": "Deletes leads",
+    "leads_assign": "Reassigns leads",
+    "contacts_create": "Creates contacts",
+    "contacts_edit": "Edits contacts",
+    "contacts_delete": "Deletes contacts",
+    "inbox_view_all": "Sees all conversations",
+    "inbox_assign": "Assigns conversations to colleagues",
+    "reports_view_all": "Company-wide reports",
+    "reports_view_team": "Team reports",
+    "data_import": "Data import",
+    "data_export": "Data export",
+    "pipelines_manage": "Configures pipelines",
+    "automations_manage": "Configures automations",
+    "team_manage": "Manages users and teams",
+    "roles_manage": "Manages roles",
+    "settings_manage": "Changes company settings",
+    "api_keys_manage": "Manages API keys"
+  },
+  "table": {
+    "search": "Search…",
+    "all": "All",
+    "resetFilters": "Reset filters",
+    "selectAll": "Select all",
+    "selectRow": "Select row",
+    "selected": "{count, plural, one {# selected} other {# selected}}",
+    "clearSelection": "Clear selection",
+    "range": "{from}–{to} of {total}",
+    "page": "Page {page} of {pages}",
+    "pageSize": "Rows per page",
+    "previous": "Previous page",
+    "next": "Next page",
+    "export": "Export CSV"
+  },
+  "customFields": {
+    "none": "—"
+  },
+  "duplicates": {
+    "title": "Possible duplicates",
+    "hidden": "A colleague's record",
+    "open": "Open",
+    "merge": "Merge here",
+    "mergeTitle": "Merge the contacts?",
+    "mergeDescription": "The details, leads, notes and tasks of “{name}” will be moved to this contact, and “{name}” will be deleted. This cannot be undone.",
+    "by": {
+      "phone": "same phone",
+      "email": "same email",
+      "name": "same name",
+      "whatsapp": "same WhatsApp",
+      "instagram": "same Instagram",
+      "messenger": "same Messenger",
+      "telegram": "same Telegram"
+    }
+  },
+  "contacts": {
+    "create": "New contact",
+    "unassigned": "Unassigned",
+    "merged": "The contacts have been merged.",
+    "emptyTitle": "No contacts",
+    "emptyDescription": "Add your first contact or change the filters.",
+    "columns": {
+      "name": "Name",
+      "company": "Company",
+      "phone": "Phone",
+      "email": "Email",
+      "owner": "Owner",
+      "tags": "Tags",
+      "created": "Created"
+    },
+    "filters": {
+      "owner": "Owner",
+      "source": "Source",
+      "tag": "Tag"
+    },
+    "bulk": {
+      "assign": "Assign",
+      "tag": "Tag",
+      "delete": "Delete",
+      "deleteTitle": "Delete the selected contacts?",
+      "deleteDescription": "{count, plural, one {The selected contact will be deleted.} other {The # selected contacts will be deleted.}}",
+      "assigned": "The owner has been changed.",
+      "tagged": "The tag has been added.",
+      "deleted": "The contacts have been deleted."
+    },
+    "form": {
+      "createTitle": "New contact",
+      "editTitle": "Edit contact",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phones": "Phones",
+      "addPhone": "Add phone",
+      "emails": "Emails",
+      "addEmail": "Add email",
+      "company": "Company",
+      "position": "Position",
+      "source": "Source",
+      "owner": "Owner",
+      "none": "—",
+      "unassigned": "Unassigned",
+      "city": "City",
+      "street": "Address",
+      "tags": "Tags",
+      "customFields": "Additional fields",
+      "cancel": "Cancel",
+      "save": "Save",
+      "created": "The contact has been created.",
+      "updated": "The contact has been updated."
+    },
+    "detail": {
+      "title": "Contact record",
+      "back": "All contacts",
+      "info": "Contact details",
+      "address": "Address",
+      "source": "Source",
+      "owner": "Owner",
+      "unassigned": "Unassigned",
+      "created": "Created",
+      "deleteDescription": "The contact “{name}” will be deleted."
+    }
+  },
+  "companies": {
+    "create": "New company",
+    "unassigned": "Unassigned",
+    "emptyTitle": "No companies",
+    "emptyDescription": "Add your first company or change the filters.",
+    "columns": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "contacts": "Contacts",
+      "leads": "Leads",
+      "owner": "Owner",
+      "tags": "Tags"
+    },
+    "filters": {
+      "owner": "Owner",
+      "tag": "Tag"
+    },
+    "bulk": {
+      "assign": "Assign",
+      "tag": "Tag",
+      "delete": "Delete",
+      "deleteTitle": "Delete the selected companies?",
+      "deleteDescription": "{count, plural, one {The selected company will be deleted.} other {The # selected companies will be deleted.}}",
+      "assigned": "The owner has been changed.",
+      "tagged": "The tag has been added.",
+      "deleted": "The companies have been deleted."
+    },
+    "form": {
+      "createTitle": "New company",
+      "editTitle": "Edit company",
+      "name": "Name",
+      "industry": "Industry",
+      "phone": "Phone",
+      "email": "Email",
+      "website": "Website",
+      "owner": "Owner",
+      "unassigned": "Unassigned",
+      "city": "City",
+      "street": "Address",
+      "tags": "Tags",
+      "customFields": "Additional fields",
+      "cancel": "Cancel",
+      "save": "Save",
+      "created": "The company has been created.",
+      "updated": "The company has been updated."
+    },
+    "detail": {
+      "title": "Company record",
+      "back": "All companies",
+      "info": "Company details",
+      "address": "Address",
+      "owner": "Owner",
+      "unassigned": "Unassigned",
+      "created": "Created",
+      "contacts": "Contact people ({count})",
+      "noContacts": "No contact people.",
+      "deleteDescription": "The company “{name}” will be deleted."
+    }
+  },
+  "leads": {
+    "create": "New lead",
+    "unassigned": "Unassigned",
+    "noTask": "No activity",
+    "emptyTitle": "No leads",
+    "emptyDescription": "Create your first lead or change the filters.",
+    "priority": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High",
+      "urgent": "Urgent"
+    },
+    "status": {
+      "open": "Open",
+      "won": "Won",
+      "lost": "Lost"
+    },
+    "columns": {
+      "title": "Lead",
+      "stage": "Stage",
+      "value": "Value",
+      "responsible": "Owner",
+      "priority": "Priority",
+      "nextTask": "Next activity",
+      "tags": "Tags",
+      "created": "Created"
+    },
+    "filters": {
+      "pipeline": "Pipeline",
+      "stage": "Stage",
+      "status": "Status",
+      "responsible": "Owner",
+      "me": "Mine",
+      "team": "Team",
+      "source": "Source",
+      "tag": "Tag",
+      "priority": "Priority"
+    },
+    "bulk": {
+      "move": "Move to stage",
+      "assign": "Assign",
+      "tag": "Tag",
+      "delete": "Delete",
+      "deleteTitle": "Delete the selected leads?",
+      "deleteDescription": "{count, plural, one {The selected lead will be deleted.} other {The # selected leads will be deleted.}}",
+      "moved": "The leads have been moved.",
+      "assigned": "The owner has been changed.",
+      "tagged": "The tag has been added.",
+      "deleted": "The leads have been deleted."
+    },
+    "loss": {
+      "title": "Loss reason",
+      "description": "Why was the lead lost? The reason appears in reports.",
+      "reason": "Reason",
+      "placeholder": "Choose a reason",
+      "cancel": "Cancel",
+      "confirm": "Mark as lost"
+    },
+    "form": {
+      "createTitle": "New lead",
+      "editTitle": "Edit lead",
+      "title": "Title",
+      "pipeline": "Pipeline",
+      "stage": "Stage",
+      "value": "Estimated value",
+      "priority": "Priority",
+      "lossReason": "Loss reason",
+      "lossComment": "Comment",
+      "client": "Client",
+      "contact": "Contact",
+      "contactPlaceholder": "Choose an existing contact…",
+      "company": "Company",
+      "newContactName": "New contact: name",
+      "newContactPhone": "Phone",
+      "newContactEmail": "Email",
+      "details": "Details",
+      "responsible": "Owner",
+      "unassigned": "Unassigned",
+      "team": "Team",
+      "source": "Source",
+      "none": "—",
+      "tags": "Tags",
+      "description": "Description",
+      "customFields": "Additional fields",
+      "cancel": "Cancel",
+      "save": "Save",
+      "created": "The lead has been created.",
+      "updated": "The lead has been updated."
+    },
+    "detail": {
+      "title": "Lead record",
+      "back": "All leads",
+      "stage": "Stage",
+      "stageChanged": "The stage has been changed.",
+      "responsible": "Owner",
+      "unassigned": "Unassigned",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteTitle": "Delete the lead?",
+      "deleteDescription": "The lead “{title}” will be deleted.",
+      "client": "Client",
+      "noClient": "No linked contact or company.",
+      "secondaryContact": "secondary contact",
+      "commercial": "Sales information",
+      "value": "Estimated value",
+      "wonAmount": "Won amount",
+      "lossReason": "Loss reason",
+      "lossComment": "Loss comment",
+      "priority": "Priority",
+      "team": "Team",
+      "source": "Source",
+      "created": "Created",
+      "lastActivity": "Last interaction",
+      "nextTask": "Next activity",
+      "noTask": "No planned activity",
+      "closed": "Closed",
+      "customFields": "Additional fields"
+    }
+  },
+  "pipeline": {
+    "pipeline": "Pipeline",
+    "emptyColumn": "No leads",
+    "loadMore": "Load {count} more",
+    "dragInstructions": "Press space to pick up the lead, the arrow keys to move it between stages and space to drop it. Escape cancels.",
+    "noPipelineTitle": "No pipeline",
+    "noPipelineDescription": "Create a pipeline in Settings → Pipelines and stages."
+  },
+  "detail": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete the record?",
+    "deleted": "The record has been deleted.",
+    "leads": "Leads ({count})",
+    "noLeads": "No linked leads."
+  },
+  "workspace": {
+    "timeline": "Timeline",
+    "tasks": "Tasks ({count})",
+    "notes": "Notes ({count})",
+    "files": "Files ({count})",
+    "conversations": "Conversations ({count})",
+    "history": "History"
+  },
+  "activity": {
+    "emptyTitle": "No activity yet",
+    "system": "System",
+    "nobody": "nobody",
+    "types": {
+      "lead": {
+        "created": "Lead created",
+        "stage_changed": "Stage changed: {from} → {to}",
+        "responsible_changed": "Owner changed: {to}",
+        "updated": "Changed: {fields}",
+        "contact_linked": "Contact linked",
+        "deleted": "Lead deleted",
+        "revenue_recorded": "Result recorded: {amount}"
+      },
+      "note": {
+        "added": "Note: {excerpt}"
+      },
+      "file": {
+        "added": "File added: {name}"
+      },
+      "task": {
+        "created": "Task created: {title}",
+        "completed": "Task completed: {title}",
+        "cancelled": "Task cancelled: {title}"
+      },
+      "contact": {
+        "created": "Contact created",
+        "merged": "Contact merged: {name}"
+      },
+      "company": {
+        "created": "Company created"
+      },
+      "message": {
+        "received": "Message received: {excerpt}",
+        "sent": "Message sent: {excerpt}"
+      }
+    },
+    "fields": {
+      "title": "title",
+      "value": "value",
+      "currency": "currency",
+      "priority": "priority",
+      "company_id": "company",
+      "source_id": "source",
+      "team_id": "team",
+      "won_amount": "won amount",
+      "loss_reason_id": "loss reason",
+      "custom_fields": "additional fields",
+      "description": "description"
+    }
+  },
+  "notes": {
+    "placeholder": "Write an internal note… (Ctrl+Enter to save)",
+    "add": "Add note",
+    "added": "The note has been added.",
+    "pin": "Pin to top",
+    "unpin": "Unpin",
+    "delete": "Delete",
+    "deleteTitle": "Delete the note?",
+    "deleteDescription": "The note will be permanently deleted.",
+    "deleted": "The note has been deleted.",
+    "emptyTitle": "No notes"
+  },
+  "files": {
+    "upload": "Upload files",
+    "limits": "25 MB maximum per file.",
+    "uploaded": "“{name}” has been uploaded.",
+    "uploadFailed": "upload failed",
+    "download": "Download",
+    "delete": "Delete",
+    "deleteTitle": "Delete the file?",
+    "deleteDescription": "“{name}” will be permanently deleted.",
+    "deleted": "The file has been deleted.",
+    "emptyTitle": "No files"
+  },
+  "tasks": {
+    "create": "New task",
+    "edit": "Edit task",
+    "complete": "Complete “{title}”",
+    "reopen": "Reopen “{title}”",
+    "created": "The task has been created.",
+    "updated": "The task has been updated.",
+    "completed": "The task has been completed.",
+    "emptyTitle": "No tasks",
+    "statuses": {
+      "new": "New",
+      "in_progress": "In progress",
+      "done": "Done",
+      "cancelled": "Cancelled",
+      "overdue": "Overdue"
+    },
+    "form": {
+      "createTitle": "New task",
+      "editTitle": "Edit task",
+      "title": "Title",
+      "type": "Type",
+      "responsible": "Owner",
+      "unassigned": "Unassigned",
+      "dueAt": "Due",
+      "duration": "Duration (minutes)",
+      "priority": "Priority",
+      "description": "Description"
+    },
+    "views": {
+      "today": "Today",
+      "overdue": "Overdue",
+      "upcoming": "Upcoming",
+      "done": "Done",
+      "all": "All"
+    },
+    "filters": {
+      "responsible": "Owner",
+      "mine": "Mine",
+      "everyone": "Everyone",
+      "unassigned": "Unassigned",
+      "type": "Type"
+    },
+    "empty": {
+      "today": "No tasks for today",
+      "overdue": "No overdue tasks",
+      "upcoming": "No planned tasks",
+      "done": "No completed tasks",
+      "all": "No tasks"
+    }
+  },
+  "calendar": {
+    "views": {
+      "month": "Month",
+      "week": "Week",
+      "day": "Day"
+    },
+    "today": "Today",
+    "previous": "Previous period",
+    "next": "Next period",
+    "more": "+{count} more",
+    "addOn": "Add a task on {date}",
+    "addAt": "Add a task at {time}",
+    "emptyDay": "No tasks on this day",
+    "rescheduled": "The task has been rescheduled."
+  },
+  "inbox": {
+    "title": "Inbox",
+    "emptyList": "No conversations for the selected filters.",
+    "unknownContact": "Unknown contact",
+    "you": "You",
+    "attachment": "Attachment",
+    "noMessages": "No messages yet.",
+    "unread": "{count, plural, one {# unread message} other {# unread messages}}",
+    "unassigned": "Unassigned",
+    "loadMore": "Load more",
+    "selectTitle": "Choose a conversation",
+    "selectHint": "Customer messages from all channels appear here in real time.",
+    "back": "Back to conversations",
+    "assignee": "Owner",
+    "take": "Take",
+    "release": "Release",
+    "assigned": "The conversation owner has been updated.",
+    "statusChanged": "The conversation status has been updated.",
+    "filters": {
+      "status": "Status",
+      "assignment": "Assignment",
+      "channel": "Channel",
+      "tag": "Tag"
+    },
+    "statusFilter": {
+      "open": "Open",
+      "pending": "Pending",
+      "closed": "Closed",
+      "all": "All"
+    },
+    "status": {
+      "open": "Open",
+      "pending": "Pending",
+      "closed": "Closed"
+    },
+    "assignment": {
+      "mine": "Mine",
+      "unassigned": "Unassigned"
+    },
+    "start": {
+      "button": "New",
+      "title": "New conversation",
+      "contact": "Contact",
+      "subject": "Subject (optional)",
+      "started": "The conversation has been created."
+    },
+    "message": {
+      "note": "Internal note",
+      "loggedBy": "Logged by {name}",
+      "delivery": {
+        "queued": "Queued",
+        "sent": "Sent",
+        "delivered": "Delivered",
+        "read": "Read",
+        "failed": "Failed"
+      }
+    },
+    "composer": {
+      "reply": "Reply",
+      "inbound": "Received message",
+      "note": "Internal note",
+      "placeholder": {
+        "reply": "Write a reply…",
+        "inbound": "The message received from the customer (call, visit)…",
+        "note": "Note visible only to the team…"
+      },
+      "send": {
+        "reply": "Send",
+        "inbound": "Log",
+        "note": "Add note"
+      },
+      "attach": "Attach files",
+      "removeFile": "Remove {name}",
+      "quickReplies": "Quick replies",
+      "searchQuickReplies": "Search for a reply…",
+      "noQuickReplies": "No quick replies.",
+      "hint": "Enter sends · Shift+Enter new line · / for quick replies"
+    },
+    "panel": {
+      "title": "Customer record",
+      "contact": "Contact",
+      "noContact": "The contact is not available.",
+      "lead": "Lead",
+      "linkLead": "Link an open lead",
+      "unlinkLead": "Unlink the lead",
+      "leadLinked": "The conversation's lead has been updated.",
+      "createLead": "New lead",
+      "leadTitle": "Lead title",
+      "leadCreated": "The lead has been created and linked to the conversation.",
+      "tags": "Tags",
+      "editTags": "Tags"
+    },
+    "record": {
+      "emptyTitle": "No conversations",
+      "emptyHint": "The customer's Inbox messages appear here."
+    }
+  },
+  "automations": {
+    "create": "New automation",
+    "createTitle": "New automation",
+    "emptyTitle": "No automations",
+    "emptyHint": "Start from a template below or create one from scratch.",
+    "neverRan": "Hasn't run yet",
+    "stats": "30 days: {runs, plural, =0 {no runs} one {# run} other {# runs}} · {failures, plural, =0 {no errors} one {# error} other {# errors}}",
+    "toggle": "Enable / disable “{name}”",
+    "activated": "The automation has been enabled.",
+    "deactivated": "The automation has been disabled.",
+    "templatesTitle": "Templates",
+    "templatesHint": "Common scenarios, ready to use. You can adjust them before saving.",
+    "noAccessTitle": "You don't have access to automations",
+    "noAccessHint": "Automations are visible to administrators and managers.",
+    "triggers": {
+      "lead_created": "New lead created",
+      "lead_stage_entered": "Lead entered a stage",
+      "lead_won": "Lead won",
+      "lead_lost": "Lead lost",
+      "task_due_soon": "Task starting soon",
+      "lead_inactive": "Lead without activity",
+      "message_received": "New message from a customer"
+    },
+    "editor": {
+      "general": "General",
+      "name": "Name",
+      "description": "Description (optional)",
+      "active": "Active",
+      "trigger": "Trigger",
+      "triggerHint": "The event that starts the automation.",
+      "triggerType": "When",
+      "stage": "Stage",
+      "minutes": "How many minutes before the due time",
+      "days": "After how many days without activity",
+      "pipeline": "Pipeline",
+      "allPipelines": "All pipelines",
+      "conditions": "Conditions",
+      "conditionsHint": "Optional: the automation runs only if they are met.",
+      "actions": "Actions",
+      "actionsHint": "Run in order, all or nothing.",
+      "save": "Save",
+      "saved": "The automation has been saved.",
+      "history": "Run history",
+      "delete": "Delete",
+      "deleteTitle": "Delete the automation?",
+      "deleteDescription": "“{name}” and its run history will be deleted.",
+      "deleted": "The automation has been deleted."
+    },
+    "conditions": {
+      "field": "Field",
+      "operator": "Condition",
+      "value": "Value",
+      "add": "Add condition",
+      "remove": "Remove condition",
+      "none": "No conditions: runs on every trigger.",
+      "combine": "Match",
+      "and": "all conditions",
+      "or": "any condition",
+      "fields": {
+        "lead_value": "Lead value",
+        "lead_priority": "Lead priority",
+        "lead_source_id": "Source",
+        "lead_responsible_id": "Owner",
+        "lead_team_id": "Team",
+        "lead_stage_id": "Stage",
+        "lead_tags": "Tags",
+        "lead_title": "Lead title",
+        "task_priority": "Task priority"
+      },
+      "operators": {
+        "eq": "is",
+        "neq": "is not",
+        "gt": "greater than",
+        "gte": "at least",
+        "lt": "less than",
+        "lte": "at most",
+        "contains": "contains",
+        "is_empty": "is empty",
+        "is_not_empty": "is filled in",
+        "includes": "includes",
+        "not_includes": "does not include"
+      }
+    },
+    "actions": {
+      "type": "Action type",
+      "add": "Add action",
+      "remove": "Remove action",
+      "up": "Move up",
+      "down": "Move down",
+      "types": {
+        "assign_responsible": "Assign owner",
+        "create_task": "Create task",
+        "notify": "Send notification",
+        "add_tag": "Add tag",
+        "change_stage": "Change stage",
+        "require_loss_reason": "Require loss reason",
+        "record_revenue": "Record the win result"
+      },
+      "strategy": "Distribution",
+      "strategies": {
+        "round_robin": "Round robin",
+        "least_loaded": "Least loaded",
+        "fixed": "Always the first in the list"
+      },
+      "users": "Users",
+      "user": "User",
+      "taskTitle": "Task title",
+      "taskType": "Task type",
+      "taskTypeDefault": "Follow-up (default)",
+      "dueInHours": "Due (hours from now)",
+      "priority": "Priority",
+      "assignee": "Task owner",
+      "assignees": {
+        "lead_responsible": "The lead's owner",
+        "user": "A specific user"
+      },
+      "recipient": "Recipient",
+      "recipients": {
+        "responsible": "The lead / task owner",
+        "user": "A specific user"
+      },
+      "message": "Notification message",
+      "tag": "Tag",
+      "stage": "New stage",
+      "hints": {
+        "require_loss_reason": "If a lost lead has no reason, the owner receives a task and a notification.",
+        "record_revenue": "Fills in the won amount (the lead value by default) and records it in the timeline."
+      }
+    },
+    "templates": {
+      "assignOnCreate": {
+        "name": "Assign on creation",
+        "description": "New leads without an owner are distributed to the team in turn."
+      },
+      "taskOnStage": {
+        "name": "Task on entering a stage",
+        "description": "When the lead reaches “Offer presented”, the owner gets a follow-up.",
+        "task": "Follow up on the offer"
+      },
+      "dueSoonReminder": {
+        "name": "Notification before the due time",
+        "description": "One hour before a task, the owner is notified.",
+        "message": "A task starts soon"
+      },
+      "lossReason": {
+        "name": "Loss reason",
+        "description": "A lost lead without a reason creates a task for the owner."
+      },
+      "wonRevenue": {
+        "name": "Win result",
+        "description": "On a win, the won amount is recorded and the owner is congratulated.",
+        "message": "Congratulations! Lead won."
+      },
+      "inactiveReminder": {
+        "name": "Inactivity reminder",
+        "description": "After 7 days without activity, the owner receives a task.",
+        "task": "Get back to the client"
+      }
+    },
+    "runs": {
+      "title": "Run history",
+      "description": "What the automations did and why some were skipped or failed.",
+      "time": "Date",
+      "automation": "Automation",
+      "statusLabel": "Status",
+      "entity": "Record",
+      "details": "Details",
+      "status": {
+        "success": "Succeeded",
+        "skipped": "Skipped",
+        "failed": "Failed",
+        "running": "Running"
+      },
+      "entities": {
+        "lead": "Lead",
+        "task": "Task",
+        "conversation": "Conversation",
+        "contact": "Contact",
+        "company": "Company"
+      },
+      "reasons": {
+        "conditions": "The conditions were not met",
+        "pipeline": "Different pipeline",
+        "loop_self": "Own effect (loop protection)",
+        "loop_depth": "Automation chain too long (loop protection)"
+      },
+      "actionSkipped": "not needed",
+      "emptyTitle": "No runs",
+      "emptyHint": "Runs appear here after active automations are triggered."
+    }
+  },
+  "dashboard": {
+    "description": "Figures for the selected period, calculated from the data you can see.",
+    "details": "Full report",
+    "noData": "No values in the selected period.",
+    "recentActivity": "Recent activity",
+    "kpis": {
+      "newLeads": "New leads",
+      "activeLeads": "Active leads",
+      "wonAmount": "Closed sales",
+      "wonCount": "{count, plural, =0 {no leads won} one {# lead won} other {# leads won}}",
+      "winRate": "Win rate",
+      "closed": "{won} won · {lost} lost",
+      "cycle": "Average sales cycle",
+      "pipelineValue": "Pipeline value (estimated)",
+      "pipelineHint": "Open leads, now",
+      "tasksOverdue": "Overdue tasks",
+      "tasksToday": "Tasks for today"
+    },
+    "charts": {
+      "sales": "Sales over time",
+      "leads": "Leads over time",
+      "funnel": "Stage conversion",
+      "team": "Team performance",
+      "sources": "Lead sources"
+    }
+  },
+  "reports": {
+    "navLabel": "Reports",
+    "export": "Export CSV",
+    "noData": "No records for the selected filters.",
+    "unassigned": "Unassigned",
+    "daysValue": "{days, plural, one {# day} other {# days}}",
+    "weekOf": "wk {date}",
+    "currencyNote": "Amounts are in {currency}; leads in other currencies are only counted.",
+    "noAccessTitle": "You don't have access to reports",
+    "noAccessHint": "Reports are available to managers and administrators. Your figures are on the Dashboard.",
+    "periods": {
+      "label": "Period",
+      "from": "From",
+      "to": "To",
+      "today": "Today",
+      "7d": "Last 7 days",
+      "30d": "Last 30 days",
+      "month": "This month",
+      "last_month": "Last month",
+      "90d": "Last 90 days",
+      "custom": "Custom"
+    },
+    "filters": {
+      "pipeline": "Pipeline",
+      "team": "Team",
+      "responsible": "Owner",
+      "source": "Source",
+      "defaultPipeline": "Main"
+    },
+    "list": {
+      "leads": {
+        "title": "Leads",
+        "description": "New, won and lost leads over time."
+      },
+      "sales": {
+        "title": "Sales",
+        "description": "Realized revenue (won leads) by period."
+      },
+      "funnel": {
+        "title": "Funnel",
+        "description": "How many leads created in the period reached each stage, and the conversion between stages."
+      },
+      "team": {
+        "title": "Team",
+        "description": "Leads, sales and tasks for each owner."
+      },
+      "sources": {
+        "title": "Sources",
+        "description": "Where leads come from and which sources bring sales."
+      },
+      "activities": {
+        "title": "Activities",
+        "description": "Planned, completed and overdue tasks by type."
+      },
+      "losses": {
+        "title": "Loss reasons",
+        "description": "Why leads are lost and how much value is lost."
+      }
+    },
+    "columns": {
+      "bucket": "Period",
+      "new_leads": "New leads",
+      "won_count": "Won",
+      "lost_count": "Lost",
+      "won_amount": "Sales",
+      "stage": "Stage",
+      "reached": "Reached the stage",
+      "from_start": "Of total",
+      "from_previous": "Vs. previous stage",
+      "current_count": "In stage now",
+      "current_value": "Value now",
+      "name": "Name",
+      "open_leads": "Open leads",
+      "open_value": "Open value",
+      "tasks_done": "Tasks completed",
+      "tasks_overdue": "Overdue tasks",
+      "planned": "Planned",
+      "done": "Completed",
+      "overdue": "Overdue",
+      "lost_value": "Lost value"
+    }
+  },
+  "integrations": {
+    "noAccessTitle": "Restricted access",
+    "noAccessHint": "API keys can only be managed by users with the “API keys” permission.",
+    "api": {
+      "intro": "API keys let external systems (website, ERP, forms) read and create data through the public API. The key is shown only once; the CRM keeps only its fingerprint. The key stops working if its author leaves the organization.",
+      "create": "New key",
+      "created": "The API key has been created.",
+      "name": "Name",
+      "namePlaceholder": "e.g. Website, ERP",
+      "scopes": "Access rights",
+      "scopeLabels": {
+        "contacts_read": "Read contacts and companies",
+        "contacts_write": "Create and edit contacts and companies",
+        "leads_read": "Read leads and pipelines",
+        "leads_write": "Create and edit leads"
+      },
+      "expiresIn": "Expiration",
+      "expiry": {
+        "never": "No expiration",
+        "30": "After 30 days",
+        "90": "After 90 days",
+        "365": "After one year"
+      },
+      "empty": "No API keys",
+      "emptyHint": "Create a key to connect an external system.",
+      "status": {
+        "active": "Active",
+        "revoked": "Revoked",
+        "expired": "Expired"
+      },
+      "createdBy": "Created on {date} by {author}",
+      "lastUsed": "last used on {date}",
+      "neverUsed": "not used yet",
+      "expiresAt": "expires on {date}",
+      "revoke": "Revoke",
+      "revokeTitle": "Revoke the API key?",
+      "revokeDescription": "Systems using the key “{name}” will immediately receive a 401 error. Revocation is permanent.",
+      "revoked": "The API key has been revoked.",
+      "secretTitle": "New API key",
+      "secretHint": "Copy the key now: it will not be shown again. Send it in the Authorization: Bearer KEY header.",
+      "secret": "API key",
+      "reference": {
+        "title": "API v1 reference",
+        "description": "REST + JSON. Each request is authenticated with an API key, and the data belongs to the key's organization.",
+        "baseUrl": "Base URL",
+        "example": "Example request",
+        "conventions": "Lists: ?limit= (max 100), offset=, q= (search), updated_since= (ISO 8601). Responses contain data and pagination; errors contain error.code (and error.fields for validation), with status codes 401, 403, 404, 422, 429. PATCH changes only the fields sent; DELETE is a soft delete.",
+        "method": "Method",
+        "path": "Resource",
+        "scope": "Required right"
+      }
+    },
+    "catalog": {
+      "intro": "Integrations available now and planned. External channels connect only through the providers' official APIs, using the company's business accounts.",
+      "configure": "Configure",
+      "status": {
+        "active": "Active",
+        "available": "Available",
+        "planned": "Planned"
+      },
+      "items": {
+        "internal": {
+          "title": "Internal channel and web form",
+          "description": "Messages received via webhook (website forms, other systems) straight into the Inbox."
+        },
+        "api": {
+          "title": "Public API v1",
+          "description": "Contacts, companies, leads and pipelines over REST, with API keys and per-resource rights."
+        },
+        "csv": {
+          "title": "CSV import / export",
+          "description": "Import contacts and companies with field mapping; export filtered lists."
+        },
+        "whatsapp": {
+          "title": "WhatsApp Business",
+          "description": "Via the WhatsApp Cloud API (Meta). Requires a verified business account and approved message templates."
+        },
+        "instagram": {
+          "title": "Instagram",
+          "description": "Direct messages via the Meta Graph API. Requires a business page and an approved Meta app."
+        },
+        "messenger": {
+          "title": "Facebook Messenger",
+          "description": "Facebook page messages via the Meta Graph API."
+        },
+        "email": {
+          "title": "Email",
+          "description": "The company mailbox (IMAP/SMTP or an email provider)."
+        },
+        "telephony": {
+          "title": "Telephony",
+          "description": "Calls and recordings through the company's VoIP provider."
+        }
+      }
+    }
+  },
+  "importExport": {
+    "importTitle": "CSV import",
+    "importDescription": "The file is read in the browser and sent in batches; every row is validated, and rows with errors go to the report without stopping the import.",
+    "exportTitle": "CSV export",
+    "exportHint": "A full export of each list. For a filtered export, use the “Export CSV” button in the list.",
+    "noAccess": "You don't have import or export rights.",
+    "entity": "What to import",
+    "entities": {
+      "contacts": "Contacts",
+      "companies": "Companies"
+    },
+    "exportEntities": {
+      "contacts": "Contacts",
+      "companies": "Companies",
+      "leads": "Leads"
+    },
+    "fileNames": {
+      "contacts": "contacts",
+      "companies": "companies",
+      "leads": "leads"
+    },
+    "encoding": "Encoding",
+    "encodings": {
+      "utf-8": "UTF-8 (recommended)",
+      "windows-1250": "Windows-1250 (Excel, Latin)",
+      "windows-1251": "Windows-1251 (Excel, Cyrillic)"
+    },
+    "file": {
+      "label": "CSV file",
+      "hint": "Header on the first row, at most {rows, number} rows. The separator is detected automatically.",
+      "summary": "{name}: {rows, plural, one {# row} other {# rows}}, {columns} columns",
+      "tooLarge": "The file exceeds 20 MB.",
+      "empty": "The file contains no data rows.",
+      "tooManyRows": "The file has too many rows (50,000 maximum). Split it into several files.",
+      "unreadable": "The file cannot be read."
+    },
+    "mapping": {
+      "column": "File column",
+      "samples": "Samples",
+      "field": "CRM field",
+      "skip": "— Don't import —",
+      "fieldFor": "Field for column {column}",
+      "needName": "Map at least one column to the first name, last name or full name.",
+      "needCompanyName": "Map a column to the company name.",
+      "duplicate": "The same field is chosen for several columns (allowed only for phone, email and tags)."
+    },
+    "options": {
+      "skipDuplicates": {
+        "contacts": "Skip contacts whose phone or email already exists",
+        "companies": "Skip companies with the same name, phone or email"
+      },
+      "createCompanies": "Create companies that don't exist",
+      "defaultOwner": "Default owner",
+      "noOwner": "No owner",
+      "defaultOwnerHint": "For rows without the “Owner (email)” column."
+    },
+    "start": "Import {rows, plural, one {# row} other {# rows}}",
+    "progress": {
+      "label": "Import progress",
+      "idle": "Ready",
+      "running": "Importing…",
+      "done": "Import finished",
+      "cancelled": "Import stopped",
+      "failed": "Import failed",
+      "rows": "{processed, number} of {total, number} rows",
+      "cancel": "Stop",
+      "errorReport": "Error report",
+      "again": "New import",
+      "stats": {
+        "ok": "Imported",
+        "skipped": "Skipped (duplicates)",
+        "failed": "With errors"
+      }
+    },
+    "history": {
+      "title": "Import history",
+      "empty": "No imports yet.",
+      "file": "File",
+      "status": "Status",
+      "ok": "Imported",
+      "skipped": "Skipped",
+      "failed": "Errors",
+      "author": "Author",
+      "processed": "{processed, number} / {total, number} rows",
+      "errors": "Errors",
+      "statuses": {
+        "processing": "In progress",
+        "done": "Finished",
+        "cancelled": "Stopped",
+        "failed": "Failed",
+        "interrupted": "Interrupted"
+      }
+    },
+    "fields": {
+      "first_name": "First name",
+      "last_name": "Last name",
+      "full_name": "Full name",
+      "phone": "Phone",
+      "email": "Email",
+      "company": "Company",
+      "position": "Position",
+      "source": "Source",
+      "owner": "Owner (email)",
+      "tags": "Tags",
+      "city": "City",
+      "street": "Address",
+      "name": "Name",
+      "companyName": "Name",
+      "industry": "Industry",
+      "website": "Website",
+      "created_at": "Created at",
+      "title": "Lead",
+      "pipeline": "Pipeline",
+      "stage": "Stage",
+      "status": "Status",
+      "value": "Value",
+      "currency": "Currency",
+      "won_amount": "Won amount",
+      "contact": "Primary contact",
+      "team": "Team",
+      "priority": "Priority",
+      "closed_at": "Closed at"
+    },
+    "errors": {
+      "duplicate": "Already exists (skipped).",
+      "unknown_owner": "The owner is not an active member of the organization (check the email).",
+      "unknown_source": "The source doesn't exist in settings.",
+      "unknown_tag": "One of the tags doesn't exist in settings.",
+      "unknown_company": "The company doesn't exist.",
+      "invalid_value": "A value doesn't match the allowed format.",
+      "db_error": "The row could not be saved."
+    },
+    "report": {
+      "row": "Row",
+      "field": "Field",
+      "error": "Error",
+      "fileName": "import-errors"
+    },
+    "leadStatus": {
+      "open": "Open",
+      "won": "Won",
+      "lost": "Lost"
+    },
+    "yes": "yes",
+    "no": "no"
+  },
+  "locale": {
+    "label": "Language"
+  }
+}

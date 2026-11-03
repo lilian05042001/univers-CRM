@@ -2,7 +2,7 @@
 
 CRM multi-tenant (Next.js + Supabase). Documentația completă: `docs/`.
 - Arhitectură, structură, securitate, dependențe, riscuri: `docs/ARCHITECTURE.md`
-- Schema DB: `docs/DATABASE.md` · Module: `docs/MODULES.md` · Plan: `docs/ROADMAP.md` · API public: `docs/API.md`
+- Schema DB: `docs/DATABASE.md` · Module: `docs/MODULES.md` · Plan: `docs/ROADMAP.md` · API public: `docs/API.md` · Producție: `docs/DEPLOY.md`
 
 Decizii: monedă implicită MDL · Supabase local (Docker) pentru dezvoltare · limbă implicită română.
 
@@ -15,13 +15,15 @@ Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `a
 - Mutație = `createOrgAction({ schema, permission }, handler)` din `src/lib/actions/action.ts`; returnează `ActionResult` cu chei i18n. Client: `applyActionResult` (formulare) sau `useActionRunner` (butoane).
 - Citirile de sesiune: `getOrgContext()` / `requirePermission()` din `src/lib/auth/session.ts`, doar în componente din `<Suspense>`. Clientul Supabase de server apelează `connection()` (sesiunea folosește `Date.now()`).
 - Schimbarea organizației active (creare/invitație/comutare): acțiunea returnează, clientul apelează `enterOrganization()` (navigare completă), nu `redirect()`.
+- Politici RLS noi: fără funcții cu parametri de rând (ar rula pe fiecare rând); `organization_id = ANY ((SELECT private.my_org_ids())::uuid[])`, `… my_perm_org_ids('<perm>'::text)` etc. — vezi `docs/DATABASE.md` §10. Testul `10_security.test.sql` verifică.
 - Triggere de protecție SQL: `security invoker` + `current_user = 'authenticated'` = apel direct din client; RPC-urile `security definer` trec de ele intenționat.
 - Scheme Zod fără `.transform()` (aceeași formă pentru formular și server); `""` → `null` cu `emptyToNull` în acțiune.
 - Liste (contacte/companii/lead-uri): pagină server → `parseListParams` → `queries.ts` (paginare/sortare/filtre pe server; același builder servește exportul CSV `/<listă>/export`) → `*View` client cu `DataTable`, `Toolbar`, `BulkBar`, `ExportButton`. Starea e în URL; dialogul de editare se deschide cu `?open=<id|new>` și folosește `useRouteDialog`.
 - Next remontează pagina la orice schimbare de parametri în URL: starea care trebuie să supraviețuiască stă în URL sau într-un store extern (vezi `use-search-draft.ts`).
 - Fără `upsert` care ar actualiza coloane fără grant UPDATE (ex. `organization_id`): `ignoreDuplicates: true` + update separat.
 - Permisiune nouă = migrație care actualizează `private.permission_catalog()` + `src/modules/auth/permissions.ts` + texte în `permissions.*`.
-- `service_role` nu primește drepturi implicite pe tabele noi: granturi explicite, minime, în migrație (ex. `webhook_events`). Clientul admin (`createAdminClient`) doar în `src/lib/channels/inbound.ts`, joburi și `src/lib/api/` (API v1: fiecare interogare cu `.eq("organization_id", ctx.organizationId)`).
+- `service_role` nu primește drepturi implicite pe tabele noi: granturi explicite, minime, în migrație (ex. `webhook_events`). Clientul admin (`createAdminClient`) doar în `src/lib/channels/inbound.ts`, joburi, `src/lib/security/rate-limit.ts` și `src/lib/api/` (API v1: fiecare interogare cu `.eq("organization_id", ctx.organizationId)`).
+- i18n: rutele sunt în `src/app/[locale]/` (proxy-ul adaugă limba intern; link-urile rămân `/contacts`). Text nou = cheie în `messages/ro.json`, `en.json` și `ru.json` (testul `i18n.test.ts` cere aceleași chei și parametri). În route handlere: `getTranslations({ locale, namespace })` cu `locale` din `params`. Fără `<tag>` sau acolade literale în mesaje (ICU).
 - Chei i18n: next-intl tratează „.” ca nivel; identificatorii cu punct (`lead.created`) devin chei cu `_` (`i18nKey()` în `modules/automations/fields.ts`).
 - RLS pe UPDATE verifică și rândul nou cu politica SELECT: o modificare după care rândul devine invizibil autorului (ex. predarea unei conversații) trece printr-un RPC `security definer` cu verificări explicite.
 
@@ -37,7 +39,7 @@ Conturi demo locale (parola `Demo12345`): `admin@demo.md`, `manager@demo.md`, `a
 4. **Mutațiile trec prin Server Actions / Route Handlers** cu: validare Zod → `requirePermission()` → acces date. RLS este a doua linie de apărare, nu singura.
 5. **Schema se schimbă doar prin migrații** în `supabase/migrations/` (niciodată editare manuală în dashboard). Regenerează tipurile după migrare: `npm run db:types`.
 6. **Cod pe module**: `src/modules/<modul>/{components,actions,queries,schemas,types,hooks}`. Componente UI generice în `src/components/`. Fără logică duplicată între module.
-7. **Texte UI numai prin i18n** (`messages/ro.json`; en/ru ulterior). Fără stringuri hardcodate în componente.
+7. **Texte UI numai prin i18n** (`messages/ro.json`, `en.json`, `ru.json`). Fără stringuri hardcodate în componente.
 8. **Fișiere mici** (orientativ < 300 linii). Server Components implicit; `"use client"` doar unde e nevoie de interactivitate.
 9. **Dependențe noi doar cu justificare**; verifică lista aprobată din `docs/ARCHITECTURE.md` §8.
 10. **Testele**: rulează doar cele relevante modificării (`npm run test -- <cale>`); E2E Playwright doar pentru fluxurile atinse.

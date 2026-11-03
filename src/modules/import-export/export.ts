@@ -38,10 +38,11 @@ async function memberEmails(organizationId: string) {
 export async function buildExport(
   entity: ExportEntity,
   ctx: OrgContext,
-  searchParams: SearchParams
+  searchParams: SearchParams,
+  locale: string
 ) {
-  const t = await getTranslations("importExport")
-  const tLeads = await getTranslations("leads")
+  const t = await getTranslations({ locale, namespace: "importExport" })
+  const tLeads = await getTranslations({ locale, namespace: "leads" })
   const timeZone = ctx.membership.organization.timezone
   const options = await getCrmOptions(ctx.organizationId)
   const owner = await memberEmails(ctx.organizationId)
@@ -171,10 +172,14 @@ export async function buildExport(
 }
 
 /** Route handler-ul exportului (/contacts/export?…filtrele listei); necesită data.export. */
-export async function exportResponse(entity: ExportEntity, request: Request): Promise<Response> {
+export async function exportResponse(
+  entity: ExportEntity,
+  request: Request,
+  locale: string
+): Promise<Response> {
   const ctx = await getOrgContext()
   if (!ctx.can("data.export")) return new Response("Forbidden", { status: 403 })
   const searchParams = Object.fromEntries(new URL(request.url).searchParams)
-  const { csv, fileName } = await buildExport(entity, ctx, searchParams)
+  const { csv, fileName } = await buildExport(entity, ctx, searchParams, locale)
   return csvResponse(csv, fileName)
 }

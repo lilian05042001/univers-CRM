@@ -10,18 +10,32 @@ vi.mock("next/server", async (importOriginal) => ({
 }))
 
 const VALID_KEY = "ucrm_valid-key"
+const LIMITED_KEY = "ucrm_limited-key"
 const ORG = "6f9619ff-8b86-4d11-b42d-00c04fc964ff"
 
-// Baza de date simulată: authenticate_api_key întoarce cheia doar pentru hash-ul cheii valide.
+const keyRow = (key_id: string) => ({
+  key_id,
+  organization_id: ORG,
+  scopes: ["contacts:read"],
+  created_by: "u1",
+})
+
+// Baza de date simulată: cheia validă și o cheie care și-a depășit limita de cereri.
 vi.mock("@/lib/supabase/admin", () => ({
   createAdminClient: () => ({
-    rpc: async (_fn: string, args: { p_hash: string }) => ({
-      data:
+    rpc: async (fn: string, args: { p_hash?: string; p_key?: string }) => {
+      if (fn === "rate_limit_hit") {
+        const allowed = args.p_key !== "api:k-limited"
+        return { data: [{ allowed, retry_after: allowed ? 0 : 42 }], error: null }
+      }
+      const data =
         args.p_hash === sha256Hex(VALID_KEY)
-          ? [{ key_id: "k1", organization_id: ORG, scopes: ["contacts:read"], created_by: "u1" }]
-          : [],
-      error: null,
-    }),
+          ? [keyRow("k1")]
+          : args.p_hash === sha256Hex(LIMITED_KEY)
+            ? [keyRow("k-limited")]
+            : []
+      return { data, error: null }
+    },
   }),
 }))
 
@@ -50,6 +64,13 @@ describe("API key authentication", () => {
     const res = await handler(request(VALID_KEY))
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({ org: ORG })
+  })
+
+  it("answers 429 with Retry-After when the key exceeds its limit", async () => {
+    const res = await handler(request(LIMITED_KEY))
+    expect(res.status).toBe(429)
+    expect(res.headers.get("retry-after")).toBe("42")
+    expect(await res.json()).toEqual({ error: { code: "rate_limited" } })
   })
 
   it("enforces the scope of the endpoint", async () => {

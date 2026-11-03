@@ -4,3 +4,5 @@ playwright-report
 test-results
 src/components/ui
 package-lock.json
+# Documentația în Markdown nu se reformatează (tabelele mari s-ar realinia la fiecare editare)
+*.md

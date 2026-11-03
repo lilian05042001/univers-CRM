@@ -232,7 +232,9 @@
     "phone": "Telefon",
     "emailInfo": "Adresa de e-mail a contului: {email}",
     "save": "Salvează",
-    "saved": "Profilul a fost salvat."
+    "saved": "Profilul a fost salvat.",
+    "language": "Limba interfeței",
+    "languageHint": "Se aplică pe toate dispozitivele tale, de la următoarea autentificare."
   },
   "team": {
     "tabs": {
@@ -1536,14 +1538,14 @@
       "revokeDescription": "Sistemele care folosesc cheia „{name}” vor primi imediat eroarea 401. Revocarea este definitivă.",
       "revoked": "Cheia API a fost revocată.",
       "secretTitle": "Cheia API nouă",
-      "secretHint": "Copiază cheia acum: nu va mai fi afișată. Trimite-o în antetul Authorization: Bearer <cheie>.",
+      "secretHint": "Copiază cheia acum: nu va mai fi afișată. Trimite-o în antetul Authorization: Bearer CHEIE.",
       "secret": "Cheia API",
       "reference": {
         "title": "Referință API v1",
         "description": "REST + JSON. Fiecare cerere se autentifică cu o cheie API, iar datele aparțin organizației cheii.",
         "baseUrl": "Adresa de bază",
         "example": "Exemplu de cerere",
-        "conventions": "Liste: ?limit= (max. 100), offset=, q= (căutare), updated_since= (ISO 8601). Răspuns: { data, pagination }. Erori: { error: { code, fields? } } cu codurile 401, 403, 404, 422. PATCH modifică doar câmpurile trimise; DELETE este ștergere logică.",
+        "conventions": "Liste: ?limit= (max. 100), offset=, q= (căutare), updated_since= (ISO 8601). Răspunsul conține data și pagination; erorile conțin error.code (și error.fields la validare), cu codurile 401, 403, 404, 422, 429. PATCH modifică doar câmpurile trimise; DELETE este ștergere logică.",
         "method": "Metodă",
         "path": "Resursă",
         "scope": "Drept necesar"
@@ -1738,5 +1740,8 @@
     },
     "yes": "da",
     "no": "nu"
+  },
+  "locale": {
+    "label": "Limba"
   }
 }

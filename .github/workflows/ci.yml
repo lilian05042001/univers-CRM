@@ -1,0 +1,64 @@
+# Verificări la fiecare push / pull request: calitatea codului, testele unitare,
+# testele bazei de date (pgTAP) și fluxurile E2E pe un Supabase local pornit în CI.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test
+
+  database-and-e2e:
+    runs-on: ubuntu-latest
+    needs: quality
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Supabase local (migrații + seed)
+        run: npx supabase start
+      - name: Teste pgTAP
+        run: npm run test:db
+      - name: Variabile pentru aplicație și teste
+        run: |
+          npx supabase status -o env > /tmp/supabase.env
+          source /tmp/supabase.env
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=$API_URL"
+            echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$PUBLISHABLE_KEY"
+            echo "SUPABASE_SECRET_KEY=$SECRET_KEY"
+            echo "CRON_SECRET=local-cron-secret"
+          } > .env.local
+      - run: npx playwright install --with-deps chromium
+      - name: Teste E2E
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7

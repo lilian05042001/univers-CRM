@@ -2067,7 +2067,7 @@ export type Database = {
           email: string
           full_name: string
           id: string
-          locale: string
+          locale: string | null
           phone: string | null
           updated_at: string
         }
@@ -2078,7 +2078,7 @@ export type Database = {
           email: string
           full_name?: string
           id: string
-          locale?: string
+          locale?: string | null
           phone?: string | null
           updated_at?: string
         }
@@ -2088,7 +2088,7 @@ export type Database = {
           email?: string
           full_name?: string
           id?: string
-          locale?: string
+          locale?: string | null
           phone?: string | null
           updated_at?: string
         }
@@ -2695,6 +2695,13 @@ export type Database = {
           lead_count: number
           stage_id: string
           total: number
+        }[]
+      }
+      rate_limit_hit: {
+        Args: { p_key: string; p_limit: number; p_window_seconds: number }
+        Returns: {
+          allowed: boolean
+          retry_after: number
         }[]
       }
       report_activities: {

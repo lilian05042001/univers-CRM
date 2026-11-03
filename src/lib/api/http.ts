@@ -7,7 +7,9 @@ export class ApiError extends Error {
   constructor(
     readonly status: number,
     readonly code: string,
-    readonly details?: Record<string, string>
+    readonly details?: Record<string, string>,
+    /** Secunde până la reîncercare (429). */
+    readonly retryAfter?: number
   ) {
     super(code)
   }
@@ -18,10 +20,12 @@ export function apiJson(body: unknown, status = 200): Response {
 }
 
 export function errorResponse(error: ApiError): Response {
-  return apiJson(
+  const response = apiJson(
     { error: { code: error.code, ...(error.details && { fields: error.details }) } },
     error.status
   )
+  if (error.retryAfter) response.headers.set("Retry-After", String(error.retryAfter))
+  return response
 }
 
 const MAX_BODY_BYTES = 64 * 1024

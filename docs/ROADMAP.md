@@ -25,4 +25,4 @@ Fiecare etapă se încheie cu: teste relevante trecute, raport scurt, **aprobare
 - [x] Node.js LTS, Git
 - [x] **Docker Desktop** (WSL 2)
 - [ ] Cont GitHub (repo privat) — pentru push la finalul Etapei 1
-- [ ] Cont Supabase cloud — doar la Etapa 12 (producție)
+- [ ] Cont Supabase cloud (Pro, eu-central-1) și cont Vercel — pașii în `docs/DEPLOY.md`

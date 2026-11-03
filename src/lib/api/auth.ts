@@ -3,6 +3,7 @@ import "server-only"
 import { unstable_rethrow } from "next/navigation"
 import { connection } from "next/server"
 
+import { hitRateLimit, RATE_LIMITS } from "@/lib/security/rate-limit"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { sha256Hex } from "@/lib/utils/secret"
 
@@ -42,13 +43,15 @@ async function authenticate(request: Request): Promise<ApiContext> {
 
 type Handler<P> = (request: Request, ctx: ApiContext, params: P) => Promise<Response>
 
-/** Route handler al API-ului v1: cheie API (Bearer) → scope → handler; erori ca JSON. */
+/** Route handler al API-ului v1: cheie API (Bearer) → limită de cereri → scope → handler; erori ca JSON. */
 export function withApiKey<P = Record<string, never>>(scope: ApiScope, handler: Handler<P>) {
   return async (request: Request, route?: { params: Promise<P> }): Promise<Response> => {
     // Răspunsurile depind de cheie și de date: niciodată prerandate sau memorate.
     await connection()
     try {
       const ctx = await authenticate(request)
+      const limit = await hitRateLimit(`api:${ctx.keyId}`, RATE_LIMITS.apiKey)
+      if (!limit.allowed) throw new ApiError(429, "rate_limited", undefined, limit.retryAfter)
       if (!ctx.scopes.includes(scope)) throw new ApiError(403, "insufficient_scope")
       const params = route ? await route.params : ({} as P)
       return await handler(request, ctx, params)

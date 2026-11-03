@@ -9,7 +9,7 @@ Legendă: `→` FK · `⇉` FK compus cu `organization_id` · `[U]` unic · `[I]
 | Tabel | Coloane principale |
 |---|---|
 | `organizations` | name, slug [U], legal_name, fiscal_code, country, currency (default `'MDL'`), timezone, default_locale, logo_path, settings jsonb |
-| `profiles` | id → auth.users (1:1), full_name, avatar_path, phone, locale |
+| `profiles` | id → auth.users (1:1), full_name, avatar_path, phone, locale (`ro/en/ru` sau null = nicio alegere; la înregistrare din metadatele contului) |
 | `roles` | organization_id, key, name, is_system, permissions text[] · [U] (organization_id, key) |
 | `memberships` | organization_id, user_id → profiles, role_id ⇉ roles, status `active/invited/disabled`, title · [U] (organization_id, user_id) |
 | `invitations` | organization_id, email, role_id ⇉, team_id ⇉, token_hash [U], expires_at, accepted_at, invited_by |
@@ -112,6 +112,8 @@ Funcții `security invoker` (respectă RLS: managerul vede echipa, agentul doar 
 
 Import (Etapa 11): `import_rows(job, rows, errors)` (`security definer`, verifică autorul jobului, `data.import`, `contacts.create`; fiecare rând într-o subtranzacție; rezolvă sursa / etichetele după nume, responsabilul după e-mail, compania după nume — creată dacă lipsește; duplicate după telefon / e-mail, la companii și după nume; `plan_cache_mode = force_custom_plan` + `ANALYZE` la fiecare 2000 de rânduri, ca timpul pe lot să rămână constant), `finish_import(job, status)`. Index `companies_search_eq (organization_id, search_text)`. API: `authenticate_api_key(hash)` doar pentru `service_role`; `service_role` are granturi explicite pe coloanele folosite de API-ul v1.
 
+Etapa 12: `private.rate_limits (key, window_start, hits)` — contoare tehnice (fără date de business, schema `private`, neexpusă), curățate orar de pg_cron; `public.rate_limit_hit(key, limit, window)` doar `service_role`.
+
 ## 9. Relații principale
 
 ```
@@ -127,6 +129,7 @@ automations 1─N automation_runs N─1 domain_events
 
 ## 10. Model RLS (rezumat)
 
+- **Forma politicilor (Etapa 12)**: nu se apelează funcții cu parametri de rând; `organization_id = ANY ((SELECT private.my_org_ids())::uuid[])`, `… my_perm_org_ids('<permisiune>'::text)`, `… my_admin_org_ids()`, `… my_scope_org_ids('all'|'team')`, `team_id = ANY ((SELECT private.my_team_ids())::uuid[])`, `(organization_id::text || '/' || owner_id::text) = ANY ((SELECT private.my_team_peer_keys())::text[])`. Regulile de mai jos descriu semantica (funcțiile `is_member`, `has_perm`, `can_see_record` rămân pentru RPC-uri și triggere).
 - `SELECT` pe orice tabel: `private.is_member(organization_id)`.
 - Vizibilitate unică: `private.can_see_record(org, owner, team)` după `private.crm_scope(org)` — `all` (admin / `crm.view.all`) → tot; `team` (`crm.view.team`) → proprii + colegii din echipele mele + lead-urile echipelor mele; `own` → proprii. **Înregistrările fără responsabil sunt vizibile tuturor membrilor** (pot fi preluate).
 - Tabelele copil (identități, legături, etichete, istoric, note, fișiere, cronologie) sunt vizibile doar dacă toți părinții sunt vizibili (`private.parents_visible`, subinterogări care respectă RLS-ul părinților).

@@ -1,5 +1,6 @@
 import "server-only"
 
+import { hitRateLimit, RATE_LIMITS } from "@/lib/security/rate-limit"
 import { createAdminClient } from "@/lib/supabase/admin"
 
 import { getAdapter } from "./registry"
@@ -34,6 +35,9 @@ export async function handleWebhook(provider: string, request: Request): Promise
     .maybeSingle()
   if (channelError) throw channelError
   if (!row) return reply(401, { error: "unauthorized" })
+  // Limita se aplică doar canalelor existente (id-uri inventate nu ocupă contoare).
+  if (!(await hitRateLimit(`webhook:${row.id}`, RATE_LIMITS.webhook)).allowed)
+    return reply(429, { error: "rate_limited" })
 
   const channel: ChannelRecord = {
     id: row.id,

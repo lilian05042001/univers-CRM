@@ -11,6 +11,10 @@ test.skip(!hasDatabase, skipReason)
 const t = messages
 let page: Page
 
+/** Răspunsul Server Action-ului care salvează mutarea (POST pe pagina curentă). */
+const actionSaved = () =>
+  page.waitForResponse((r) => r.request().method() === "POST" && r.ok(), { timeout: 15_000 })
+
 /** Tragere reală cu mouse-ul (dnd-kit pornește după câțiva pixeli de mișcare). */
 async function drag(source: Locator, target: Locator) {
   const from = (await source.boundingBox())!
@@ -60,14 +64,15 @@ test("a new lead appears in the first column", async () => {
 })
 
 test("dragging a card moves the lead and persists", async () => {
+  const saved = actionSaved()
   await dragUntil("Kanban E2E", "Contactat", () =>
     expect(column("Contactat").getByText("Kanban E2E")).toBeVisible({ timeout: 2000 })
   )
   await expect(column("Contactat").getByTestId("stage-count")).toHaveText("1")
   await expect(column("Lead nou").getByTestId("stage-count")).toHaveText("0")
 
-  // Mutarea se salvează asincron: reîncărcarea abia după ce cererea a ajuns la server.
-  await page.waitForLoadState("networkidle")
+  // Mutarea se salvează asincron: reîncărcarea abia după răspunsul Server Action-ului.
+  await saved
   await page.reload()
   await expect(column("Contactat").getByText("Kanban E2E")).toBeVisible()
   await expect(column("Contactat").getByTestId("stage-total")).toContainText("5.000")
@@ -80,20 +85,19 @@ test("moving to Lost asks for the reason", async () => {
   )
   await dialog.getByRole("combobox").click()
   await page.getByRole("option", { name: "Preț prea mare" }).click()
+  const saved = actionSaved()
   await dialog.getByRole("button", { name: t.leads.loss.confirm }).click()
-
-  // Mutarea se salvează asincron: reîncărcarea abia după ce cererea a ajuns la server.
-  await page.waitForLoadState("networkidle")
+  await saved
   await page.reload()
   await expect(column("Pierdut").getByText("Kanban E2E")).toBeVisible()
 })
 
 test("cancelling the reason keeps the lead where it was", async () => {
+  const saved = actionSaved()
   await dragUntil("Kanban E2E", "Negociere", () =>
     expect(column("Negociere").getByText("Kanban E2E")).toBeVisible({ timeout: 2000 })
   )
-  // Mutarea se salvează asincron: reîncărcarea abia după ce cererea a ajuns la server.
-  await page.waitForLoadState("networkidle")
+  await saved
   await page.reload()
   await dragUntil("Kanban E2E", "Pierdut", () =>
     expect(page.getByRole("dialog").getByText(t.leads.loss.title)).toBeVisible({ timeout: 2000 })

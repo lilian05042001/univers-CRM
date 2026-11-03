@@ -1,0 +1,41 @@
+# Backup logic săptămânal al bazei de producție, pe lângă backup-urile zilnice Supabase.
+# Fișierele conțin date personale: sunt criptate (GPG, AES256) înainte de a fi păstrate ca artefact.
+# Secrete necesare: SUPABASE_DB_URL (conexiune directă, rol postgres), BACKUP_PASSPHRASE.
+name: Backup
+
+on:
+  schedule:
+    - cron: "17 2 * * 0" # duminică, 02:17 UTC
+  workflow_dispatch:
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Dump (roluri, schemă, date)
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          mkdir -p backup
+          npx supabase db dump --db-url "$SUPABASE_DB_URL" --role-only -f backup/roles.sql
+          npx supabase db dump --db-url "$SUPABASE_DB_URL" -f backup/schema.sql
+          npx supabase db dump --db-url "$SUPABASE_DB_URL" --data-only --use-copy -f backup/data.sql
+      - name: Criptare
+        env:
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          tar -czf backup.tar.gz backup
+          gpg --batch --yes --symmetric --cipher-algo AES256 \
+            --passphrase "$BACKUP_PASSPHRASE" -o "univers-crm-$(date -u +%Y%m%d).tar.gz.gpg" backup.tar.gz
+          rm -rf backup backup.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: univers-crm-backup-${{ github.run_id }}
+          path: univers-crm-*.tar.gz.gpg
+          retention-days: 30

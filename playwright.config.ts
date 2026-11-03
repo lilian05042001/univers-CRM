@@ -36,7 +36,8 @@ export default defineConfig({
   ],
   webServer: {
     command: `npm run build && npm run start -- --port ${port}`,
-    env: { NEXT_PUBLIC_APP_URL: `http://localhost:${port}` },
+    // Toate testele se autentifică de pe localhost: limita pe IP e ridicată doar aici.
+    env: { NEXT_PUBLIC_APP_URL: `http://localhost:${port}`, AUTH_RATE_LIMIT_PER_IP: "10000" },
     url: `http://localhost:${port}/dashboard`,
     reuseExistingServer: !process.env.CI,
     timeout: 240_000,

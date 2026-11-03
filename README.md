@@ -10,4 +10,4 @@ npm run test       # teste unitare (Vitest)
 npm run test:e2e   # teste E2E (Playwright)
 ```
 
-Documentație: [`docs/`](docs/) · Reguli de dezvoltare: [`CLAUDE.md`](CLAUDE.md)
+Documentație: [`docs/`](docs/) · Producție: [`docs/DEPLOY.md`](docs/DEPLOY.md) · Reguli de dezvoltare: [`CLAUDE.md`](CLAUDE.md)

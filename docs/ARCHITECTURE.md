@@ -48,7 +48,7 @@ Supabase
 | Vizibilitate date | Admin: toată organizația · Manager: echipele sale · Agent: înregistrările atribuite lui (configurabil per rol) |
 | Server | wrapper `action(schema, perm, handler)` pentru fiecare Server Action: validare Zod, verificare permisiune, mapare erori |
 | RLS | activ pe toate tabelele; politici separate SELECT/INSERT/UPDATE/DELETE; teste pgTAP |
-| service_role | doar `src/lib/supabase/admin.ts` + `server-only`; folosit de webhooks (`src/lib/channels/inbound.ts`), joburi și API-ul public (`src/lib/api/`, fiecare interogare filtrată pe organizația cheii) |
+| service_role | doar `src/lib/supabase/admin.ts` + `server-only`; folosit de webhooks (`src/lib/channels/inbound.ts`), joburi, API-ul public (`src/lib/api/`, fiecare interogare filtrată pe organizația cheii) și limitarea cererilor (`src/lib/security/rate-limit.ts`) |
 | Secrete integrări | Supabase Vault; în tabel se păstrează doar referința |
 | Chei API | afișate o singură dată, stocate ca SHA-256, cu prefix vizibil și scopes |
 | Webhooks | verificare semnătură (HMAC/provider), tabel `webhook_events` cu cheie unică pentru idempotență |
@@ -62,7 +62,7 @@ Supabase
 ```
 univers-crm/
 ├─ CLAUDE.md
-├─ docs/                          ARCHITECTURE, DATABASE, MODULES, ROADMAP
+├─ docs/                          ARCHITECTURE, DATABASE, MODULES, ROADMAP, API, DEPLOY
 ├─ messages/                      ro.json (implicit), en.json, ru.json
 ├─ supabase/
 │  ├─ config.toml
@@ -73,8 +73,9 @@ univers-crm/
 ├─ src/
 │  ├─ proxy.ts                    sesiune + protecție rute + locale (fost middleware.ts)
 │  ├─ app/
-│  │  ├─ (auth)/                  login, register, forgot-password, invite/[token]
-│  │  ├─ (app)/                   layout cu sidebar + topbar
+│  │  ├─ [locale]/                segmentul limbii (ro/en/ru), adăugat intern de proxy; layout-ul rădăcină
+│  │  ├─ (auth)/                  login, register, forgot-password, invite/[token]   (în [locale]/)
+│  │  ├─ (app)/                   layout cu sidebar + topbar                         (în [locale]/)
 │  │  │  ├─ dashboard/
 │  │  │  ├─ leads/                listă · [id]/ (fișa lead-ului)
 │  │  │  ├─ pipeline/             kanban · ?pipeline=
@@ -182,8 +183,16 @@ univers-crm/
 - **Import** (`src/modules/import-export`): fișierul (max. 20 MB / 50 000 rânduri, UTF-8 sau Windows-1250/1251) e citit în browser cu papaparse → mapare coloane (automată după antet: etichetele din interfață, chei, sinonime ro/en/ru; exportul aplicației se reimportă fără ajustări) → `startImport` creează jobul → loturi de max. 500 rânduri / ~600 KB trimise secvențial (`importBatch`: validare Zod/TS pe server în `rows.ts`, apoi RPC `import_rows`) → `finishImport`. Interfața rămâne responsivă (o Server Action per lot, progres după fiecare lot, oprire, avertizare la închiderea paginii). Raport de erori CSV: `/settings/import-export/[id]/errors`.
 - **Export**: `/contacts|companies|leads/export?…` cu exact filtrele și sortarea listei (aceleași builder-e de interogare din `queries.ts`), max. 50 000 rânduri, responsabilul ca e-mail, câmpurile personalizate ca coloane; utilitarul comun `src/lib/csv.ts` (BOM, „;”, protecție la formule — fără a altera numerele/telefoanele). Necesită `data.export`.
 - **Chei API** (`/settings/api`, `api_keys.manage`): `ucrm_` + 256 biți, afișată o singură dată; scope-uri pe resursă; expirare opțională; revocare definitivă; cheia devine invalidă dacă autorul nu mai e membru activ.
-- **API v1** (`src/app/api/v1`, logica în `src/lib/api`, documentat în `docs/API.md`): `withApiKey(scope, handler)` → `authenticate_api_key(sha256)` → handler cu clientul `service_role` + `organization_id` explicit; erori JSON stabile (`401/403/404/409/413/422`); integritatea între organizații e garantată și de FK-urile compuse. Exclus din `proxy.ts`. Rate-limit: Etapa 12.
+- **API v1** (`src/app/api/v1`, logica în `src/lib/api`, documentat în `docs/API.md`): `withApiKey(scope, handler)` → `authenticate_api_key(sha256)` → handler cu clientul `service_role` + `organization_id` explicit; erori JSON stabile (`401/403/404/409/413/422/429`); integritatea între organizații e garantată și de FK-urile compuse. Exclus din `proxy.ts`. Limită: 120 cereri / minut / cheie.
 - **Integrări** (`/settings/integrations`): catalog — canal intern, API, CSV (active) și WhatsApp / Instagram / Messenger / e-mail / telefonie (planificate, doar prin API-uri oficiale).
+
+## 7d. Securitate, performanță, i18n, producție (Etapa 12)
+
+- **RLS performant**: politicile nu apelează funcții `security definer` cu parametri de rând (erau evaluate pe fiecare rând). Folosesc `coloană = ANY ((SELECT private.my_org_ids())::uuid[])` și echivalentele (`my_perm_org_ids(perm)`, `my_admin_org_ids()`, `my_scope_org_ids('all'|'team')`, `my_team_ids()`, `my_team_peer_keys()`, `my_colleague_ids()`): subinterogarea devine un InitPlan, calculat o dată per interogare. Migrația `*_rls_performance.sql` a rescris toate politicile; testul `10_security.test.sql` interzice revenirea la tiparul vechi.
+- **Headere** (`src/lib/security/headers.ts`, din `next.config.ts`): CSP fără nonce (Partial Prerendering nu e compatibil cu nonce-uri; scripturile proprii + Supabase REST/Storage/Realtime), `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`, COOP; HSTS și `upgrade-insecure-requests` doar în producție (https).
+- **Limitarea cererilor** (`src/lib/security/rate-limit.ts` + `public.rate_limit_hit`, doar `service_role`): ferestre fixe în Postgres (funcționează pe orice număr de instanțe serverless). Autentificare: 20 / 5 min / IP și 10 / 15 min / e-mail (login, înregistrare, resetare); API: 120 / min / cheie (`429` + `Retry-After`); webhooks: 300 / min / canal. Dacă baza nu răspunde, cererea trece (jurnal de eroare).
+- **i18n ro/en/ru**: rutele stau în `app/[locale]` (segment rădăcină, citit cu `next/root-params`); `proxy.ts` rescrie intern `/contacts` → `/{limbă}/contacts`, deci URL-urile rămân fără prefix și fiecare limbă are shell prerandat. Limba: cookie `NEXT_LOCALE` (selectorul din profil / paginile de autentificare; la login, limba din profil) → `Accept-Language` → ro. `/en/…` setează limba și redirecționează la URL-ul fără prefix. Route handlerele (unde `root-params` nu e disponibil) transmit limba explicit: `getTranslations({ locale, namespace })`. Server Actions întorc chei i18n, traduse în client. `tests/unit/i18n.test.ts` verifică chei, parametri și sintaxa ICU în toate limbile.
+- **Producție**: `docs/DEPLOY.md` (Supabase + Vercel, Vault, backup, checklist), CI (`.github/workflows/ci.yml`), backup logic săptămânal criptat (`backup.yml`).
 
 ## 7b. Motorul de automatizări (Etapa 9)
 

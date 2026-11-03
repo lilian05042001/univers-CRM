@@ -1,6 +1,6 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
@@ -34,6 +34,7 @@ export function ReportChart({
   className?: string
 }) {
   const t = useTranslations("reports.columns")
+  const locale = useLocale()
   const fmt = useReportFormat(currency)
   const xKind = columns.find((c) => c.key === spec.x)?.kind ?? "text"
   const config: ChartConfig = Object.fromEntries(
@@ -46,7 +47,7 @@ export function ReportChart({
   const value = (v: unknown) => fmt(v as number, spec.valueKind)
   const compact = (v: unknown) =>
     spec.valueKind === "money"
-      ? new Intl.NumberFormat("ro-MD", { notation: "compact", maximumFractionDigits: 1 }).format(
+      ? new Intl.NumberFormat(locale, { notation: "compact", maximumFractionDigits: 1 }).format(
           Number(v)
         )
       : String(v)

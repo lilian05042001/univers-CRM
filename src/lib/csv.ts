@@ -21,10 +21,16 @@ export function toCsvDocument(header: string[], rows: CsvValue[][]): string {
 
 /** Răspunsul HTTP pentru descărcarea unui CSV. */
 export function csvResponse(csv: string, fileName: string): Response {
+  // Antetele HTTP acceptă doar ASCII: numele cu diacritice / chirilice merg în filename* (RFC 6266).
+  const ascii = fileName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\x20-\x7e]/g, "_")
+    .replace(/["\\]/g, "_")
   return new Response(csv, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="${fileName}"`,
+      "Content-Disposition": `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(fileName)}`,
       "Cache-Control": "no-store",
     },
   })

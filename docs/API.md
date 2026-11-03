@@ -43,6 +43,7 @@ O cheie nu mai este valabilă dacă e revocată, a expirat sau autorul ei nu mai
 | 404 | `not_found` |
 | 409 | `conflict` |
 | 413 | `payload_too_large` (corp > 64 KB) |
+| 429 | `rate_limited` — peste 120 de cereri / minut pentru aceeași cheie; antetul `Retry-After` spune peste câte secunde |
 | 422 | `validation_failed` (cu `fields`), `invalid_reference`, `invalid_value` |
 | 500 | `internal_error` |
 
